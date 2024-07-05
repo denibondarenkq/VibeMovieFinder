@@ -90,7 +90,7 @@ final class MovieTableViewCell: UITableViewCell {
         movieImageView.image = nil
     }
 
-    public func configure(with viewModel: MovieTableViewCellModel) {
+    public func configure(with viewModel: MovieCellViewModel) {
         nameLabel.text = viewModel.name
         ratingLabel.text = "Rating: \(viewModel.rating)"
         yearDurationLabel.text = "\(viewModel.year) • \(viewModel.duration) min"

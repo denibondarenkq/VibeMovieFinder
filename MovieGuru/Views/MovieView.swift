@@ -9,7 +9,7 @@ import UIKit
 
 class MovieView: UIView {
     
-    private var viewModel: WatchlistTableViewModel? {
+    private var viewModel: MovieTableViewModel? {
         didSet {
             spinner.stopAnimating()
             tableView.isHidden = false
@@ -67,7 +67,7 @@ class MovieView: UIView {
         ])
     }
     
-    public func configure(with viewModel: WatchlistTableViewModel) {
+    public func configure(with viewModel: MovieTableViewModel) {
         self.viewModel = viewModel
     }
 }

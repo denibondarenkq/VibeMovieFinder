@@ -8,10 +8,10 @@
 import UIKit
 
 /// Controller to show and manage Watchlist
-class WatchlistViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class WatchlistViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MovieTableViewModelDelegate {
 
     private let primaryView = MovieView()
-    private let viewModel = WatchlistTableViewModel()
+    private let viewModel = MovieTableViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,10 +21,22 @@ class WatchlistViewController: UIViewController, UITableViewDelegate, UITableVie
         
         primaryView.tableView.delegate = self
         primaryView.tableView.dataSource = self
+        view.addSubview(primaryView)
+
         
         addConstraints()
-        viewModel.fetchMovies()
-        primaryView.configure(with: viewModel)
+        viewModel.delegate = self 
+        viewModel.fetchMovies { result in
+            switch result {
+            case .success:
+                print("Movies loaded successfully")
+                DispatchQueue.main.async {
+                    self.primaryView.configure(with: self.viewModel)
+                }
+            case .failure(let error):
+                print("Error loading movies: \(error)")
+            }
+        }
     }
     
     private func addConstraints() {
@@ -54,12 +66,15 @@ class WatchlistViewController: UIViewController, UITableViewDelegate, UITableVie
     
     // MARK: - UITableViewDelegate
     
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        tableView.deselectRow(at: indexPath, animated: true)
-//        // Handle cell selection
-//    }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return MovieTableViewCell.cellHeight
     }
 
+    // MARK: - MovieTableViewModelDelegate
+    
+    func didFetchMovies() {
+        DispatchQueue.main.async {
+            self.primaryView.tableView.reloadData()
+        }
+    }
 }

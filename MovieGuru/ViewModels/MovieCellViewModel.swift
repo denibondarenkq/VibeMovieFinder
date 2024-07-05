@@ -7,35 +7,35 @@
 
 import UIKit
 
-struct MovieTableViewCellModel: Equatable {
+struct MovieCellViewModel: Equatable {
 
-    private let movie: Movie
+    private let movie: MovieSummary
 
-    init(movie: Movie) {
+    init(movie: MovieSummary) {
         self.movie = movie
     }
 
     public var name: String {
-        return movie.name
+        return movie.originalTitle
     }
 
     public var rating: Double {
-        return movie.rating
+        return movie.voteAverage
     }
     
-    public var year: Int {
-        return movie.year
+    public var year: String {
+        return movie.releaseDate
     }
     
     public var duration: Int {
-        return movie.duration
+        return movie.voteCount
     }
     
     public var image: UIImage? {
-           return movie.image
+           return UIImage(named: "oxxqiyWrnM0XPnBtVe9TgYWnPxT")
        }
     
-    static func == (lhs: MovieTableViewCellModel, rhs: MovieTableViewCellModel) -> Bool {
+    static func == (lhs: MovieCellViewModel, rhs: MovieCellViewModel) -> Bool {
         return lhs.name == rhs.name
     }
 
