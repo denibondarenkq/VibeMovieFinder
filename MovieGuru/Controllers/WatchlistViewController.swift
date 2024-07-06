@@ -8,38 +8,45 @@
 import UIKit
 
 /// Controller to show and manage Watchlist
-class WatchlistViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MovieTableViewModelDelegate {
+class WatchlistViewController: UIViewController {
 
+    // MARK: - Properties
+    
     private let primaryView = MovieView()
     private let viewModel = MovieTableViewModel()
 
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(primaryView)
-        view.backgroundColor = .systemBackground
-        title = "Watchlist"
-        
-        primaryView.tableView.delegate = self
-        primaryView.tableView.dataSource = self
-        view.addSubview(primaryView)
-
-        
-        addConstraints()
-        viewModel.delegate = self 
-        viewModel.fetchMovies { result in
+        setupView()
+        setupConstraints()
+        setupBindings()
+        viewModel.fetchMovies(endpoint: .accountWatchList(accountId: 21250428, page: 1)) { result in
             switch result {
             case .success:
                 print("Movies loaded successfully")
-                DispatchQueue.main.async {
-                    self.primaryView.configure(with: self.viewModel)
-                }
             case .failure(let error):
                 print("Error loading movies: \(error)")
             }
         }
     }
+
+    // MARK: - Setup Methods
     
-    private func addConstraints() {
+    private func setupView() {
+        title = "Watchlist"
+        view.addSubview(primaryView)
+        view.backgroundColor = .systemBackground
+        setupTableView()
+    }
+
+    private func setupTableView() {
+        primaryView.tableView.delegate = self
+        primaryView.tableView.dataSource = self
+    }
+
+    private func setupConstraints() {
         primaryView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             primaryView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -49,8 +56,15 @@ class WatchlistViewController: UIViewController, UITableViewDelegate, UITableVie
         ])
     }
 
-    // MARK: - UITableViewDataSource
-    
+    private func setupBindings() {
+        viewModel.delegate = self
+        primaryView.configure(with: viewModel)
+    }
+}
+
+// MARK: - UITableViewDataSource
+
+extension WatchlistViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.numberOfMovies()
     }
@@ -63,15 +77,19 @@ class WatchlistViewController: UIViewController, UITableViewDelegate, UITableVie
         cell.configure(with: cellViewModel)
         return cell
     }
-    
-    // MARK: - UITableViewDelegate
-    
+}
+
+// MARK: - UITableViewDelegate
+
+extension WatchlistViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return MovieTableViewCell.cellHeight
     }
+}
 
-    // MARK: - MovieTableViewModelDelegate
-    
+// MARK: - MovieTableViewModelDelegate
+
+extension WatchlistViewController: MovieTableViewModelDelegate {
     func didFetchMovies() {
         DispatchQueue.main.async {
             self.primaryView.tableView.reloadData()

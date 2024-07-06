@@ -19,30 +19,23 @@ struct MovieCellViewModel: Equatable {
         return movie.originalTitle
     }
 
-    public var rating: Double {
-        return movie.voteAverage
+    public var rating: String {
+        return String(format: "%.1f", movie.voteAverage)
     }
     
     public var year: String {
-        return movie.releaseDate
+        return String(movie.releaseDate.prefix(4))
     }
     
-    public var duration: Int {
-        return movie.voteCount
+    public var genreIDs: [Int] {
+        return movie.genreIDS
     }
     
-    public var image: UIImage? {
-           return UIImage(named: "oxxqiyWrnM0XPnBtVe9TgYWnPxT")
-       }
-    
-    static func == (lhs: MovieCellViewModel, rhs: MovieCellViewModel) -> Bool {
-        return lhs.name == rhs.name
+    public var posterURL: URL? {
+        return URL(string: "https://image.tmdb.org/t/p/w500\(movie.posterPath)")
     }
 
-//    func hash(into hasher: inout Hasher) {
-//        hasher.combine(name)
-//        hasher.combine(location.id)
-//        hasher.combine(dimension)
-//        hasher.combine(type)
-//    }
+    static func == (lhs: MovieCellViewModel, rhs: MovieCellViewModel) -> Bool {
+        return lhs.movie.id == rhs.movie.id
+    }
 }

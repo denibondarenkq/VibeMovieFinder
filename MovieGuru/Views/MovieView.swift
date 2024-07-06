@@ -39,14 +39,13 @@ class MovieView: UIView {
     // MARK: - Init
 
     override init(frame: CGRect) {
-        super.init(frame: frame)
-        backgroundColor = .systemBackground
-        translatesAutoresizingMaskIntoConstraints = false
-        addSubview(tableView)
-        addSubview(spinner)
-        spinner.startAnimating()
-        addConstraints()
-//        configureTable()
+            super.init(frame: frame)
+            backgroundColor = .systemBackground
+            translatesAutoresizingMaskIntoConstraints = false
+            addSubview(tableView)
+            addSubview(spinner)
+            spinner.startAnimating()
+            addConstraints()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -54,19 +53,14 @@ class MovieView: UIView {
     }
 
     private func addConstraints() {
-        NSLayoutConstraint.activate([
-//            spinner.heightAnchor.constraint(equalToConstant: 100),
-//            spinner.widthAnchor.constraint(equalToConstant: 100),
-//            spinner.centerXAnchor.constraint(equalTo: centerXAnchor),
-//            spinner.centerYAnchor.constraint(equalTo: centerYAnchor),
-
-            tableView.topAnchor.constraint(equalTo: topAnchor),
-            tableView.leftAnchor.constraint(equalTo: leftAnchor),
-            tableView.rightAnchor.constraint(equalTo: rightAnchor),
-            tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
-        ])
+            NSLayoutConstraint.activate([
+                tableView.topAnchor.constraint(equalTo: topAnchor),
+                tableView.leftAnchor.constraint(equalTo: leftAnchor),
+                tableView.rightAnchor.constraint(equalTo: rightAnchor),
+                tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            ])
     }
-    
+        
     public func configure(with viewModel: MovieTableViewModel) {
         self.viewModel = viewModel
     }
