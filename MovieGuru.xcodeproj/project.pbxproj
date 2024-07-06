@@ -27,6 +27,9 @@
 		7956FD062C385B2300DB6247 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7956FD052C385B2300DB6247 /* Endpoint.swift */; };
 		7956FD082C38622300DB6247 /* APICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7956FD072C38622300DB6247 /* APICaller.swift */; };
 		7956FD0A2C3862AA00DB6247 /* RequestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7956FD092C3862AA00DB6247 /* RequestError.swift */; };
+		7956FD0C2C3961D300DB6247 /* Genres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7956FD0B2C3961D300DB6247 /* Genres.swift */; };
+		7956FD0E2C39A43A00DB6247 /* Padding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7956FD0D2C39A43A00DB6247 /* Padding.swift */; };
+		7956FD102C39A50C00DB6247 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7956FD0F2C39A50C00DB6247 /* Font.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +55,9 @@
 		7956FD052C385B2300DB6247 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		7956FD072C38622300DB6247 /* APICaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICaller.swift; sourceTree = "<group>"; };
 		7956FD092C3862AA00DB6247 /* RequestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestError.swift; sourceTree = "<group>"; };
+		7956FD0B2C3961D300DB6247 /* Genres.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genres.swift; sourceTree = "<group>"; };
+		7956FD0D2C39A43A00DB6247 /* Padding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Padding.swift; sourceTree = "<group>"; };
+		7956FD0F2C39A50C00DB6247 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +130,7 @@
 			children = (
 				7956FCFC2C3844A500DB6247 /* MovieSummary.swift */,
 				7956FCFE2C38453000DB6247 /* MovieDetail.swift */,
+				7956FD0B2C3961D300DB6247 /* Genres.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -149,10 +156,12 @@
 		7939BE652C2A00640098FCB0 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				7939BE3C2C29661C0098FCB0 /* Assets.xcassets */,
 				7939BE3E2C29661C0098FCB0 /* LaunchScreen.storyboard */,
 				7939BE332C29661B0098FCB0 /* AppDelegate.swift */,
 				7939BE352C29661B0098FCB0 /* SceneDelegate.swift */,
+				7939BE3C2C29661C0098FCB0 /* Assets.xcassets */,
+				7956FD0D2C39A43A00DB6247 /* Padding.swift */,
+				7956FD0F2C39A50C00DB6247 /* Font.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -236,11 +245,14 @@
 				7939BE5C2C299EDE0098FCB0 /* MovieTableViewModel.swift in Sources */,
 				7956FD062C385B2300DB6247 /* Endpoint.swift in Sources */,
 				7956FD082C38622300DB6247 /* APICaller.swift in Sources */,
+				7956FD0C2C3961D300DB6247 /* Genres.swift in Sources */,
 				7939BE4C2C2969510098FCB0 /* WatchlistViewController.swift in Sources */,
 				7939BE622C29C1CE0098FCB0 /* MovieCellViewModel.swift in Sources */,
 				7939BE342C29661B0098FCB0 /* AppDelegate.swift in Sources */,
+				7956FD0E2C39A43A00DB6247 /* Padding.swift in Sources */,
 				7956FD012C3859AF00DB6247 /* AuthManager.swift in Sources */,
 				7956FD0A2C3862AA00DB6247 /* RequestError.swift in Sources */,
+				7956FD102C39A50C00DB6247 /* Font.swift in Sources */,
 				7939BE5A2C299DAB0098FCB0 /* MovieView.swift in Sources */,
 				7939BE502C2969E90098FCB0 /* TabBarController.swift in Sources */,
 				7939BE4A2C2969130098FCB0 /* ChatAIViewController.swift in Sources */,
@@ -388,6 +400,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7LD839RLR5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MovieGuru/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -414,6 +427,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7LD839RLR5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MovieGuru/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

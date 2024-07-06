@@ -9,8 +9,9 @@ import Foundation
 
 public enum Endpoint {
     case accountaddToWatchList(accountId: Int, sessionId: String, movieId: Int)
-    case accountWatchList(accountId: Int, page: Int)
+    case accountWatchList(accountId: Int, page: Int, sortBy: String)
     case moviesDetails(movieId: Int)
+    case generesMovieList
     
     var baseURL: URL {
         return URL(string: "https://api.themoviedb.org/3/")!
@@ -20,10 +21,12 @@ public enum Endpoint {
         switch self {
         case .accountaddToWatchList(let accountId, _, _):
             return "account/\(accountId)/watchlist"
-        case .accountWatchList(let accountId, _):
+        case .accountWatchList(let accountId, _, _):
             return "account/\(accountId)/watchlist/movies"
         case .moviesDetails(let movieId):
             return "movie/\(movieId)"
+        case .generesMovieList:
+            return "genre/movie/list"
         }
     }
     
@@ -31,7 +34,7 @@ public enum Endpoint {
         switch self {
         case .accountaddToWatchList:
             return .POST
-        default:
+        case .accountWatchList, .moviesDetails, .generesMovieList:
             return .GET
             //TODO: .GET, .PUT, .DELETE
         }
@@ -39,13 +42,17 @@ public enum Endpoint {
     
     var queryItems: [URLQueryItem]? {
         switch self {
-        case .accountWatchList(_, let page): //TODO: sort by
+        case .accountWatchList(_, let page, let sortBy): //TODO: sort by
             return [
                 URLQueryItem(name: "language", value: "en-US"),
                 URLQueryItem(name: "page", value: "\(page)"),
-                URLQueryItem(name: "sort_by", value: "created_at.asc")
+                URLQueryItem(name: "sort_by", value: "\(sortBy)")
             ]
             //TODO: other cases
+        case .generesMovieList:
+            return [
+                URLQueryItem(name: "language", value: "en")
+            ]
         default:
             return nil
         }
@@ -54,13 +61,11 @@ public enum Endpoint {
     var headers: [String: String]? {
         guard let token = AuthManager.shared.token else { return nil }
         
-        var headers = [
+        let headers = [
             "accept": "application/json",
+            "content-type": "application/json",
             "Authorization": "Bearer \(token)"
         ]
-        if method == .GET {
-            headers["content-type"] = "application/json"
-        }
         return headers
     }
     
@@ -83,7 +88,7 @@ public enum Endpoint {
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
         request.allHTTPHeaderFields = headers
-        request.timeoutInterval = 30
+        request.timeoutInterval = 10
 
 //            if let bodyParameters = bodyParameters {
 //                request.httpBody = try JSONSerialization.data(withJSONObject: bodyParameters, options: [])

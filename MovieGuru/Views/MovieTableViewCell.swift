@@ -8,12 +8,12 @@
 import UIKit
 
 final class MovieTableViewCell: UITableViewCell {
-    static let cellHeight: CGFloat = 170
+    static let cellHeight: CGFloat = 190
 
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "GillSans-SemiBold", size: 24.0)
+        label.font = Font.title
         label.numberOfLines = 2
         return label
     }()
@@ -21,7 +21,7 @@ final class MovieTableViewCell: UITableViewCell {
     private let ratingLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.font = Font.regular
         label.textColor = .black
         return label
     }()
@@ -30,14 +30,15 @@ final class MovieTableViewCell: UITableViewCell {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.spacing = 5
+        stackView.alignment = .leading
+        stackView.spacing = Padding.small
         return stackView
     }()
     
     private let yearLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 14, weight: .light)
+        label.font = Font.light
         label.textColor = .black
         return label
     }()
@@ -55,7 +56,7 @@ final class MovieTableViewCell: UITableViewCell {
     private let starImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(systemName: "star.fill")
+        imageView.image = UIImage(systemName: "star.circle.fill")
         imageView.tintColor = .orange
         return imageView
     }()
@@ -63,7 +64,7 @@ final class MovieTableViewCell: UITableViewCell {
     private let calendarImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(systemName: "calendar")
+        imageView.image = UIImage(systemName: "calendar.circle.fill")
         imageView.tintColor = .black
         return imageView
     }()
@@ -72,6 +73,15 @@ final class MovieTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupViews()
+        addConstraints()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
+    
+    private func setupViews() {
         contentView.addSubview(nameLabel)
         contentView.addSubview(ratingLabel)
         contentView.addSubview(genresStackView)
@@ -79,45 +89,46 @@ final class MovieTableViewCell: UITableViewCell {
         contentView.addSubview(movieImageView)
         contentView.addSubview(starImageView)
         contentView.addSubview(calendarImageView)
-
-        addConstraints()
-        accessoryType = .disclosureIndicator
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError()
     }
     
     private func addConstraints() {
+        let calendarStackView = UIStackView(arrangedSubviews: [calendarImageView, yearLabel])
+        calendarStackView.translatesAutoresizingMaskIntoConstraints = false
+        calendarStackView.spacing = Padding.small
+        calendarStackView.alignment = .center
+
+        let ratingStackView = UIStackView(arrangedSubviews: [starImageView, ratingLabel])
+        ratingStackView.translatesAutoresizingMaskIntoConstraints = false
+        ratingStackView.spacing = Padding.small
+        ratingStackView.alignment = .center
+
+        let informationStack = UIStackView(arrangedSubviews: [ratingStackView, calendarStackView])
+        informationStack.translatesAutoresizingMaskIntoConstraints = false
+        informationStack.axis = .horizontal
+        informationStack.spacing = Padding.medium
+        informationStack.alignment = .center
+
+        let contentStackView = UIStackView(arrangedSubviews: [nameLabel, informationStack, genresStackView])
+        contentStackView.axis = .vertical
+        contentStackView.spacing = Padding.medium
+        contentStackView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(contentStackView)
+        
+        contentStackView.alignment = .leading
+
         NSLayoutConstraint.activate([
-            movieImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            movieImageView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 10),
+            movieImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Padding.large),
+            movieImageView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: Padding.large),
             movieImageView.widthAnchor.constraint(equalToConstant: 100),
             movieImageView.heightAnchor.constraint(equalTo: movieImageView.widthAnchor, multiplier: 1.5),  // 2:3 aspect ratio
 
-            nameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            nameLabel.leftAnchor.constraint(equalTo: movieImageView.rightAnchor, constant: 10),
-            nameLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -10),
+            contentStackView.centerYAnchor.constraint(equalTo: movieImageView.centerYAnchor),
+            contentStackView.leftAnchor.constraint(equalTo: movieImageView.rightAnchor, constant: Padding.medium),
+            contentStackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -Padding.large),
 
-            starImageView.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 10),
-            starImageView.leftAnchor.constraint(equalTo: movieImageView.rightAnchor, constant: 10),
-            starImageView.widthAnchor.constraint(equalToConstant: 20),
-            starImageView.heightAnchor.constraint(equalToConstant: 20),
+            nameLabel.leftAnchor.constraint(equalTo: contentStackView.leftAnchor),
 
-            ratingLabel.centerYAnchor.constraint(equalTo: starImageView.centerYAnchor),
-            ratingLabel.leftAnchor.constraint(equalTo: starImageView.rightAnchor, constant: 5),
-
-            genresStackView.topAnchor.constraint(equalTo: starImageView.bottomAnchor, constant: 10),
-            genresStackView.leftAnchor.constraint(equalTo: movieImageView.rightAnchor, constant: 10),
-            genresStackView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -10),
-
-            calendarImageView.topAnchor.constraint(equalTo: genresStackView.bottomAnchor, constant: 10),
-            calendarImageView.leftAnchor.constraint(equalTo: movieImageView.rightAnchor, constant: 10),
-            calendarImageView.widthAnchor.constraint(equalToConstant: 20),
-            calendarImageView.heightAnchor.constraint(equalToConstant: 20),
-
-            yearLabel.centerYAnchor.constraint(equalTo: calendarImageView.centerYAnchor),
-            yearLabel.leftAnchor.constraint(equalTo: calendarImageView.rightAnchor, constant: 5),
+            genresStackView.rightAnchor.constraint(lessThanOrEqualTo: contentStackView.rightAnchor),
         ])
     }
 
@@ -135,9 +146,20 @@ final class MovieTableViewCell: UITableViewCell {
         ratingLabel.text = "\(viewModel.rating)/10 TMDB"
         yearLabel.text = viewModel.year
         
-        for genreID in viewModel.genreIDs {
-            let genreLabel = createGenreLabel(for: genreID)
-            genresStackView.addArrangedSubview(genreLabel)
+        // Calculate available width in genresStackView
+        let availableWidth = contentView.bounds.width - (Padding.large + 100 + Padding.medium + Padding.large) // Padding + Image + Padding + Padding
+        var currentWidth: CGFloat = 0
+
+        for genreName in viewModel.genreNames {
+            let genreLabel = createGenreLabel(for: genreName)
+            let genreWidth = genreLabel.intrinsicContentSize.width + Padding.small
+            
+            if currentWidth + genreWidth <= availableWidth {
+                genresStackView.addArrangedSubview(genreLabel)
+                currentWidth += genreWidth + Padding.small
+            } else {
+                break
+            }
         }
         
         if let posterURL = viewModel.posterURL {
@@ -145,18 +167,21 @@ final class MovieTableViewCell: UITableViewCell {
         }
     }
     
-    private func createGenreLabel(for genreID: Int) -> UILabel {
+    private func createGenreLabel(for genreName: String) -> UILabel {
         let label = UILabel()
-        label.text = String(genreID)
+        label.text = genreName
         label.font = .systemFont(ofSize: 12, weight: .medium)
         label.textColor = .white
-        label.backgroundColor = .black
+        label.backgroundColor = .systemIndigo
         label.textAlignment = .center
-        label.layer.cornerRadius = 10
-        label.layer.masksToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
         label.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        label.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        label.layer.cornerRadius = 10
+        label.layer.masksToBounds = true
+        
+        let widthConstraint = label.widthAnchor.constraint(equalToConstant: label.intrinsicContentSize.width + Padding.medium)
+        widthConstraint.isActive = true
+        
         return label
     }
 

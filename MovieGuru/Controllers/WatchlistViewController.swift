@@ -22,14 +22,7 @@ class WatchlistViewController: UIViewController {
         setupView()
         setupConstraints()
         setupBindings()
-        viewModel.fetchMovies(endpoint: .accountWatchList(accountId: 21250428, page: 1)) { result in
-            switch result {
-            case .success:
-                print("Movies loaded successfully")
-            case .failure(let error):
-                print("Error loading movies: \(error)")
-            }
-        }
+        fetchData()
     }
 
     // MARK: - Setup Methods
@@ -59,6 +52,25 @@ class WatchlistViewController: UIViewController {
     private func setupBindings() {
         viewModel.delegate = self
         primaryView.configure(with: viewModel)
+    }
+    
+    private func fetchData() {
+        viewModel.fetchGenres(endpoint: .generesMovieList) { [weak self] result in
+            switch result {
+            case .success:
+                print("HEY")
+                self?.viewModel.fetchMovies(endpoint: .accountWatchList(accountId: 21250428, page: 1, sortBy: "created_at.asc")) { result in
+                    switch result {
+                    case .success:
+                        print("Movies loaded successfully")
+                    case .failure(let error):
+                        print("Error loading movies: \(error)")
+                    }
+                }
+            case .failure(let error):
+                print("Error fetching genres: \(error)")
+            }
+        }
     }
 }
 

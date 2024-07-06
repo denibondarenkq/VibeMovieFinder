@@ -14,10 +14,11 @@ protocol MovieTableViewModelDelegate: AnyObject {
 class MovieTableViewModel {
     private var movies: [MovieSummary] = [] {
         didSet {
-            cellViewModels = movies.map { MovieCellViewModel(movie: $0) }
+            cellViewModels = movies.map { MovieCellViewModel(movie: $0, genres: genres) }
             delegate?.didFetchMovies()
         }
     }
+    private var genres: [Genre] = []
     
     public private(set) var cellViewModels: [MovieCellViewModel] = []
     weak var delegate: MovieTableViewModelDelegate?
@@ -43,4 +44,18 @@ class MovieTableViewModel {
             }
         }
     }
+    
+    func fetchGenres(endpoint: Endpoint, completion: @escaping (Result<Void, Error>) -> Void) {
+            Task {
+                do {
+                    let (data, _) = try await APICaller.shared.performRequest(endpoint: endpoint)
+                    let genresResponse = try JSONDecoder().decode(Genres.self, from: data)
+                    self.genres = genresResponse.genres
+                    completion(.success(()))
+                } catch {
+                    print("Error fetching genres: \(error)")
+                    completion(.failure(error))
+                }
+            }
+        }
 }
