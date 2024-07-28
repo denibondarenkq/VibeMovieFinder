@@ -14,49 +14,49 @@ protocol BaseMoviesViewModelDelegate: AnyObject {
 class BaseMoviesViewModel {
     private var movies: [MovieSummary] = []
     private var genres: [Genre] = []
-    private(set) var cellViewModels: [MovieCellViewModel] = []
+    private(set) var movieCellViewModels: [MovieCellViewModel] = []
     private var isFetching = false
     weak var delegate: BaseMoviesViewModelDelegate?
     
     private var currentEndpoint: Endpoint?
-    private var parameters: [String: Any] = ["page": 1]
+    private var requestParameters: [String: Any] = ["page": 1]
     private var currentPage: Int {
-        get { parameters["page"] as? Int ?? 1 }
-        set { parameters["page"] = newValue }
+        get { requestParameters["page"] as? Int ?? 1 }
+        set { requestParameters["page"] = newValue }
     }
     private var totalPages: Int = 1
     
     func configure(endpoint: Endpoint, initialParameters: [String: Any] = [:]) {
         self.currentEndpoint = endpoint
-        self.parameters = initialParameters
+        self.requestParameters = initialParameters
         resetData()
     }
     
     private func resetData() {
         movies = []
         genres = []
-        cellViewModels = []
+        movieCellViewModels = []
         currentPage = 1
         totalPages = 1
     }
     
-    func updateParameters(_ newParameters: [String: Any]) {
+    func updateRequestParameters(_ newParameters: [String: Any]) {
         for (key, value) in newParameters {
-            parameters[key] = value
+            requestParameters[key] = value
         }
         resetData()
-        fetchGenresAndMovies(page: 1)
+        fetchMoviesAndGenres(page: 1)
     }
     
-    func fetchGenresAndMovies(page: Int) {
+    func fetchMoviesAndGenres(page: Int) {
         guard !isFetching, let endpoint = currentEndpoint, page <= totalPages else { return }
         isFetching = true
         
-        parameters["page"] = page
+        requestParameters["page"] = page
         Task {
             do {
-                let fetchedGenres = try await fetchGenres(endpoint: .genresMovieList)
-                let moviesPage = try await fetchMovies(endpoint: endpoint, parameters: parameters)
+                let fetchedGenres = try await fetchGenres(from: .genresMovieList)
+                let moviesPage = try await fetchMovies(from: endpoint, with: requestParameters)
                 let newMovies = moviesPage.results
                 
                 DispatchQueue.main.async {
@@ -77,26 +77,26 @@ class BaseMoviesViewModel {
     }
     
     func fetchNextPage() {
-        fetchGenresAndMovies(page: currentPage + 1)
+        fetchMoviesAndGenres(page: currentPage + 1)
     }
     
-    private func fetchGenres(endpoint: Endpoint) async throws -> [Genre] {
+    private func fetchGenres(from endpoint: Endpoint) async throws -> [Genre] {
         let response: Genres = try await APICaller.shared.execute(endpoint: endpoint, expecting: Genres.self)
         return response.genres
     }
     
-    private func fetchMovies(endpoint: Endpoint, parameters: [String: Any]) async throws -> MoviesSummaryPage {
+    private func fetchMovies(from endpoint: Endpoint, with parameters: [String: Any]) async throws -> MoviesSummaryPage {
         let response: MoviesSummaryPage = try await APICaller.shared.execute(endpoint: endpoint, parameters: parameters, expecting: MoviesSummaryPage.self)
         return response
     }
     
     private func combineData() {
-        cellViewModels = movies.map { MovieCellViewModel(movie: $0, genres: genres) }
+        movieCellViewModels = movies.map { MovieCellViewModel(movie: $0, genres: genres) }
         delegate?.didFetchMovies()
     }
     
     func numberOfMovies() -> Int {
-        return cellViewModels.count
+        return movieCellViewModels.count
     }
     
     func movie(at index: Int) -> MovieSummary {

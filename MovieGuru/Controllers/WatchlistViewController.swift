@@ -8,77 +8,80 @@
 import UIKit
 
 class WatchlistViewController: UIViewController {
-    private let primaryView = MovieTableView()
+    private let movieTableView = MovieTableView()
     private let viewModel = WatchlistViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupView()
+        configureView()
         setupConstraints()
         setupBindings()
-        fetchData()
-        setupSortOrderButton()
+        fetchInitialData()
+        setupSortButton()
     }
 
-    private func setupView() {
+    private func configureView() {
         title = "Watchlist"
-        view.addSubview(primaryView)
+        view.addSubview(movieTableView)
         view.backgroundColor = .systemGroupedBackground
     }
 
-    private func setupSortOrderButton() {
-        let sortButton = UIBarButtonItem(title: "Sort", style: .plain, target: self, action: #selector(changeSortOrder))
+    private func setupSortButton() {
+        let sortButton = UIBarButtonItem(title: "Sort", style: .plain, target: self, action: #selector(promptSortOrder))
         navigationItem.rightBarButtonItem = sortButton
     }
 
-    @objc private func changeSortOrder() {
+    @objc private func promptSortOrder() {
         let alert = UIAlertController(title: "Sort By", message: "Date Added", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Ascending", style: .default, handler: { _ in
-            self.viewModel.updateSortOrder("created_at.asc")
+            self.viewModel.updateSortOrder(to: "created_at.asc")
         }))
         alert.addAction(UIAlertAction(title: "Descending", style: .default, handler: { _ in
-            self.viewModel.updateSortOrder("created_at.desc")
+            self.viewModel.updateSortOrder(to: "created_at.desc")
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
     }
 
     private func setupConstraints() {
-        primaryView.translatesAutoresizingMaskIntoConstraints = false
+        movieTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            primaryView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            primaryView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-            primaryView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
-            primaryView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            movieTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            movieTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            movieTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            movieTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 
     private func setupBindings() {
         viewModel.delegate = self
-//        primaryView.delegate = self
-        primaryView.configure(with: viewModel)
-
+        movieTableView.configure(with: viewModel)
     }
 
-    private func fetchData() {
-        viewModel.fetchGenresAndMovies(page: 1)
+    private func fetchInitialData() {
+        viewModel.fetchMoviesAndGenres(page: 1)
     }
-
 }
+
+// MARK: - MovieTableViewDelegate
 
 extension WatchlistViewController: MovieTableViewDelegate {
+    func movieTableView(_ movieTableView: MovieTableView, didSelect movie: MovieSummary) {
+        print(movie)
+    }
+    
     func movieView(_ movieView: MovieTableView, didSelect movie: MovieSummary) {
-        // let vc = WatchlistViewController(movie: MovieSummary)
-        // vc.navigationItem.largeTitleDisplayMode = .never
-        // navigationController?.pushViewController(vc, animated: true)
+        // Navigation logic for selected movie
     }
 }
+
+// MARK: - BaseMoviesViewModelDelegate
 
 extension WatchlistViewController: BaseMoviesViewModelDelegate {
     func didFetchMovies() {
         DispatchQueue.main.async {
-            self.primaryView.tableView.reloadData()
-            self.primaryView.tableView.tableFooterView = nil
+            self.movieTableView.tableView.reloadData()
+            self.movieTableView.tableView.tableFooterView = nil
         }
     }
 }

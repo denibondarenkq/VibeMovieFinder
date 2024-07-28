@@ -7,8 +7,6 @@
 
 import Foundation
 
-import Foundation
-
 class WatchlistViewModel: BaseMoviesViewModel {
     override init() {
         let accountId = AuthManager.shared.accountId
@@ -16,7 +14,7 @@ class WatchlistViewModel: BaseMoviesViewModel {
         configure(endpoint: .accountWatchList(accountId: accountId), initialParameters: ["sort_by": "created_at.desc"])
     }
 
-    func updateSortOrder(_ sortOrder: String) {
-        updateParameters(["sort_by": sortOrder])
+    func updateSortOrder(to sortOrder: String) {
+        updateRequestParameters(["sort_by": sortOrder])
     }
 }
