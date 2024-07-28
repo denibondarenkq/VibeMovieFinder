@@ -12,20 +12,20 @@ final class APICaller {
 
     private init() {}
 
-    public func execute<T: Codable>(endpoint: Endpoint, expecting type: T.Type) async throws -> T {
-        if let cachedData = CacheManager.shared.cachedResponse(for: endpoint) {
-            do {
-                return try JSONDecoder().decode(type.self, from: cachedData)
-            } catch {
-                throw APICallerError.decodingError(error)
-            }
-        }
+    func execute<T: Decodable>(endpoint: Endpoint, parameters: [String: Any] = [:], expecting: T.Type) async throws -> T {
+        //        if let cachedData = CacheManager.shared.cachedResponse(for: endpoint) {
+        //            do {
+        //                return try JSONDecoder().decode(type.self, from: cachedData)
+        //            } catch {
+        //                throw APICallerError.decodingError(error)
+        //            }
+        //        }
         
-        let urlRequest = try endpoint.makeRequest()
+        let urlRequest = try endpoint.makeRequest(parameters: parameters)
         let (data, _) = try await performRequest(urlRequest: urlRequest)
-        let result = try JSONDecoder().decode(type.self, from: data)
+        let result = try JSONDecoder().decode(expecting, from: data)
         return result
-        }
+    }
     
     
     private func performRequest(urlRequest: URLRequest, urlSession: URLSession = .shared) async throws -> (Data, URLResponse) {

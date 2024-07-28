@@ -9,6 +9,9 @@ import UIKit
 
 final class MovieTableViewCell: UITableViewCell {
     static let cellHeight: CGFloat = 190
+    
+    static let cellIdentifier = "MovieTableViewCell"
+
 
     private let nameLabel: UILabel = {
         let label = UILabel()
@@ -22,7 +25,7 @@ final class MovieTableViewCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Font.regular
-        label.textColor = .black
+        label.textColor = .label
         return label
     }()
     
@@ -39,7 +42,7 @@ final class MovieTableViewCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Font.light
-        label.textColor = .black
+        label.textColor = .label
         return label
     }()
     
@@ -57,7 +60,7 @@ final class MovieTableViewCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(systemName: "star.circle.fill")
-        imageView.tintColor = .orange
+        imageView.tintColor = .systemOrange
         return imageView
     }()
     
@@ -65,7 +68,7 @@ final class MovieTableViewCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(systemName: "calendar.circle.fill")
-        imageView.tintColor = .black
+        imageView.tintColor = .label
         return imageView
     }()
     
@@ -171,8 +174,8 @@ final class MovieTableViewCell: UITableViewCell {
         let label = UILabel()
         label.text = genreName
         label.font = .systemFont(ofSize: 12, weight: .medium)
-        label.textColor = .white
-        label.backgroundColor = .systemIndigo
+        label.textColor = .systemBackground
+        label.backgroundColor = .label
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.heightAnchor.constraint(equalToConstant: 20).isActive = true
