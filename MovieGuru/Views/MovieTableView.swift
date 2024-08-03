@@ -33,11 +33,12 @@ class MovieTableView: UIView {
     }()
     
     public let tableView: UITableView = {
-        let table = UITableView(frame: .zero, style: .grouped)
+        let table = UITableView(frame: .zero, style: .insetGrouped)
         table.translatesAutoresizingMaskIntoConstraints = false
         table.alpha = 0
+        table.estimatedRowHeight = MovieTableCellView.cellHeight
         table.isHidden = true
-        table.register(MovieTableViewCell.self, forCellReuseIdentifier: MovieTableViewCell.cellIdentifier)
+        table.register(MovieTableCellView.self, forCellReuseIdentifier: MovieTableCellView.cellIdentifier)
         return table
     }()
         
@@ -99,7 +100,7 @@ extension MovieTableView: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.cellIdentifier, for: indexPath) as? MovieTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableCellView.cellIdentifier, for: indexPath) as? MovieTableCellView else {
             fatalError("Unable to dequeue MovieTableViewCell")
         }
         guard let cellViewModels = viewModel?.movieCellViewModels else {
@@ -115,7 +116,7 @@ extension MovieTableView: UITableViewDataSource {
 
 extension MovieTableView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return MovieTableViewCell.cellHeight
+        return MovieTableCellView.cellHeight
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -132,9 +133,12 @@ extension MovieTableView: UIScrollViewDelegate {
         let contentHeight = scrollView.contentSize.height
         let height = scrollView.frame.size.height
         
-        if offsetY > contentHeight - height {
-            showLoadingFooter()
-            viewModel?.fetchNextPage()
+        
+        if offsetY > contentHeight - height - 100 {
+            if viewModel?.hasMorePages == true, tableView.tableFooterView == nil {
+                showLoadingFooter()
+                viewModel?.fetchNextPage()
+            }
         }
     }
     

@@ -10,6 +10,6 @@ import Foundation
 class PopularMoviesViewModel: BaseMoviesViewModel {
     override init() {
         super.init()
-        configure(endpoint: .popularMovies, initialParameters: ["page": 1])
+        configure(endpoint: .popularMovies, initialParameters: ["page": 1, ])
     }
 }

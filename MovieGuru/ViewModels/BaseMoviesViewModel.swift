@@ -14,7 +14,7 @@ protocol BaseMoviesViewModelDelegate: AnyObject {
 class BaseMoviesViewModel {
     private var movies: [MovieSummary] = []
     private var genres: [Genre] = []
-    private(set) var movieCellViewModels: [MovieCellViewModel] = []
+    private(set) var movieCellViewModels: [MovieTableCellViewModel] = []
     private var isFetching = false
     weak var delegate: BaseMoviesViewModelDelegate?
     
@@ -25,6 +25,10 @@ class BaseMoviesViewModel {
         set { requestParameters["page"] = newValue }
     }
     private var totalPages: Int = 1
+    
+    var hasMorePages: Bool {
+           return currentPage < totalPages
+       }
     
     func configure(endpoint: Endpoint, initialParameters: [String: Any] = [:]) {
         self.currentEndpoint = endpoint
@@ -91,14 +95,10 @@ class BaseMoviesViewModel {
     }
     
     private func combineData() {
-        movieCellViewModels = movies.map { MovieCellViewModel(movie: $0, genres: genres) }
+        movieCellViewModels = movies.map { MovieTableCellViewModel(movie: $0, genres: genres) }
         delegate?.didFetchMovies()
     }
-    
-    func numberOfMovies() -> Int {
-        return movieCellViewModels.count
-    }
-    
+        
     func movie(at index: Int) -> MovieSummary {
         return movies[index]
     }
