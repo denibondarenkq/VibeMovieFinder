@@ -14,7 +14,7 @@ final class MovieTableCellView: UITableViewCell {
     private let nameLabel = UILabel.createTitleLabel()
     private let ratingLabel = UILabel.createRegularLabel()
     private let genresStackView = UIStackView.createStackView(axis: .horizontal, alignment: .leading, distribution: .fillProportionally, spacing: Padding.small)
-    private let yearLabel = UILabel.createLightLabel()
+    private let yearLabel = UILabel.createRegularLabel()
     private let movieImageView = UIImageView.createPosterImageView()
     private let starImageView = UIImageView.createStarImageView()
     private let calendarImageView = UIImageView.createCalendarImageView()
@@ -79,15 +79,16 @@ final class MovieTableCellView: UITableViewCell {
             genresStackView.addArrangedSubview(genreLabel)
         }
         
-        if let posterImage = viewModel.posterImage {
-            movieImageView.image = posterImage
-        } else {
-            movieImageView.image = nil
-            Task {
-                try await viewModel.loadPosterImage()
+        viewModel.loadPosterImage() { [weak self] result in
+            switch result {
+            case .success(let data):
                 DispatchQueue.main.async {
-                    self.movieImageView.image = viewModel.posterImage
+                    let image = UIImage(data: data)
+                    self?.movieImageView.image = image
                 }
+            case .failure(let error):
+                print(String(describing: error))
+                break
             }
         }
     }
@@ -100,13 +101,8 @@ final class MovieTableCellView: UITableViewCell {
         let ratingStackView = UIStackView(arrangedSubviews: [starImageView, ratingLabel])
         ratingStackView.spacing = Padding.small
         ratingStackView.alignment = .center
-        
-        let informationStack = UIStackView(arrangedSubviews: [ratingStackView, calendarStackView])
-        informationStack.axis = .horizontal
-        informationStack.spacing = Padding.medium
-        informationStack.alignment = .center
-        
-        let contentStackView = UIStackView(arrangedSubviews: [nameLabel, informationStack, genresStackView])
+
+        let contentStackView = UIStackView(arrangedSubviews: [nameLabel, ratingStackView, calendarStackView, genresStackView])
         contentStackView.axis = .vertical
         contentStackView.spacing = Padding.medium
         contentStackView.alignment = .leading
@@ -182,6 +178,7 @@ private extension UILabel {
 private extension UIImageView {
     static func createPosterImageView() -> UIImageView {
         let imageView = UIImageView()
+        imageView.backgroundColor = .systemGray3
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
@@ -193,15 +190,15 @@ private extension UIImageView {
     static func createStarImageView() -> UIImageView {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(systemName: "star.circle.fill")
-        imageView.tintColor = .systemOrange
+        imageView.image = UIImage(systemName: "star")
+        imageView.tintColor = .label
         return imageView
     }
     
     static func createCalendarImageView() -> UIImageView {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(systemName: "calendar.circle.fill")
+        imageView.image = UIImage(systemName: "calendar")
         imageView.tintColor = .label
         return imageView
     }
@@ -215,7 +212,6 @@ private extension UIStackView {
         stackView.alignment = alignment
         stackView.distribution = distribution
         stackView.spacing = spacing
-        stackView.backgroundColor = .brown
         return stackView
     }
 }

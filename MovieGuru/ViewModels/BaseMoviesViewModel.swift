@@ -27,8 +27,8 @@ class BaseMoviesViewModel {
     private var totalPages: Int = 1
     
     var hasMorePages: Bool {
-           return currentPage < totalPages
-       }
+        return currentPage < totalPages
+    }
     
     func configure(endpoint: Endpoint, initialParameters: [String: Any] = [:]) {
         self.currentEndpoint = endpoint
@@ -57,25 +57,46 @@ class BaseMoviesViewModel {
         isFetching = true
         
         requestParameters["page"] = page
-        Task {
-            do {
-                let fetchedGenres = try await fetchGenres(from: .genresMovieList)
-                let moviesPage = try await fetchMovies(from: endpoint, with: requestParameters)
-                let newMovies = moviesPage.results
-                
-                DispatchQueue.main.async {
-                    self.genres = fetchedGenres
-                    self.movies.append(contentsOf: newMovies)
-                    self.totalPages = moviesPage.totalPages
-                    self.currentPage = page
-                    self.combineData()
-                    self.isFetching = false
+        
+        DispatchQueue.global().async {
+            let group = DispatchGroup()
+            var fetchedGenres: [Genre] = []
+            var fetchedMoviesPage: MoviesSummaryPage?
+            var fetchError: Error?
+            
+            group.enter()
+            self.fetchGenres(from: .genresMovieList) { result in
+                switch result {
+                case .success(let genres):
+                    fetchedGenres = genres.genres
+                case .failure(let error):
+                    fetchError = error
                 }
-            } catch {
-                print("Error fetching data: \(error)")
-                DispatchQueue.main.async {
-                    self.isFetching = false
+                group.leave()
+            }
+            
+            group.enter()
+            self.fetchMovies(from: endpoint, with: self.requestParameters) { result in
+                switch result {
+                case .success(let movies):
+                    fetchedMoviesPage = movies
+                case .failure(let error):
+                    fetchError = error
                 }
+                group.leave()
+            }
+            
+            group.notify(queue: .main) {
+                guard fetchError == nil else {
+                    self.isFetching = false
+                    return
+                }
+                self.genres = fetchedGenres
+                self.movies.append(contentsOf: fetchedMoviesPage!.results)
+                self.totalPages = fetchedMoviesPage!.totalPages
+                self.currentPage = page
+                self.combineData()
+                self.isFetching = false
             }
         }
     }
@@ -84,14 +105,18 @@ class BaseMoviesViewModel {
         fetchMoviesAndGenres(page: currentPage + 1)
     }
     
-    private func fetchGenres(from endpoint: Endpoint) async throws -> [Genre] {
-        let response: Genres = try await APICaller.shared.execute(endpoint: endpoint, expecting: Genres.self)
-        return response.genres
+    private func fetchGenres(from endpoint: Endpoint, completion: @escaping ((Result<Genres, Error>) -> Void)) {
+        DispatchQueue.global().async {
+            NetworkService.shared.execute(endpoint: endpoint, expecting: Genres.self) { result in
+                completion(result)
+            }
+        }
     }
     
-    private func fetchMovies(from endpoint: Endpoint, with parameters: [String: Any]) async throws -> MoviesSummaryPage {
-        let response: MoviesSummaryPage = try await APICaller.shared.execute(endpoint: endpoint, parameters: parameters, expecting: MoviesSummaryPage.self)
-        return response
+    private func fetchMovies(from endpoint: Endpoint, with parameters: [String: Any], completion: @escaping ((Result<MoviesSummaryPage, Error>) -> Void)) {
+        NetworkService.shared.execute(endpoint: endpoint, parameters: parameters, expecting: MoviesSummaryPage.self) { result in
+            completion(result)
+        }
     }
     
     private func combineData() {
