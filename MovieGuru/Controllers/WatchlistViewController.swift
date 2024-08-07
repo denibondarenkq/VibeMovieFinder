@@ -9,12 +9,15 @@ import UIKit
 
 class WatchlistViewController: UIViewController {
     private let movieTableView = MovieTableView()
-    private let viewModel = WatchlistViewModel()
+    private let viewModel = PopularMoviesViewModel()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func loadView() {
+        super.loadView()
         configureView()
         setupConstraints()
+    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
         setupBindings()
         fetchInitialData()
         setupSortButton()
@@ -34,10 +37,10 @@ class WatchlistViewController: UIViewController {
     @objc private func promptSortOrder() {
         let alert = UIAlertController(title: "Sort By", message: "Date Added", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Ascending", style: .default, handler: { _ in
-            self.viewModel.updateSortOrder(to: "created_at.asc")
+//            self.viewModel.updateSortOrder(to: "created_at.asc")
         }))
         alert.addAction(UIAlertAction(title: "Descending", style: .default, handler: { _ in
-            self.viewModel.updateSortOrder(to: "created_at.desc")
+//            self.viewModel.updateSortOrder(to: "created_at.desc")
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
@@ -55,6 +58,8 @@ class WatchlistViewController: UIViewController {
 
     private func setupBindings() {
         viewModel.delegate = self
+        movieTableView.delegate = self
+
         movieTableView.configure(with: viewModel)
     }
 
@@ -67,18 +72,16 @@ class WatchlistViewController: UIViewController {
 
 extension WatchlistViewController: MovieTableViewDelegate {
     func movieTableView(_ movieTableView: MovieTableView, didSelect movie: MovieSummary) {
-        print(movie)
-    }
-    
-    func movieView(_ movieView: MovieTableView, didSelect movie: MovieSummary) {
-        // Navigation logic for selected movie
+        let vc = MovieDetailViewController(movie: movie)
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
 // MARK: - BaseMoviesViewModelDelegate
 
 extension WatchlistViewController: BaseMoviesViewModelDelegate {
-    func didFetchMovies() {
+    func didFetchedMovies() {
         DispatchQueue.main.async {
             self.movieTableView.tableView.reloadData()
             self.movieTableView.tableView.tableFooterView = nil

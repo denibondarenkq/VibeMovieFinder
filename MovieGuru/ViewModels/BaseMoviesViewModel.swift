@@ -8,7 +8,7 @@
 import Foundation
 
 protocol BaseMoviesViewModelDelegate: AnyObject {
-    func didFetchMovies()
+    func didFetchedMovies()
 }
 
 class BaseMoviesViewModel {
@@ -121,7 +121,7 @@ class BaseMoviesViewModel {
     
     private func combineData() {
         movieCellViewModels = movies.map { MovieTableCellViewModel(movie: $0, genres: genres) }
-        delegate?.didFetchMovies()
+        delegate?.didFetchedMovies()
     }
         
     func movie(at index: Int) -> MovieSummary {

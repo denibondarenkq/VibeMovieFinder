@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class MovieTableCellView: UITableViewCell {
+final class MovieTableViewCell: UITableViewCell {
     static let cellHeight: CGFloat = 190
     static let cellIdentifier = "MovieTableViewCell"
     
@@ -79,7 +79,7 @@ final class MovieTableCellView: UITableViewCell {
             genresStackView.addArrangedSubview(genreLabel)
         }
         
-        viewModel.loadPosterImage() { [weak self] result in
+        viewModel.fetchPosterImage() { [weak self] result in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {

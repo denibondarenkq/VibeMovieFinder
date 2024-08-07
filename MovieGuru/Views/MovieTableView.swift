@@ -36,9 +36,9 @@ class MovieTableView: UIView {
         let table = UITableView(frame: .zero, style: .insetGrouped)
         table.translatesAutoresizingMaskIntoConstraints = false
         table.alpha = 0
-        table.estimatedRowHeight = MovieTableCellView.cellHeight
+        table.estimatedRowHeight = MovieTableViewCell.cellHeight
         table.isHidden = true
-        table.register(MovieTableCellView.self, forCellReuseIdentifier: MovieTableCellView.cellIdentifier)
+        table.register(MovieTableViewCell.self, forCellReuseIdentifier: MovieTableViewCell.cellIdentifier)
         return table
     }()
         
@@ -100,7 +100,7 @@ extension MovieTableView: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableCellView.cellIdentifier, for: indexPath) as? MovieTableCellView else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.cellIdentifier, for: indexPath) as? MovieTableViewCell else {
             fatalError("Unable to dequeue MovieTableViewCell")
         }
         guard let cellViewModels = viewModel?.movieCellViewModels else {
@@ -116,7 +116,7 @@ extension MovieTableView: UITableViewDataSource {
 
 extension MovieTableView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return MovieTableCellView.cellHeight
+        return MovieTableViewCell.cellHeight
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
