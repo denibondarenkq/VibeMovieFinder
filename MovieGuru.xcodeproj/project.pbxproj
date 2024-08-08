@@ -37,6 +37,8 @@
 		798611452C63E42700FF7254 /* MovieBackdropCollectionCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798611442C63E42700FF7254 /* MovieBackdropCollectionCellViewModel.swift */; };
 		798611482C63E65400FF7254 /* MovieDetailCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798611472C63E65400FF7254 /* MovieDetailCollectionView.swift */; };
 		7986114B2C63F08100FF7254 /* MovieBackdropCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7986114A2C63F08100FF7254 /* MovieBackdropCollectionViewCell.swift */; };
+		7986114D2C6503EC00FF7254 /* MovieCreditsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7986114C2C6503EC00FF7254 /* MovieCreditsCollectionViewCell.swift */; };
+		7986114F2C650BBE00FF7254 /* MovieCreditsCollectionViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7986114E2C650BBE00FF7254 /* MovieCreditsCollectionViewCellViewModel.swift */; };
 		79C69EFB2C5EF01000F463EB /* MovieDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C69EFA2C5EF00F00F463EB /* MovieDetailViewController.swift */; };
 		79C69EFD2C5EF18F00F463EB /* MovieDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C69EFC2C5EF18F00F463EB /* MovieDetailViewModel.swift */; };
 		79DED2FD2C56B0C4006198EA /* WatchlistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79DED2FC2C56B0C4006198EA /* WatchlistViewModel.swift */; };
@@ -76,6 +78,8 @@
 		798611442C63E42700FF7254 /* MovieBackdropCollectionCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieBackdropCollectionCellViewModel.swift; sourceTree = "<group>"; };
 		798611472C63E65400FF7254 /* MovieDetailCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailCollectionView.swift; sourceTree = "<group>"; };
 		7986114A2C63F08100FF7254 /* MovieBackdropCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieBackdropCollectionViewCell.swift; sourceTree = "<group>"; };
+		7986114C2C6503EC00FF7254 /* MovieCreditsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCreditsCollectionViewCell.swift; sourceTree = "<group>"; };
+		7986114E2C650BBE00FF7254 /* MovieCreditsCollectionViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCreditsCollectionViewCellViewModel.swift; sourceTree = "<group>"; };
 		79C69EFA2C5EF00F00F463EB /* MovieDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewController.swift; sourceTree = "<group>"; };
 		79C69EFC2C5EF18F00F463EB /* MovieDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewModel.swift; sourceTree = "<group>"; };
 		79DED2FC2C56B0C4006198EA /* WatchlistViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistViewModel.swift; sourceTree = "<group>"; };
@@ -202,6 +206,7 @@
 			children = (
 				79C69EFC2C5EF18F00F463EB /* MovieDetailViewModel.swift */,
 				798611442C63E42700FF7254 /* MovieBackdropCollectionCellViewModel.swift */,
+				7986114E2C650BBE00FF7254 /* MovieCreditsCollectionViewCellViewModel.swift */,
 			);
 			path = MovieDetail;
 			sourceTree = "<group>";
@@ -211,6 +216,7 @@
 			children = (
 				798611472C63E65400FF7254 /* MovieDetailCollectionView.swift */,
 				7986114A2C63F08100FF7254 /* MovieBackdropCollectionViewCell.swift */,
+				7986114C2C6503EC00FF7254 /* MovieCreditsCollectionViewCell.swift */,
 			);
 			path = MovieDetail;
 			sourceTree = "<group>";
@@ -298,6 +304,7 @@
 				7986114B2C63F08100FF7254 /* MovieBackdropCollectionViewCell.swift in Sources */,
 				7986113E2C62C59F00FF7254 /* ImageService.swift in Sources */,
 				79DED3012C56EE91006198EA /* PopularMoviesViewModel.swift in Sources */,
+				7986114F2C650BBE00FF7254 /* MovieCreditsCollectionViewCellViewModel.swift in Sources */,
 				79DED2FD2C56B0C4006198EA /* WatchlistViewModel.swift in Sources */,
 				79C69EFB2C5EF01000F463EB /* MovieDetailViewController.swift in Sources */,
 				798611402C63DB8D00FF7254 /* MovieImages.swift in Sources */,
@@ -313,6 +320,7 @@
 				798611452C63E42700FF7254 /* MovieBackdropCollectionCellViewModel.swift in Sources */,
 				7956FD0C2C3961D300DB6247 /* Genres.swift in Sources */,
 				7939BE4C2C2969510098FCB0 /* WatchlistViewController.swift in Sources */,
+				7986114D2C6503EC00FF7254 /* MovieCreditsCollectionViewCell.swift in Sources */,
 				7939BE622C29C1CE0098FCB0 /* MovieTableCellViewModel.swift in Sources */,
 				7939BE342C29661B0098FCB0 /* AppDelegate.swift in Sources */,
 				798611482C63E65400FF7254 /* MovieDetailCollectionView.swift in Sources */,

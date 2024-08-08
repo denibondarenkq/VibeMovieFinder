@@ -8,12 +8,12 @@
 import UIKit
 
 final class MovieDetailViewController: UIViewController {
-    private let movieCollectionView: MovieDetailCollectionView
+    private let movieCollectionView = MovieDetailCollectionView()
     private let viewModel: MovieDetailViewModel
     
     init(movie: MovieSummary) {
         self.viewModel = MovieDetailViewModel(movie: movie)
-        self.movieCollectionView = MovieDetailCollectionView(frame: .zero, viewModel: viewModel)
+//        self.movieCollectionView = MovieDetailCollectionView(frame: .zero, viewModel: viewModel)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -34,6 +34,8 @@ final class MovieDetailViewController: UIViewController {
             target: self,
             action: #selector(didTapShare)
         )
+        viewModel.delegate = self
+        viewModel.fetchContent()
     }
     
     private func configureView() {
@@ -60,5 +62,14 @@ final class MovieDetailViewController: UIViewController {
     private func setupBindings() {
 //        viewModel.delegate = self
 //        movieTableView.delegate = self
+    }
+}
+
+
+// MARK: - MovieDetailViewModelDelegate
+
+extension MovieDetailViewController: MovieDetailViewModelDelegate {
+    func didFetchedMovieDetails() {
+        movieCollectionView.configure(with: viewModel)
     }
 }

@@ -13,6 +13,7 @@ public enum Endpoint {
     case movieDetails(movieId: Int)
     case genresMovieList
     case popularMovies
+    case movieCredits(movieId: Int)
 
     var baseURL: URL {
         return URL(string: "https://api.themoviedb.org/3/")!
@@ -30,6 +31,8 @@ public enum Endpoint {
             return "genre/movie/list"
         case .popularMovies:
             return "movie/popular"
+        case .movieCredits(let movieId):
+            return "movie/\(movieId)/credits"
         }
     }
 
@@ -37,7 +40,7 @@ public enum Endpoint {
         switch self {
         case .accountAddToWatchList:
             return .POST
-        case .accountWatchList, .movieDetails, .genresMovieList, .popularMovies:
+        case .accountWatchList, .movieDetails, .genresMovieList, .popularMovies, .movieCredits:
             return .GET
         }
     }
@@ -53,8 +56,6 @@ public enum Endpoint {
 
     var bodyParameters: [String: Any]? {
         switch self {
-//        case .accountAddToWatchList:
-//            return ["media_id": movieId]
         default:
             return nil
         }

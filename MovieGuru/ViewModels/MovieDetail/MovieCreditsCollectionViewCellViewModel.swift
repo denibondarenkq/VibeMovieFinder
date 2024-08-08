@@ -1,24 +1,31 @@
 //
-//  MovieDetailPhotoCollectionViewCellViewModel.swift
+//  MovieCastCollectionViewCellViewModel.swift
 //  MovieGuru
 //
-//  Created by Denys Bondarenko on 07.08.2024.
+//  Created by Denys Bondarenko on 08.08.2024.
 //
 
 import Foundation
 
-class MovieBackdropCollectionCellViewModel {
+final class MovieCreditsCollectionViewCellViewModel {
+    public let name: String
+    public let character: String
     private let imageUrl: URL?
-    
-    init(imageUrl: String?) {
+
+    // MARK: - Init
+
+    init(name: String, character: String?, job: String?, imageUrl: String?) {
+        self.name = name
+        self.character = character ?? job!
         if let imageUrl = imageUrl {
             self.imageUrl = URL(string: "https://image.tmdb.org/t/p/w500\(imageUrl)")
         } else {
             self.imageUrl = nil
         }
     }
-    
-    public func fetchBackdropImage(completion: @escaping (Result<Data, Error>) -> Void) {
+
+
+    func fetchImage(completion: @escaping (Result<Data, Error>) -> Void) {
         guard let url = imageUrl else {
             completion(.failure(URLError(.badURL)))
             return
