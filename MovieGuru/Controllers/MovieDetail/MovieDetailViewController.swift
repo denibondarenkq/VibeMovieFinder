@@ -13,7 +13,6 @@ final class MovieDetailViewController: UIViewController {
     
     init(movie: MovieSummary) {
         self.viewModel = MovieDetailViewModel(movie: movie)
-//        self.movieCollectionView = MovieDetailCollectionView(frame: .zero, viewModel: viewModel)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -26,14 +25,11 @@ final class MovieDetailViewController: UIViewController {
         configureView()
         setupConstraints()
     }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBindings()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .action,
-            target: self,
-            action: #selector(didTapShare)
-        )
+        configureNavigationBar()
         viewModel.delegate = self
         viewModel.fetchContent()
     }
@@ -41,12 +37,20 @@ final class MovieDetailViewController: UIViewController {
     private func configureView() {
         title = viewModel.title
         view.addSubview(movieCollectionView)
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = UIColor(named: "BackgroundColor")
     }
     
+    private func configureNavigationBar() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .action,
+            target: self,
+            action: #selector(didTapShare)
+        )
+    }
+
     @objc
     private func didTapShare() {
-        // Share character info
+        // Share movie info
     }
 
     private func setupConstraints() {
@@ -58,18 +62,16 @@ final class MovieDetailViewController: UIViewController {
             movieCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
-    
+
     private func setupBindings() {
-//        viewModel.delegate = self
-//        movieTableView.delegate = self
+        // Bindings setup if needed
     }
 }
-
 
 // MARK: - MovieDetailViewModelDelegate
 
 extension MovieDetailViewController: MovieDetailViewModelDelegate {
-    func didFetchedMovieDetails() {
+    func didFetchMovieDetails() {
         movieCollectionView.configure(with: viewModel)
     }
 }

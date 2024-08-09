@@ -26,7 +26,7 @@ final class MovieCreditsCollectionViewCell: UICollectionViewCell {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .label
-        label.font = .systemFont(ofSize: 15, weight: .regular)
+        label.font = TextStyle.body
         label.numberOfLines = 2
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -36,9 +36,10 @@ final class MovieCreditsCollectionViewCell: UICollectionViewCell {
     private let characterLabel: UILabel = {
         let label = UILabel()
         label.textColor = .secondaryLabel
-        label.font = .systemFont(ofSize: 12, weight: .light)
+        label.font = TextStyle.light
         label.textAlignment = .center
         label.numberOfLines = 2
+        label.lineBreakMode = .byWordWrapping
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -47,7 +48,6 @@ final class MovieCreditsCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.backgroundColor = .clear
         contentView.addSubview(imageView)
         contentView.addSubview(nameLabel)
         contentView.addSubview(characterLabel)
@@ -63,18 +63,22 @@ final class MovieCreditsCollectionViewCell: UICollectionViewCell {
             // ImageView Constraints
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             imageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             imageView.widthAnchor.constraint(equalToConstant: 110),
             imageView.heightAnchor.constraint(equalToConstant: 110),
             
             // NameLabel Constraints
-            nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
+            nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: Spacing.medium),
             nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
             // CharacterLabel Constraints
-            characterLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 4),
+            characterLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: Spacing.small),
             characterLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             characterLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            characterLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor),
+
         ])
     }
     
@@ -95,8 +99,10 @@ final class MovieCreditsCollectionViewCell: UICollectionViewCell {
                 DispatchQueue.main.async {
                     self?.imageView.image = UIImage(data: data)
                 }
-            case .failure(let error):
-                print(String(describing: error))
+            case .failure(_):
+                DispatchQueue.main.async {
+                    self?.imageView.image = UIImage(systemName: "person")
+                }
             }
         }
     }

@@ -33,7 +33,7 @@ class MovieTableView: UIView {
     }()
     
     public let tableView: UITableView = {
-        let table = UITableView(frame: .zero, style: .insetGrouped)
+        let table = UITableView(frame: .zero, style: .grouped)
         table.translatesAutoresizingMaskIntoConstraints = false
         table.alpha = 0
         table.estimatedRowHeight = MovieTableViewCell.cellHeight
@@ -54,7 +54,7 @@ class MovieTableView: UIView {
     }
         
     private func setupView() {
-        backgroundColor = .systemBackground
+        backgroundColor = UIColor(named: "BackgroundColor")
         translatesAutoresizingMaskIntoConstraints = false
         addSubview(tableView)
         addSubview(activityIndicator)

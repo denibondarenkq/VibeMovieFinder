@@ -7,8 +7,8 @@
 
 import UIKit
 
-class MovieDetailCollectionView : UIView {
-    public var collectionView: UICollectionView?
+final class MovieDetailCollectionView: UIView {
+    private var collectionView: UICollectionView?
     private var viewModel: MovieDetailViewModel? {
         didSet {
             updateView()
@@ -24,8 +24,16 @@ class MovieDetailCollectionView : UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupView()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .systemBackground
+        backgroundColor = UIColor(named: "BackgroundColor")
         let collectionView = createCollectionView()
         addSubview(collectionView)
         addSubview(activityIndicator)
@@ -34,14 +42,8 @@ class MovieDetailCollectionView : UIView {
         activityIndicator.startAnimating()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     private func addConstraints() {
-        guard let collectionView = collectionView else {
-            return
-        }
+        guard let collectionView = collectionView else { return }
         
         NSLayoutConstraint.activate([
             activityIndicator.widthAnchor.constraint(equalToConstant: 100),
@@ -58,114 +60,42 @@ class MovieDetailCollectionView : UIView {
     
     private func createCollectionView() -> UICollectionView {
         let layout = UICollectionViewCompositionalLayout { sectionIndex, _ in
-            return self.createSection(for: sectionIndex)
+            self.createSection(for: sectionIndex)
         }
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = UIColor(named: "BackgroundColor")
         collectionView.isHidden = true
         collectionView.alpha = 0
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(MovieBackdropCollectionViewCell.self,
-                                forCellWithReuseIdentifier: MovieBackdropCollectionViewCell.cellIdentifer)
+        collectionView.register(MovieBackdropCollectionViewCell.self, forCellWithReuseIdentifier: MovieBackdropCollectionViewCell.cellIdentifer)
         collectionView.register(MovieCreditsCollectionViewCell.self, forCellWithReuseIdentifier: MovieCreditsCollectionViewCell.cellIdentifier)
+        collectionView.register(SectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeaderView.reuseIdentifier)
         return collectionView
     }
     
-    
-}
-
-// MARK: - UICollectionViewDelegate
-
-extension MovieDetailCollectionView : UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let sections = viewModel?.sections else {
-            return 0
-        }
-        let sectionType = sections[section]
-        let itemCount: Int
-
-        switch sectionType {
-        case .backdrop:
-            itemCount = 1
-        case .overview:
-            itemCount = 0
-        case .cast(let viewModels):
-            itemCount = viewModels.count
-        case .recommendations:
-            itemCount = 0
-        }
-        
-        print("Section \(section), Item Count: \(itemCount)")
-        return itemCount
-    }
-
-}
-
-// MARK: - UICollectionViewDataSource
-extension MovieDetailCollectionView : UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return viewModel?.sections.count ?? 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let sections = viewModel?.sections else {
-            fatalError("No viewModel")
-        }
-        let sectionType = sections[indexPath.section]
-
-        switch sectionType {
-        case .backdrop(let viewModel):
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: MovieBackdropCollectionViewCell.cellIdentifer,
-                for: indexPath
-            ) as? MovieBackdropCollectionViewCell else {
-                fatalError()
-            }
-            cell.configure(with: viewModel)
-            return cell
-        case .cast(let viewModels):
-            let cellViewModel = viewModels[indexPath.row]
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: MovieCreditsCollectionViewCell.cellIdentifier,
-                for: indexPath
-            ) as? MovieCreditsCollectionViewCell else {
-                fatalError()
-            }
-            cell.configure(with: cellViewModel)
-            return cell
-        default:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: MovieBackdropCollectionViewCell.cellIdentifer,
-                for: indexPath
-            ) as? MovieBackdropCollectionViewCell else {
-                fatalError()
-            }
-//            cell.configure(with: viewModel)
-            return cell
+    private func updateView() {
+        activityIndicator.stopAnimating()
+        collectionView?.reloadData()
+        collectionView?.isHidden = false
+        UIView.animate(withDuration: 0.3) {
+            self.collectionView?.alpha = 1
         }
     }
     
+    public func configure(with viewModel: MovieDetailViewModel) {
+        self.viewModel = viewModel
+    }
     
-}
-
-extension MovieDetailCollectionView {
     private func createSection(for sectionIndex: Int) -> NSCollectionLayoutSection {
-        print("Creating section for index \(sectionIndex)")
-
         guard let sections = viewModel?.sections else {
             return createBackdropSectionLayout()
         }
         
-        switch sections[sectionIndex]  {
+        switch sections[sectionIndex] {
         case .backdrop:
             return createBackdropSectionLayout()
-        case .overview:
-            return createBackdropSectionLayout()
-//        case .images:
-//            return createBackdropSectionLayout()
-//        case .genres:
-//            return createBackdropSectionLayout()
         case .cast:
             return createCreditsSectionLayout()
         case .recommendations:
@@ -173,53 +103,46 @@ extension MovieDetailCollectionView {
         }
     }
     
-    public func createBackdropSectionLayout() -> NSCollectionLayoutSection {
+    private func createBackdropSectionLayout() -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(
             layoutSize: NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
                 heightDimension: .fractionalHeight(1.0)
             )
         )
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0,
-                                                     leading: 0,
-                                                     bottom: 10,
-                                                     trailing: 0)
-
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: Spacing.medium, trailing: 0)
+        
         let group = NSCollectionLayoutGroup.vertical(
-            layoutSize:  NSCollectionLayoutSize(
+            layoutSize: NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(0.3)
+                heightDimension: .fractionalHeight(0.2)
             ),
             subitems: [item]
         )
-        let section = NSCollectionLayoutSection(group: group)
-        return section
+        return NSCollectionLayoutSection(group: group)
     }
     
     public func createCreditsSectionLayout() -> NSCollectionLayoutSection {
-        // 1. Item
         let item = NSCollectionLayoutItem(
             layoutSize: NSCollectionLayoutSize(
-                widthDimension: .absolute((120)),
-                heightDimension: .absolute(185)
+                widthDimension: .absolute(120),
+                heightDimension: .absolute(170)
             )
         )
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Spacing.medium)
         
-        // 2. Group
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: NSCollectionLayoutSize(
                 widthDimension: .estimated(120),
-                heightDimension: .absolute(185)
+                heightDimension: .absolute(170)
             ),
             subitems: [item]
         )
         
-        // 3. Section
         let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .continuous
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: Spacing.large, bottom: 0, trailing: Spacing.large)
+        section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
         
-        // 4. Section Header
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                 heightDimension: .absolute(44))
         let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
@@ -232,18 +155,91 @@ extension MovieDetailCollectionView {
         
         return section
     }
+}
 
-    
-    public func configure(with viewModel: MovieDetailViewModel) {
-        self.viewModel = viewModel
+// MARK: - UICollectionViewDataSource, UICollectionViewDelegate
+
+extension MovieDetailCollectionView: UICollectionViewDataSource, UICollectionViewDelegate {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return viewModel?.sections.count ?? 0
     }
     
-    private func updateView() {
-        activityIndicator.stopAnimating()
-        self.collectionView?.reloadData()
-        self.collectionView?.isHidden = false
-        UIView.animate(withDuration: 0.3) {
-            self.collectionView?.alpha = 1
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let sectionType = viewModel?.sections[section] else {
+            return 0
         }
+        
+        switch sectionType {
+        case .backdrop:
+            return 1
+        case .cast(let viewModels):
+            return viewModels.count
+        case .recommendations:
+            return 1
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let sectionType = viewModel?.sections[indexPath.section] else {
+            fatalError("No section available")
+        }
+        
+        switch sectionType {
+        case .backdrop(let viewModel):
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: MovieBackdropCollectionViewCell.cellIdentifer,
+                for: indexPath
+            ) as? MovieBackdropCollectionViewCell else {
+                fatalError()
+            }
+            cell.configure(with: viewModel)
+            return cell
+            
+        case .cast(let viewModels):
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: MovieCreditsCollectionViewCell.cellIdentifier,
+                for: indexPath
+            ) as? MovieCreditsCollectionViewCell else {
+                fatalError()
+            }
+            cell.configure(with: viewModels[indexPath.row])
+            return cell
+            
+        case .recommendations:
+            fatalError("Cell not yet implemented")
+        }
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        at indexPath: IndexPath
+    ) -> UICollectionReusableView {
+        guard kind == UICollectionView.elementKindSectionHeader else {
+            fatalError("Invalid supplementary view kind")
+        }
+        
+        guard let header = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: SectionHeaderView.reuseIdentifier,
+            for: indexPath
+        ) as? SectionHeaderView else {
+            fatalError("Could not dequeue SectionHeaderView")
+        }
+        
+        guard let section = viewModel?.sections[indexPath.section] else {
+            fatalError("No section available")
+        }
+        
+        switch section {
+        case .backdrop:
+            header.configure(with: " ")
+        case .cast:
+            header.configure(with: "Top Billed Cast")
+        case .recommendations:
+            header.configure(with: "Recommendations")
+        }
+        
+        return header
     }
 }

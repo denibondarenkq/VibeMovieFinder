@@ -26,7 +26,7 @@ class WatchlistViewController: UIViewController {
     private func configureView() {
         title = "Watchlist"
         view.addSubview(movieTableView)
-        view.backgroundColor = .systemGroupedBackground
+        view.backgroundColor = UIColor(named: "BackgroundColor")
     }
 
     private func setupSortButton() {

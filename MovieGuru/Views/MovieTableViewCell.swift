@@ -13,7 +13,7 @@ final class MovieTableViewCell: UITableViewCell {
     
     private let nameLabel = UILabel.createTitleLabel()
     private let ratingLabel = UILabel.createRegularLabel()
-    private let genresStackView = UIStackView.createStackView(axis: .horizontal, alignment: .leading, distribution: .fillProportionally, spacing: Padding.small)
+    private let genresStackView = UIStackView.createStackView(axis: .horizontal, alignment: .leading, distribution: .fillProportionally, spacing: Spacing.small)
     private let yearLabel = UILabel.createRegularLabel()
     private let movieImageView = UIImageView.createPosterImageView()
     private let starImageView = UIImageView.createStarImageView()
@@ -43,20 +43,21 @@ final class MovieTableViewCell: UITableViewCell {
     }
     
     private func setupViews() {
+//        contentView.backgroundColor = UIColor(named: "BackgroundColor")
         contentView.addSubview(movieImageView)
         contentView.addSubview(contentStackView)
     }
     
     private func addConstraints() {
         NSLayoutConstraint.activate([
-            movieImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Padding.large),
-            movieImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Padding.large),
+            movieImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Spacing.large),
+            movieImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Spacing.large),
             movieImageView.widthAnchor.constraint(equalToConstant: 100),
             movieImageView.heightAnchor.constraint(equalTo: movieImageView.widthAnchor, multiplier: 1.5),
             
             contentStackView.centerYAnchor.constraint(equalTo: movieImageView.centerYAnchor),
-            contentStackView.leftAnchor.constraint(equalTo: movieImageView.rightAnchor, constant: Padding.medium),
-            contentStackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -Padding.large),
+            contentStackView.leftAnchor.constraint(equalTo: movieImageView.rightAnchor, constant: Spacing.medium),
+            contentStackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -Spacing.large),
         ])
     }
     
@@ -95,16 +96,16 @@ final class MovieTableViewCell: UITableViewCell {
     
     func createContentStackView() -> UIStackView {
         let calendarStackView = UIStackView(arrangedSubviews: [calendarImageView, yearLabel])
-        calendarStackView.spacing = Padding.small
+        calendarStackView.spacing = Spacing.small
         calendarStackView.alignment = .center
         
         let ratingStackView = UIStackView(arrangedSubviews: [starImageView, ratingLabel])
-        ratingStackView.spacing = Padding.small
+        ratingStackView.spacing = Spacing.small
         ratingStackView.alignment = .center
 
         let contentStackView = UIStackView(arrangedSubviews: [nameLabel, ratingStackView, calendarStackView, genresStackView])
         contentStackView.axis = .vertical
-        contentStackView.spacing = Padding.medium
+        contentStackView.spacing = Spacing.medium
         contentStackView.alignment = .leading
         
         return contentStackView
@@ -117,7 +118,7 @@ final class MovieTableViewCell: UITableViewCell {
         for view in genresStackView.arrangedSubviews {
             guard let label = view as? UILabel else { continue }
             
-            let labelWidth = label.intrinsicContentSize.width + Padding.medium
+            let labelWidth = label.intrinsicContentSize.width + Spacing.medium
             if totalWidth + labelWidth >= maxWidth {
                 label.isHidden = true
             } else {
@@ -134,7 +135,7 @@ private extension UILabel {
     static func createTitleLabel() -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Font.title
+        label.font = TextStyle.headline
         label.numberOfLines = 2
         return label
     }
@@ -142,7 +143,7 @@ private extension UILabel {
     static func createRegularLabel() -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Font.regular
+        label.font = TextStyle.body
         label.textColor = .label
         return label
     }
@@ -150,7 +151,7 @@ private extension UILabel {
     static func createLightLabel() -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Font.light
+        label.font = TextStyle.light
         label.textColor = .label
         return label
     }
@@ -164,7 +165,7 @@ private extension UILabel {
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        label.widthAnchor.constraint(equalToConstant: label.intrinsicContentSize.width + Padding.medium).isActive = true
+        label.widthAnchor.constraint(equalToConstant: label.intrinsicContentSize.width + Spacing.medium).isActive = true
         label.layer.cornerRadius = 10
         label.layer.masksToBounds = true
         label.numberOfLines = 1
