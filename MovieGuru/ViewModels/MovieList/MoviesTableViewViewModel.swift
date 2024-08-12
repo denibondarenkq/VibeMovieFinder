@@ -1,10 +1,3 @@
-//
-//  WatchlistViewModel.swift
-//  MovieGuru
-//
-//  Created by Denys Bondarenko on 24.06.2024.
-//
-
 import Foundation
 
 protocol BaseMoviesViewModelDelegate: AnyObject {

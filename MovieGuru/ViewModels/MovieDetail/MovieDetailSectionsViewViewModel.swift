@@ -1,13 +1,6 @@
-//
-//  MovieDetailViewModel.swift
-//  MovieGuru
-//
-//  Created by Denys Bondarenko on 04.08.2024.
-//
-
 import Foundation
 
-protocol MovieDetailViewModelDelegate: AnyObject {
+protocol MovieDetailSectionsViewViewModelDelegate: AnyObject {
     func didFetchMovieDetails()
 }
 
@@ -19,10 +12,10 @@ class MovieDetailSectionsViewViewModel {
     private var reviews: [Review] = []
     private var recommendations: [Movie] = []
     
-    weak var delegate: MovieDetailViewModelDelegate?
+    weak var delegate: MovieDetailSectionsViewViewModelDelegate?
     
     enum SectionType {
-        case backdrop(viewModel: BackdropCollectionCellViewModel)
+        case backdrop(viewModel: BackdropCollectionViewCellViewModel)
         case images(viewModels: [ImageCollectionViewCellViewModel])
         case genres(viewModels: [GenreCollectionViewCellViewModel])
         case cast(viewModels: [CastCollectionViewCellViewModel])
@@ -111,7 +104,7 @@ class MovieDetailSectionsViewViewModel {
     
     private func setUpSections() {
         sections = [
-            .backdrop(viewModel: BackdropCollectionCellViewModel(imageUrl: movie.backdropPath)),
+            .backdrop(viewModel: BackdropCollectionViewCellViewModel(imageUrl: movie.backdropPath)),
             .genres(viewModels: genres.compactMap { genre in
                 GenreCollectionViewCellViewModel(name: genre.name)
             }),

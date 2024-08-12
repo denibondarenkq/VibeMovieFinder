@@ -1,10 +1,3 @@
-//
-//  MovieCastCollectionViewCellViewModel.swift
-//  MovieGuru
-//
-//  Created by Denys Bondarenko on 08.08.2024.
-//
-
 import Foundation
 
 final class CastCollectionViewCellViewModel {

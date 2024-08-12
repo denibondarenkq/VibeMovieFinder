@@ -21,7 +21,7 @@ class TabBarController: UITabBarController {
        }
     
     private func setupTabBar() {
-            let watchlistVC = WatchlistViewController()
+            let watchlistVC = AccountListViewController()
             let chatVC = ChatAIViewController()
             let profileVC = ProfileViewController()
 

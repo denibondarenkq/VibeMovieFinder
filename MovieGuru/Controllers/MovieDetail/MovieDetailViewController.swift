@@ -8,11 +8,11 @@
 import UIKit
 
 final class MovieDetailViewController: UIViewController {
-    private let movieCollectionView = MovieDetailCollectionView()
-    private let viewModel: MovieDetailViewModel
+    private let movieCollectionView = MovieDetailSectionsView()
+    private let viewModel: MovieDetailSectionsViewViewModel
     
-    init(movie: MovieSummary) {
-        self.viewModel = MovieDetailViewModel(movie: movie)
+    init(movie: Movie) {
+        self.viewModel = MovieDetailSectionsViewViewModel(movie: movie)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -28,7 +28,6 @@ final class MovieDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupBindings()
         configureNavigationBar()
         viewModel.delegate = self
         viewModel.fetchContent()
@@ -62,15 +61,11 @@ final class MovieDetailViewController: UIViewController {
             movieCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
-
-    private func setupBindings() {
-        // Bindings setup if needed
-    }
 }
 
 // MARK: - MovieDetailViewModelDelegate
 
-extension MovieDetailViewController: MovieDetailViewModelDelegate {
+extension MovieDetailViewController: MovieDetailSectionsViewViewModelDelegate {
     func didFetchMovieDetails() {
         movieCollectionView.configure(with: viewModel)
     }

@@ -7,12 +7,6 @@
 
 import Foundation
 
-struct Images: Codable {
-    let backdrops: [Backdrop]
-    let id: Int
-    let logos, posters: [Backdrop]
-}
-
 struct Backdrop: Codable {
     let aspectRatio: Double
     let height: Int
@@ -20,7 +14,7 @@ struct Backdrop: Codable {
     let filePath: String
     let voteAverage: Double
     let voteCount, width: Int
-
+    
     enum CodingKeys: String, CodingKey {
         case aspectRatio = "aspect_ratio"
         case height
@@ -30,4 +24,10 @@ struct Backdrop: Codable {
         case voteCount = "vote_count"
         case width
     }
+}
+
+struct Images: Codable {
+    let backdrops: [Backdrop]
+    let id: Int
+    let logos, posters: [Backdrop]
 }

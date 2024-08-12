@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class MovieTableViewCellViewModel: UITableViewCell {
+final class MovieTableViewCell: UITableViewCell {
     static let cellHeight: CGFloat = 190
     static let cellIdentifier = "MovieTableViewCell"
     
@@ -70,7 +70,7 @@ final class MovieTableViewCellViewModel: UITableViewCell {
         movieImageView.image = nil
     }
     
-    public func configure(with viewModel: MovieTableCellViewModel) {
+    public func configure(with viewModel: MovieTableViewCellViewModel) {
         nameLabel.text = viewModel.title
         ratingLabel.text = "\(viewModel.rating)/10 TMDB"
         yearLabel.text = viewModel.releaseYear

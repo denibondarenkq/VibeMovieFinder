@@ -8,12 +8,12 @@
 import UIKit
 
 protocol MoviesTableViewDelegate: AnyObject {
-    func movieTableView(_ movieTableView: MoviesTableView, didSelect movie: MovieSummary)
+    func movieDetailView(_ movieTableView: MoviesTableView, didSelect movie: Movie)
 }
 
 class MoviesTableView: UIView {
     weak var delegate: MoviesTableViewDelegate?
-    private var viewModel: BaseMoviesViewModel? {
+    private var viewModel: MoviesTableViewViewModel? {
         didSet {
             updateView()
         }
@@ -78,7 +78,7 @@ class MoviesTableView: UIView {
         tableView.dataSource = self
     }
         
-    public func configure(with viewModel: BaseMoviesViewModel) {
+    public func configure(with viewModel: MoviesTableViewViewModel) {
         self.viewModel = viewModel
     }
         
@@ -121,7 +121,7 @@ extension MoviesTableView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let movie = viewModel?.movie(at: indexPath.row) else { return }
-        delegate?.movieTableView(self, didSelect: movie)
+        delegate?.movieDetailView(self, didSelect: movie)
     }
 }
 

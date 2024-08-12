@@ -1,10 +1,3 @@
-//
-//  WatchlistViewModel.swift
-//  MovieGuru
-//
-//  Created by Denys Bondarenko on 28.07.2024.
-//
-
 import Foundation
 
 class WatchlistTableViewViewModel: MoviesTableViewViewModel {

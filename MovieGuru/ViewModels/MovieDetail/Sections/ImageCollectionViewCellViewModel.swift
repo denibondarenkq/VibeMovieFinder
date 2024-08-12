@@ -1,10 +1,3 @@
-//
-//  ImageCollectionViewCellViewModel.swift
-//  MovieGuru
-//
-//  Created by Denys Bondarenko on 11.08.2024.
-//
-
 import Foundation
 
 final class ImageCollectionViewCellViewModel {

@@ -7,13 +7,14 @@
 
 import UIKit
 
-protocol MovieDetailCollectionViewDelegate: AnyObject {
-    func moviesTableView(_ movieTableView: MovieTableView, didSelect movie: MovieSummary)
+protocol MovieDetailSectionsViewDelegate: AnyObject {
+    func movieDetailView(_ movieTableView: MoviesTableView, didSelect movie: Movie)
 }
 
 final class MovieDetailSectionsView: UIView {
+    weak var delegate: MoviesTableViewDelegate?
     private var collectionView: UICollectionView?
-    private var viewModel: MovieDetailViewModel? {
+    private var viewModel: MovieDetailSectionsViewViewModel? {
         didSet {
             updateView()
         }
@@ -64,7 +65,7 @@ final class MovieDetailSectionsView: UIView {
     
     private func createCollectionView() -> UICollectionView {
         let layout = UICollectionViewCompositionalLayout { sectionIndex, _ in
-            self.createSection(for: sectionIndex)
+            self.createSectionLayout(for: sectionIndex)
         }
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -88,23 +89,22 @@ final class MovieDetailSectionsView: UIView {
         }
     }
     
-    public func configure(with viewModel: MovieDetailViewModel) {
+    public func configure(with viewModel: MovieDetailSectionsViewViewModel) {
         self.viewModel = viewModel
     }
     
-    private func createSection(for sectionIndex: Int) -> NSCollectionLayoutSection {
+    private func createSectionLayout(for sectionIndex: Int) -> NSCollectionLayoutSection {
         guard let sections = viewModel?.sections else {
             return createBackdropSectionLayout()
         }
         
         switch sections[sectionIndex] {
-        case .backdrop:
-            return createBackdropSectionLayout()
         case .cast:
             return createCreditsSectionLayout()
-        case .recommendations:
+        default:
             return createBackdropSectionLayout()
         }
+        
     }
     
     private func createBackdropSectionLayout() -> NSCollectionLayoutSection {
@@ -174,11 +174,9 @@ extension MovieDetailSectionsView: UICollectionViewDataSource, UICollectionViewD
         }
         
         switch sectionType {
-        case .backdrop:
-            return 1
         case .cast(let viewModels):
             return viewModels.count
-        case .recommendations:
+        default:
             return 1
         }
     }
@@ -208,10 +206,17 @@ extension MovieDetailSectionsView: UICollectionViewDataSource, UICollectionViewD
             }
             cell.configure(with: viewModels[indexPath.row])
             return cell
-            
-        case .recommendations:
-            fatalError("Cell not yet implemented")
+        default:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: MovieCreditsCollectionViewCell.cellIdentifier,
+                for: indexPath
+            ) as? MovieCreditsCollectionViewCell else {
+                fatalError()
+            }
+            return cell
         }
+        
+        
     }
     
     func collectionView(
@@ -236,12 +241,10 @@ extension MovieDetailSectionsView: UICollectionViewDataSource, UICollectionViewD
         }
         
         switch section {
-        case .backdrop:
-            header.configure(with: " ")
         case .cast:
             header.configure(with: "Top Billed Cast")
-        case .recommendations:
-            header.configure(with: "Recommendations")
+        default:
+            header.configure(with: " ")
         }
         
         return header

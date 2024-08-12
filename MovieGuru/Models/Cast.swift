@@ -7,11 +7,6 @@
 
 import Foundation
 
-struct Credits: Codable {
-    let id: Int
-    let cast, crew: [Cast]
-}
-
 struct Cast: Codable {
     let adult: Bool
     let gender, id: Int
@@ -38,6 +33,11 @@ struct Cast: Codable {
         case creditID = "credit_id"
         case order, department, job
     }
+}
+
+struct Credits: Codable {
+    let id: Int
+    let cast, crew: [Cast]
 }
 
 enum Department: String, Codable {

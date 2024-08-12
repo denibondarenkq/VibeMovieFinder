@@ -1,12 +1,3 @@
-//
-//  ReviewCollectionViewCellViewModel.swift
-//  MovieGuru
-//
-//  Created by Denys Bondarenko on 12.08.2024.
-//
-
-import Foundation
-
 import Foundation
 
 final class ReviewCollectionViewCellViewModel {

@@ -89,7 +89,7 @@ final class MovieCreditsCollectionViewCell: UICollectionViewCell {
         characterLabel.text = nil
     }
     
-    public func configure(with viewModel: MovieCreditsCollectionViewCellViewModel) {
+    public func configure(with viewModel: CastCollectionViewCellViewModel) {
         nameLabel.text = viewModel.name
         characterLabel.text = viewModel.character
         

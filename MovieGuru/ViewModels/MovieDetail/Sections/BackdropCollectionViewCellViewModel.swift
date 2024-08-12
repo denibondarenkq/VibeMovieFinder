@@ -1,10 +1,3 @@
-//
-//  MovieDetailPhotoCollectionViewCellViewModel.swift
-//  MovieGuru
-//
-//  Created by Denys Bondarenko on 07.08.2024.
-//
-
 import Foundation
 
 class BackdropCollectionViewCellViewModel {

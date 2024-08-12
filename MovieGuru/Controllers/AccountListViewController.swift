@@ -9,7 +9,7 @@ import UIKit
 
 class AccountListViewController: UIViewController {
     private let movieTableView = MoviesTableView()
-    private let viewModel = PopularMoviesViewModel()
+    private let viewModel = PopularTableViewViewModel()
 
     override func loadView() {
         super.loadView()
@@ -71,7 +71,7 @@ class AccountListViewController: UIViewController {
 // MARK: - MovieTableViewDelegate
 
 extension AccountListViewController: MoviesTableViewDelegate {
-    func movieDetailView(_ movieTableView: MoviesTableView, didSelect movie: MovieSummary) {
+    func movieDetailView(_ movieTableView: MoviesTableView, didSelect movie: Movie) {
         let vc = MovieDetailViewController(movie: movie)
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)
@@ -81,7 +81,7 @@ extension AccountListViewController: MoviesTableViewDelegate {
 // MARK: - BaseMoviesViewModelDelegate
 
 extension AccountListViewController: BaseMoviesViewModelDelegate {
-    func didFetchedMovies() {
+    func didFetchMovies() {
         DispatchQueue.main.async {
             self.movieTableView.tableView.reloadData()
             self.movieTableView.tableView.tableFooterView = nil

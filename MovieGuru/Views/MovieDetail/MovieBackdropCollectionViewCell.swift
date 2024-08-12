@@ -44,7 +44,7 @@ final class MovieBackdropCollectionViewCell: UICollectionViewCell {
         imageView.image = nil
     }
 
-    public func configure(with viewModel: MovieBackdropCollectionCellViewModel) {
+    public func configure(with viewModel: BackdropCollectionViewCellViewModel) {
         viewModel.fetchBackdropImage { [weak self] result in
             switch result {
             case .success(let data):
