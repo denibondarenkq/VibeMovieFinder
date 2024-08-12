@@ -8,13 +8,13 @@
 import Foundation
 
 protocol BaseMoviesViewModelDelegate: AnyObject {
-    func didFetchedMovies()
+    func didFetchMovies()
 }
 
-class BaseMoviesViewModel {
-    private var movies: [MovieSummary] = []
+class MoviesTableViewViewModel {
+    private var movies: [Movie] = []
     private var genres: [Genre] = []
-    private(set) var movieCellViewModels: [MovieTableCellViewModel] = []
+    private(set) var movieCellViewModels: [MovieTableViewCellViewModel] = []
     private var isFetching = false
     weak var delegate: BaseMoviesViewModelDelegate?
     
@@ -61,11 +61,11 @@ class BaseMoviesViewModel {
         DispatchQueue.global().async {
             let group = DispatchGroup()
             var fetchedGenres: [Genre] = []
-            var fetchedMoviesPage: MoviesSummaryPage?
+            var fetchedMoviesPage: Movies?
             var fetchError: Error?
             
             group.enter()
-            self.fetchGenres(from: .genresMovieList) { result in
+            self.fetchGenres(from: .genreMovieList) { result in
                 switch result {
                 case .success(let genres):
                     fetchedGenres = genres.genres
@@ -106,25 +106,24 @@ class BaseMoviesViewModel {
     }
     
     private func fetchGenres(from endpoint: Endpoint, completion: @escaping ((Result<Genres, Error>) -> Void)) {
-        DispatchQueue.global().async {
-            NetworkService.shared.execute(endpoint: endpoint, expecting: Genres.self) { result in
-                completion(result)
-            }
+        NetworkService.shared.execute(endpoint: endpoint, expecting: Genres.self) { result in
+            completion(result)
         }
     }
     
-    private func fetchMovies(from endpoint: Endpoint, with parameters: [String: Any], completion: @escaping ((Result<MoviesSummaryPage, Error>) -> Void)) {
-        NetworkService.shared.execute(endpoint: endpoint, parameters: parameters, expecting: MoviesSummaryPage.self) { result in
+    private func fetchMovies(from endpoint: Endpoint, with parameters: [String: Any], completion: @escaping ((Result<Movies, Error>) -> Void)) {
+        NetworkService.shared.execute(endpoint: endpoint, parameters: parameters, expecting: Movies.self) { result in
             completion(result)
         }
     }
     
     private func combineData() {
-        movieCellViewModels = movies.map { MovieTableCellViewModel(movie: $0, genres: genres) }
-        delegate?.didFetchedMovies()
+        movieCellViewModels = movies.map { movie in
+            MovieTableViewCellViewModel(title: movie.title, voteAverage: movie.voteAverage, releaseDate: movie.releaseDate, genreIDs: movie.genreIDS, genres: genres, posterPath: movie.posterPath) }
+        delegate?.didFetchMovies()
     }
-        
-    func movie(at index: Int) -> MovieSummary {
+    
+    func movie(at index: Int) -> Movie {
         return movies[index]
     }
 }

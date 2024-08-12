@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MovieSummary: Codable {
+struct Movie: Codable {
     let adult: Bool
     let backdropPath: String
     let genreIDS: [Int]
@@ -37,7 +37,7 @@ struct MovieSummary: Codable {
 
 struct MoviesSummaryPage: Codable {
     let page: Int
-    let results: [MovieSummary]
+    let results: [Movie]
     let totalPages, totalResults: Int
 
     enum CodingKeys: String, CodingKey {

@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class MovieCreditsCollectionViewCellViewModel {
+final class CastCollectionViewCellViewModel {
     public let name: String
     public let character: String
     private let imageUrl: URL?

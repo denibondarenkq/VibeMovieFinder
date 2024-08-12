@@ -7,7 +7,11 @@
 
 import UIKit
 
-final class MovieDetailCollectionView: UIView {
+protocol MovieDetailCollectionViewDelegate: AnyObject {
+    func moviesTableView(_ movieTableView: MovieTableView, didSelect movie: MovieSummary)
+}
+
+final class MovieDetailSectionsView: UIView {
     private var collectionView: UICollectionView?
     private var viewModel: MovieDetailViewModel? {
         didSet {
@@ -159,7 +163,7 @@ final class MovieDetailCollectionView: UIView {
 
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegate
 
-extension MovieDetailCollectionView: UICollectionViewDataSource, UICollectionViewDelegate {
+extension MovieDetailSectionsView: UICollectionViewDataSource, UICollectionViewDelegate {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return viewModel?.sections.count ?? 0
     }

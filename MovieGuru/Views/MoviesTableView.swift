@@ -7,12 +7,12 @@
 
 import UIKit
 
-protocol MovieTableViewDelegate: AnyObject {
-    func movieTableView(_ movieTableView: MovieTableView, didSelect movie: MovieSummary)
+protocol MoviesTableViewDelegate: AnyObject {
+    func movieTableView(_ movieTableView: MoviesTableView, didSelect movie: MovieSummary)
 }
 
-class MovieTableView: UIView {
-    weak var delegate: MovieTableViewDelegate?
+class MoviesTableView: UIView {
+    weak var delegate: MoviesTableViewDelegate?
     private var viewModel: BaseMoviesViewModel? {
         didSet {
             updateView()
@@ -94,7 +94,7 @@ class MovieTableView: UIView {
 
 // MARK: - UITableViewDataSource
 
-extension MovieTableView: UITableViewDataSource {
+extension MoviesTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel?.movieCellViewModels.count ?? 0
     }
@@ -114,7 +114,7 @@ extension MovieTableView: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 
-extension MovieTableView: UITableViewDelegate {
+extension MoviesTableView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return MovieTableViewCell.cellHeight
     }
@@ -127,7 +127,7 @@ extension MovieTableView: UITableViewDelegate {
 
 // MARK: - UIScrollViewDelegate
 
-extension MovieTableView: UIScrollViewDelegate {
+extension MoviesTableView: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height

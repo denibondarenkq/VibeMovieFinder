@@ -7,9 +7,9 @@
 
 import Foundation
 
-class PopularMoviesViewModel: BaseMoviesViewModel {
+class PopularTableViewViewModel: MoviesTableViewViewModel {
     override init() {
         super.init()
-        configure(endpoint: .popularMovies, initialParameters: ["page": 1, ])
+        configure(endpoint: .moviePopular, initialParameters: ["page": 1, ])
     }
 }

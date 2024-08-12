@@ -7,8 +7,8 @@
 
 import UIKit
 
-class WatchlistViewController: UIViewController {
-    private let movieTableView = MovieTableView()
+class AccountListViewController: UIViewController {
+    private let movieTableView = MoviesTableView()
     private let viewModel = PopularMoviesViewModel()
 
     override func loadView() {
@@ -70,8 +70,8 @@ class WatchlistViewController: UIViewController {
 
 // MARK: - MovieTableViewDelegate
 
-extension WatchlistViewController: MovieTableViewDelegate {
-    func movieTableView(_ movieTableView: MovieTableView, didSelect movie: MovieSummary) {
+extension AccountListViewController: MoviesTableViewDelegate {
+    func movieDetailView(_ movieTableView: MoviesTableView, didSelect movie: MovieSummary) {
         let vc = MovieDetailViewController(movie: movie)
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)
@@ -80,7 +80,7 @@ extension WatchlistViewController: MovieTableViewDelegate {
 
 // MARK: - BaseMoviesViewModelDelegate
 
-extension WatchlistViewController: BaseMoviesViewModelDelegate {
+extension AccountListViewController: BaseMoviesViewModelDelegate {
     func didFetchedMovies() {
         DispatchQueue.main.async {
             self.movieTableView.tableView.reloadData()

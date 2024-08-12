@@ -7,14 +7,12 @@
 
 import Foundation
 
-// MARK: - MovieImages
-struct MovieImages: Codable {
+struct Images: Codable {
     let backdrops: [Backdrop]
     let id: Int
     let logos, posters: [Backdrop]
 }
 
-// MARK: - Backdrop
 struct Backdrop: Codable {
     let aspectRatio: Double
     let height: Int
