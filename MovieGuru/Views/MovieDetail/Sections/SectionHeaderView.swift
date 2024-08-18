@@ -1,10 +1,3 @@
-//
-//  SectionHeaderView.swift
-//  MovieGuru
-//
-//  Created by Denys Bondarenko on 09.08.2024.
-//
-
 import UIKit
 
 class SectionHeaderView: UICollectionReusableView {
@@ -13,7 +6,8 @@ class SectionHeaderView: UICollectionReusableView {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = TextStyle.headline
+        label.font = TextStyle.heading1
+        label.numberOfLines = 2
         return label
     }()
 
@@ -30,8 +24,10 @@ class SectionHeaderView: UICollectionReusableView {
         addSubview(titleLabel)
 
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
+            titleLabel.topAnchor.constraint(equalTo: topAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
     }
 

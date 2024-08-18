@@ -1,32 +1,24 @@
-//
-//  MovieCastCollectionViewCell.swift
-//  MovieGuru
-//
-//  Created by Denys Bondarenko on 08.08.2024.
-//
-
 import UIKit
 
-final class MovieCreditsCollectionViewCell: UICollectionViewCell {
-
-    static let cellIdentifier = "MovieCastCollectionViewCell"
+final class CastCollectionViewCell: UICollectionViewCell {
+    static let cellIdentifier = "CastCollectionViewCell"
     
-    // UI Components
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.backgroundColor = .systemGray3
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 55
-        imageView.layer.masksToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
+
+    private let shadowView = ShadowView()
     
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .label
-        label.font = TextStyle.body
+        label.font = TextStyle.heading2
         label.numberOfLines = 2
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -35,7 +27,7 @@ final class MovieCreditsCollectionViewCell: UICollectionViewCell {
     
     private let characterLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .secondaryLabel
+        label.textColor = .label
         label.font = TextStyle.light
         label.textAlignment = .center
         label.numberOfLines = 2
@@ -44,11 +36,11 @@ final class MovieCreditsCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    // MARK: - Init
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.addSubview(imageView)
+        contentView.addSubview(shadowView)
+        shadowView.addSubview(imageView)
         contentView.addSubview(nameLabel)
         contentView.addSubview(characterLabel)
         addConstraints()
@@ -60,7 +52,6 @@ final class MovieCreditsCollectionViewCell: UICollectionViewCell {
     
     private func addConstraints() {
         NSLayoutConstraint.activate([
-            // ImageView Constraints
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             imageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -68,12 +59,10 @@ final class MovieCreditsCollectionViewCell: UICollectionViewCell {
             imageView.widthAnchor.constraint(equalToConstant: 110),
             imageView.heightAnchor.constraint(equalToConstant: 110),
             
-            // NameLabel Constraints
             nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: Spacing.medium),
             nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
-            // CharacterLabel Constraints
             characterLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: Spacing.small),
             characterLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             characterLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),

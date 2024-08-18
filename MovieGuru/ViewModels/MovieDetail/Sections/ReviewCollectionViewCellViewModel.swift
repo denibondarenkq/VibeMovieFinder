@@ -21,6 +21,8 @@ final class ReviewCollectionViewCellViewModel {
     
     private static func formatDate(from isoDate: String) -> String {
         let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+
         guard let date = formatter.date(from: isoDate) else {
             return isoDate
         }

@@ -1,14 +1,6 @@
-//
-//  MovieBackdropCollectionViewCellViewModel.swift
-//  MovieGuru
-//
-//  Created by Denys Bondarenko on 07.08.2024.
-//
-
 import UIKit
 
-final class MovieBackdropCollectionViewCell: UICollectionViewCell {
-    
+final class BackdropCollectionViewCell: UICollectionViewCell {
     static let cellIdentifer = "MovieBackdropCollectionCellView"
 
     private let imageView: UIImageView = {

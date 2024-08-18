@@ -40,8 +40,10 @@ final class MovieDetailViewController: UIViewController {
     }
     
     private func configureNavigationBar() {
+        navigationItem.title = ""
+
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .action,
+            barButtonSystemItem: .add,
             target: self,
             action: #selector(didTapShare)
         )

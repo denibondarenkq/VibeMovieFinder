@@ -1,10 +1,3 @@
-//
-//  MovieTableViewCell.swift
-//  MovieGuru
-//
-//  Created by Denys Bondarenko on 24.06.2024.
-//
-
 import UIKit
 
 final class MovieTableViewCell: UITableViewCell {
@@ -43,7 +36,6 @@ final class MovieTableViewCell: UITableViewCell {
     }
     
     private func setupViews() {
-//        contentView.backgroundColor = UIColor(named: "BackgroundColor")
         contentView.addSubview(movieImageView)
         contentView.addSubview(contentStackView)
     }
@@ -72,8 +64,8 @@ final class MovieTableViewCell: UITableViewCell {
     
     public func configure(with viewModel: MovieTableViewCellViewModel) {
         nameLabel.text = viewModel.title
-        ratingLabel.text = "\(viewModel.rating)/10 TMDB"
-        yearLabel.text = viewModel.releaseYear
+        ratingLabel.text = "⭐ \(viewModel.rating)/10 TMDB"
+        yearLabel.text = "🗓️ \(viewModel.releaseYear)"
         
         for genre in viewModel.genreNames {
             let genreLabel = UILabel.createGenreLabel(for: genre)
@@ -135,7 +127,7 @@ private extension UILabel {
     static func createTitleLabel() -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = TextStyle.headline
+        label.font = TextStyle.heading1
         label.numberOfLines = 2
         return label
     }

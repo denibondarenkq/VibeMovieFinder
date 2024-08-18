@@ -27,7 +27,16 @@ class AccountListViewController: UIViewController {
         title = "Watchlist"
         view.addSubview(movieTableView)
         view.backgroundColor = UIColor(named: "BackgroundColor")
+        
+        // Задаем кастомный шрифт для заголовка навигационной панели
+        if let customFont = UIFont(name: "YourCustomFontName", size: 24) {
+            navigationController?.navigationBar.titleTextAttributes = [
+                .font: customFont,
+                .foregroundColor: UIColor.white
+            ]
+        }
     }
+
 
     private func setupSortButton() {
         let sortButton = UIBarButtonItem(title: "Sort", style: .plain, target: self, action: #selector(promptSortOrder))

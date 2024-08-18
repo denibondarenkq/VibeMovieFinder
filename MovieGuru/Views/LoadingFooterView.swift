@@ -1,10 +1,3 @@
-//
-//  LoadingFooterView.swift
-//  MovieGuru
-//
-//  Created by Denys Bondarenko on 20.07.2024.
-//
-
 import UIKit
 
 class LoadingFooterView: UIView {

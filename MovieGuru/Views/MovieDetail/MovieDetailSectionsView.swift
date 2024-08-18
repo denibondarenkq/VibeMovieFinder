@@ -1,10 +1,3 @@
-//
-//  MovieDetailViewModel.swift
-//  MovieGuru
-//
-//  Created by Denys Bondarenko on 07.08.2024.
-//
-
 import UIKit
 
 protocol MovieDetailSectionsViewDelegate: AnyObject {
@@ -74,9 +67,16 @@ final class MovieDetailSectionsView: UIView {
         collectionView.alpha = 0
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(MovieBackdropCollectionViewCell.self, forCellWithReuseIdentifier: MovieBackdropCollectionViewCell.cellIdentifer)
-        collectionView.register(MovieCreditsCollectionViewCell.self, forCellWithReuseIdentifier: MovieCreditsCollectionViewCell.cellIdentifier)
+        collectionView.register(BackdropCollectionViewCell.self, forCellWithReuseIdentifier: BackdropCollectionViewCell.cellIdentifer)
+        collectionView.register(OverviewCollectionViewCell.self, forCellWithReuseIdentifier: OverviewCollectionViewCell.cellIdentifier)
+        collectionView.register(FactCollectionViewCell.self, forCellWithReuseIdentifier: FactCollectionViewCell.cellIdentifier)
+        collectionView.register(CastCollectionViewCell.self, forCellWithReuseIdentifier: CastCollectionViewCell.cellIdentifier)
+        collectionView.register(GenreCollectionViewCell.self, forCellWithReuseIdentifier: GenreCollectionViewCell.cellIdentifier)
+        collectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: ImageCollectionViewCell.cellIdentifier)
+        collectionView.register(ReviewCollectionViewCell.self, forCellWithReuseIdentifier: ReviewCollectionViewCell.cellIdentifier)
+        collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: MovieCollectionViewCell.cellIdentifier)
         collectionView.register(SectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeaderView.reuseIdentifier)
+        
         return collectionView
     }
     
@@ -95,69 +95,156 @@ final class MovieDetailSectionsView: UIView {
     
     private func createSectionLayout(for sectionIndex: Int) -> NSCollectionLayoutSection {
         guard let sections = viewModel?.sections else {
-            return createBackdropSectionLayout()
+            return createSectionLayout(
+                itemWidth: .fractionalWidth(1.00),
+                itemHeight: .fractionalHeight(1.00),
+                groupWidth: .fractionalWidth(1.0),
+                groupHeight: .fractionalHeight(0.4),
+                scrollBehavior: nil,
+                groupInsets: NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0),
+                sectionInsets: NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+            )
         }
         
         switch sections[sectionIndex] {
+        case .backdrop:
+            return createSectionLayout(
+                itemWidth: .fractionalWidth(1.00),
+                itemHeight: .fractionalHeight(1.00),
+                groupWidth: .fractionalWidth(1.0),
+                groupHeight: .fractionalHeight(0.4),
+                scrollBehavior: nil,
+                groupInsets: NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0),
+                sectionInsets: NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+            )
+        case .facts:
+            return createSectionLayout(
+                itemWidth: .fractionalWidth(0.33),
+                itemHeight: .fractionalHeight(1.00),
+                groupWidth: .fractionalWidth(1.0),
+                groupHeight: .absolute(80),
+                scrollBehavior: .groupPagingCentered,
+                groupInsets: NSDirectionalEdgeInsets(top: Spacing.medium, leading: Spacing.large, bottom: Spacing.large, trailing: Spacing.large),
+                sectionInsets: NSDirectionalEdgeInsets(top: Spacing.medium, leading: Spacing.large, bottom: Spacing.large, trailing: Spacing.large)
+            )
+        case .overview:
+            return createSectionLayout(
+                itemWidth: .fractionalWidth(1.0),
+                itemHeight: .fractionalHeight(1.0),
+                groupWidth: .fractionalWidth(1.0),
+                groupHeight: .absolute(130),
+                scrollBehavior: nil,
+                groupInsets: NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: Spacing.medium, trailing: 0),
+                sectionInsets: NSDirectionalEdgeInsets(top: Spacing.medium, leading: Spacing.large, bottom: Spacing.large, trailing: Spacing.large)
+            )
+        case .genres:
+            return createSectionLayout(
+                itemWidth: .fractionalWidth(1.0),
+                itemHeight: .fractionalHeight(1.0),
+                groupWidth: .absolute(150),
+                groupHeight: .absolute(30),
+                scrollBehavior: .continuousGroupLeadingBoundary,
+                groupInsets: NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Spacing.medium),
+                sectionInsets: NSDirectionalEdgeInsets(top: Spacing.medium, leading: Spacing.large, bottom: Spacing.large, trailing: Spacing.large)
+            )
         case .cast:
-            return createCreditsSectionLayout()
-        default:
-            return createBackdropSectionLayout()
+            return createSectionLayout(
+                itemWidth: .fractionalWidth(1.0),
+                itemHeight: .fractionalHeight(1.0),
+                groupWidth: .absolute(120),
+                groupHeight: .absolute(180),
+                scrollBehavior: .continuousGroupLeadingBoundary,
+                groupInsets: NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Spacing.medium),
+                sectionInsets: NSDirectionalEdgeInsets(top: Spacing.medium, leading: Spacing.large, bottom: Spacing.large, trailing: Spacing.large)
+            )
+        case .images:
+            return createSectionLayout(
+                itemWidth: .fractionalWidth(1.0),
+                itemHeight: .fractionalHeight(1.0),
+                groupWidth: .absolute(230),
+                groupHeight: .absolute(130),
+                scrollBehavior: .continuousGroupLeadingBoundary,
+                groupInsets: NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Spacing.medium),
+                sectionInsets: NSDirectionalEdgeInsets(top: Spacing.medium, leading: Spacing.large, bottom: Spacing.large, trailing: Spacing.large)
+            )
+        case .reviews:
+            return createSectionLayout(
+                itemWidth: .fractionalWidth(1.0),
+                itemHeight: .fractionalHeight(1.0),
+                groupWidth: .absolute(350),
+                groupHeight: .absolute(180),
+                scrollBehavior: .continuousGroupLeadingBoundary,
+                groupInsets: NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Spacing.medium),
+                sectionInsets: NSDirectionalEdgeInsets(top: Spacing.medium, leading: Spacing.large, bottom: Spacing.large, trailing: Spacing.large)
+            )
+        case .recommendations:
+            return createSectionLayout(
+                itemWidth: .fractionalWidth(1.0),
+                itemHeight: .fractionalHeight(1.0),
+                groupWidth: .absolute(230),
+                groupHeight: .absolute(180),
+                scrollBehavior: .continuousGroupLeadingBoundary,
+                groupInsets: NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Spacing.medium),
+                sectionInsets: NSDirectionalEdgeInsets(top: Spacing.medium, leading: Spacing.large, bottom: Spacing.large, trailing: Spacing.large)
+            )
         }
-        
     }
-    
-    private func createBackdropSectionLayout() -> NSCollectionLayoutSection {
+
+    private func createSectionLayout(
+        itemWidth: NSCollectionLayoutDimension,
+        itemHeight: NSCollectionLayoutDimension,
+        groupWidth: NSCollectionLayoutDimension,
+        groupHeight: NSCollectionLayoutDimension,
+        scrollBehavior: UICollectionLayoutSectionOrthogonalScrollingBehavior?,
+        groupInsets: NSDirectionalEdgeInsets,
+        sectionInsets: NSDirectionalEdgeInsets
+    ) -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(
             layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0)
+                widthDimension: itemWidth,
+                heightDimension: itemHeight
             )
         )
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: Spacing.medium, trailing: 0)
         
-        let group = NSCollectionLayoutGroup.vertical(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(0.2)
-            ),
-            subitems: [item]
-        )
-        return NSCollectionLayoutSection(group: group)
-    }
-    
-    public func createCreditsSectionLayout() -> NSCollectionLayoutSection {
-        let item = NSCollectionLayoutItem(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .absolute(120),
-                heightDimension: .absolute(170)
+        let group: NSCollectionLayoutGroup = itemWidth == .fractionalWidth(1.0) ?
+            NSCollectionLayoutGroup.vertical(
+                layoutSize: NSCollectionLayoutSize(
+                    widthDimension: groupWidth,
+                    heightDimension: groupHeight
+                ),
+                subitems: [item]
+            ) :
+            NSCollectionLayoutGroup.horizontal(
+                layoutSize: NSCollectionLayoutSize(
+                    widthDimension: groupWidth,
+                    heightDimension: groupHeight
+                ),
+                subitems: [item]
             )
-        )
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Spacing.medium)
-        
-        let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .estimated(120),
-                heightDimension: .absolute(170)
-            ),
-            subitems: [item]
-        )
+
+        group.contentInsets = groupInsets
         
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: Spacing.large, bottom: 0, trailing: Spacing.large)
-        section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
+        section.contentInsets = sectionInsets
         
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                heightDimension: .absolute(44))
-        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+        if let scrollBehavior = scrollBehavior {
+            section.orthogonalScrollingBehavior = scrollBehavior
+        }
+        
+        section.boundarySupplementaryItems = [createSectionHeader()]
+        return section
+    }
+
+    private func createSectionHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
+        let headerSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(60)
+        )
+        return NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: headerSize,
             elementKind: UICollectionView.elementKindSectionHeader,
             alignment: .top
         )
-        
-        section.boundarySupplementaryItems = [sectionHeader]
-        
-        return section
     }
 }
 
@@ -174,7 +261,19 @@ extension MovieDetailSectionsView: UICollectionViewDataSource, UICollectionViewD
         }
         
         switch sectionType {
+        case .facts(let viewModels):
+            return viewModels.count
+        case .overview(let viewModels):
+            return viewModels.count
         case .cast(let viewModels):
+            return viewModels.count
+        case .genres(let viewModels):
+            return viewModels.count
+        case .images(let viewModels):
+            return viewModels.count
+        case .reviews(let viewModels):
+            return viewModels.count
+        case .recommendations(let viewModels):
             return viewModels.count
         default:
             return 1
@@ -189,30 +288,75 @@ extension MovieDetailSectionsView: UICollectionViewDataSource, UICollectionViewD
         switch sectionType {
         case .backdrop(let viewModel):
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: MovieBackdropCollectionViewCell.cellIdentifer,
+                withReuseIdentifier: BackdropCollectionViewCell.cellIdentifer,
                 for: indexPath
-            ) as? MovieBackdropCollectionViewCell else {
+            ) as? BackdropCollectionViewCell else {
                 fatalError()
             }
             cell.configure(with: viewModel)
             return cell
-            
-        case .cast(let viewModels):
+        case .facts(let viewModels):
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: MovieCreditsCollectionViewCell.cellIdentifier,
+                withReuseIdentifier: FactCollectionViewCell.cellIdentifier,
                 for: indexPath
-            ) as? MovieCreditsCollectionViewCell else {
+            ) as? FactCollectionViewCell else {
                 fatalError()
             }
             cell.configure(with: viewModels[indexPath.row])
             return cell
-        default:
+        case .overview(let viewModels):
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: MovieCreditsCollectionViewCell.cellIdentifier,
+                withReuseIdentifier: OverviewCollectionViewCell.cellIdentifier,
                 for: indexPath
-            ) as? MovieCreditsCollectionViewCell else {
+            ) as? OverviewCollectionViewCell else {
                 fatalError()
             }
+            cell.configure(with: viewModels[indexPath.row])
+            return cell
+        case .genres(let viewModels):
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: GenreCollectionViewCell.cellIdentifier,
+                for: indexPath
+            ) as? GenreCollectionViewCell else {
+                fatalError()
+            }
+            cell.configure(with: viewModels[indexPath.row])
+            return cell
+        case .cast(let viewModels):
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: CastCollectionViewCell.cellIdentifier,
+                for: indexPath
+            ) as? CastCollectionViewCell else {
+                fatalError()
+            }
+            cell.configure(with: viewModels[indexPath.row])
+            return cell
+        case .images(let viewModels):
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: ImageCollectionViewCell.cellIdentifier,
+                for: indexPath
+            ) as? ImageCollectionViewCell else {
+                fatalError()
+            }
+            cell.configure(with: viewModels[indexPath.row])
+            return cell
+        case .reviews(let viewModels):
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: ReviewCollectionViewCell.cellIdentifier,
+                for: indexPath
+            ) as? ReviewCollectionViewCell else {
+                fatalError()
+            }
+            cell.configure(with: viewModels[indexPath.row])
+            return cell
+        case .recommendations(let viewModels):
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: MovieCollectionViewCell.cellIdentifier,
+                for: indexPath
+            ) as? MovieCollectionViewCell else {
+                fatalError()
+            }
+            cell.configure(with: viewModels[indexPath.row])
             return cell
         }
         
@@ -241,12 +385,24 @@ extension MovieDetailSectionsView: UICollectionViewDataSource, UICollectionViewD
         }
         
         switch section {
+        case .facts:
+            header.configure(with: viewModel!.title)
+        case .genres:
+            header.configure(with: "Genres")
+        case .overview:
+            header.configure(with: "Overview")
         case .cast:
             header.configure(with: "Top Billed Cast")
+        case .images:
+            header.configure(with: "Images")
+        case .reviews:
+            header.configure(with: "Comments")
+        case .recommendations:
+            header.configure(with: "You might also like")
         default:
             header.configure(with: " ")
         }
-        
+
         return header
     }
 }

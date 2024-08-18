@@ -16,11 +16,14 @@ class MovieDetailSectionsViewViewModel {
     
     enum SectionType {
         case backdrop(viewModel: BackdropCollectionViewCellViewModel)
+        case facts(viewModels: [FactCollectionViewCellViewModel])
+        case overview(viewModels: [OverviewCollectionViewCellViewModel])
         case images(viewModels: [ImageCollectionViewCellViewModel])
         case genres(viewModels: [GenreCollectionViewCellViewModel])
         case cast(viewModels: [CastCollectionViewCellViewModel])
         case reviews(viewModels: [ReviewCollectionViewCellViewModel])
         case recommendations(viewModels: [MovieCollectionViewCellViewModel])
+        
     }
     
     public private(set) var sections: [SectionType] = []
@@ -94,7 +97,6 @@ class MovieDetailSectionsViewViewModel {
         
         dispatchGroup.notify(queue: .main) {
             if fetchError != nil {
-                /// TO:DO: Handle error
                 return
             }
             self.setUpSections()
@@ -105,23 +107,37 @@ class MovieDetailSectionsViewViewModel {
     private func setUpSections() {
         sections = [
             .backdrop(viewModel: BackdropCollectionViewCellViewModel(imageUrl: movie.backdropPath)),
-            .genres(viewModels: genres.compactMap { genre in
-                GenreCollectionViewCellViewModel(name: genre.name)
-            }),
-            .cast(viewModels: credits.compactMap { cast in
-                CastCollectionViewCellViewModel(
-                    name: cast.name,
-                    character: cast.character,
-                    job: cast.job,
-                    imageUrl: cast.profilePath
-                )
-            }),
+            .facts(viewModels: [
+                FactCollectionViewCellViewModel(title: "Release", value: String(movie.releaseDate.prefix(7)), emoji: "🎬"),
+                FactCollectionViewCellViewModel(title: "Rating", value: "\(round(movie.voteAverage * 10) / 10.0)/10", emoji: "🔥"),
+                FactCollectionViewCellViewModel(title: "Your verdict", value: "\(round(movie.voteAverage * 10) / 10.0)/10", emoji: "🧑‍⚖️"),
+                FactCollectionViewCellViewModel(title: "Popularity", value: "\(round(movie.popularity * 10) / 10.0)", emoji: "🤩"),
+                FactCollectionViewCellViewModel(title: "Language", value: movie.originalLanguage.uppercased(), emoji: "🌎"),
+            ]),
             .images(viewModels: images.compactMap { image in
                 ImageCollectionViewCellViewModel(
                     imagePath: image.filePath,
                     aspectRatio: image.aspectRatio
                 )
             }),
+            .overview(viewModels: [
+                OverviewCollectionViewCellViewModel(titleLabel: "Description", descriptionText: movie.overview),
+                OverviewCollectionViewCellViewModel(titleLabel: "AI Overview", descriptionText: movie.overview),
+            ]),
+            .cast(viewModels: credits.compactMap { cast in
+                CastCollectionViewCellViewModel(
+                    name: cast.name,
+                    character: cast.character,
+                    job: cast.job, imageUrl:
+                        cast.profilePath)
+            }),
+            .genres(viewModels: movie.genreIDS.compactMap { id in
+                if let genreName = genres.first(where: { $0.id == id })?.name {
+                    return GenreCollectionViewCellViewModel(name: genreName)
+                }
+                return nil
+            }),
+        
             .reviews(viewModels: reviews.compactMap { review in
                 ReviewCollectionViewCellViewModel(
                     author: review.author,
@@ -151,7 +167,7 @@ class MovieDetailSectionsViewViewModel {
     
     private func fetchImages(completion: @escaping (Result<Images, Error>) -> Void) {
         let endpoint = Endpoint.movieImages(movieId: movie.id)
-        NetworkService.shared.execute(endpoint: endpoint, parameters: ["name": "language", "value": "null"], expecting: Images.self, completion: completion)
+        NetworkService.shared.execute(endpoint: endpoint, parameters: ["include_image_language": "null"], expecting: Images.self, completion: completion)
     }
     
     private func fetchReviews(completion: @escaping (Result<Reviews, Error>) -> Void) {

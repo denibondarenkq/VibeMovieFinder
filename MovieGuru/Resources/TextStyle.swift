@@ -8,7 +8,8 @@
 import UIKit
 
 struct TextStyle {
-    static let headline = UIFont(name: "GillSans-SemiBold", size: 20)!
-    static let body = UIFont.systemFont(ofSize: 16, weight: .regular)
+    static let heading1 = UIFont(name: "GillSans-SemiBold", size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .semibold)
+    static let heading2 = UIFont.systemFont(ofSize: 16, weight: .semibold)
+    static let body = UIFont.systemFont(ofSize: 14, weight: .regular)
     static let light = UIFont.systemFont(ofSize: 12, weight: .light)
 }
