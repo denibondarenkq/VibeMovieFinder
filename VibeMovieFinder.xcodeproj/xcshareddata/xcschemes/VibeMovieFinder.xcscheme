@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "7939BE2F2C29661B0098FCB0"
-               BuildableName = "MovieGuru.app"
-               BlueprintName = "MovieGuru"
-               ReferencedContainer = "container:MovieGuru.xcodeproj">
+               BuildableName = "VibeMovieFinder.app"
+               BlueprintName = "VibeMovieFinder"
+               ReferencedContainer = "container:VibeMovieFinder.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,9 +46,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7939BE2F2C29661B0098FCB0"
-            BuildableName = "MovieGuru.app"
-            BlueprintName = "MovieGuru"
-            ReferencedContainer = "container:MovieGuru.xcodeproj">
+            BuildableName = "VibeMovieFinder.app"
+            BlueprintName = "VibeMovieFinder"
+            ReferencedContainer = "container:VibeMovieFinder.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -63,9 +63,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7939BE2F2C29661B0098FCB0"
-            BuildableName = "MovieGuru.app"
-            BlueprintName = "MovieGuru"
-            ReferencedContainer = "container:MovieGuru.xcodeproj">
+            BuildableName = "VibeMovieFinder.app"
+            BlueprintName = "VibeMovieFinder"
+            ReferencedContainer = "container:VibeMovieFinder.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
