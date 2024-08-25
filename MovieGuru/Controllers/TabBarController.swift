@@ -22,7 +22,7 @@ class TabBarController: UITabBarController {
     
     private func setupTabBar() {
             let watchlistVC = AccountListViewController()
-            let chatVC = ChatAIViewController()
+            let chatVC = VibeSearchViewController()
             let profileVC = ProfileViewController()
 
             watchlistVC.navigationItem.largeTitleDisplayMode = .automatic

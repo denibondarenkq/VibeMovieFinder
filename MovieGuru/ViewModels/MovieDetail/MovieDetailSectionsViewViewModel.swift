@@ -24,6 +24,48 @@ class MovieDetailSectionsViewViewModel {
         case reviews(viewModels: [ReviewCollectionViewCellViewModel])
         case recommendations(viewModels: [MovieCollectionViewCellViewModel])
         
+        var numberOfItems: Int {
+            switch self {
+            case .backdrop:
+                return 1
+            case .facts(let viewModels):
+                return viewModels.count
+            case .overview(let viewModels):
+                return viewModels.count
+            case .images(let viewModels):
+                return viewModels.count
+            case .genres(let viewModels):
+                return viewModels.count
+            case .cast(let viewModels):
+                return viewModels.count
+            case .reviews(let viewModels):
+                return viewModels.count
+            case .recommendations(let viewModels):
+                return viewModels.count
+            }
+        }
+        
+        func viewModelForItem(at index: Int) -> Any {
+            switch self {
+            case .backdrop(let viewModel):
+                return viewModel
+            case .facts(let viewModels):
+                return viewModels[index]
+            case .overview(let viewModels):
+                return viewModels[index]
+            case .images(let viewModels):
+                return viewModels[index]
+            case .genres(let viewModels):
+                return viewModels[index]
+            case .cast(let viewModels):
+                return viewModels[index]
+            case .reviews(let viewModels):
+                return viewModels[index]
+            case .recommendations(let viewModels):
+                return viewModels[index]
+            }
+        }
+        
     }
     
     public private(set) var sections: [SectionType] = []
@@ -179,4 +221,32 @@ class MovieDetailSectionsViewViewModel {
         let endpoint = Endpoint.movieRecommendations(movieId: movie.id)
         NetworkService.shared.execute(endpoint: endpoint, expecting: Movies.self, completion: completion)
     }
+    
+    func numberOfItems(in section: Int) -> Int {
+        guard section < sections.count else {
+            return 0
+        }
+
+        let sectionType = sections[section]
+
+        switch sectionType {
+        case .backdrop:
+            return 1
+        case .facts(let factViewModels):
+            return factViewModels.count
+        case .overview(let overviewViewModels):
+            return overviewViewModels.count
+        case .images(let imageViewModels):
+            return imageViewModels.count
+        case .genres(let genreViewModels):
+            return genreViewModels.count
+        case .cast(let castViewModels):
+            return castViewModels.count
+        case .reviews(let reviewViewModels):
+            return reviewViewModels.count
+        case .recommendations(let recommendationViewModels):
+            return recommendationViewModels.count
+        }
+    }
+
 }

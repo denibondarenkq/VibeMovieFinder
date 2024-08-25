@@ -5,7 +5,7 @@ protocol MovieDetailSectionsViewDelegate: AnyObject {
 }
 
 final class MovieDetailSectionsView: UIView {
-    weak var delegate: MoviesTableViewDelegate?
+    weak var delegate: MovieDetailSectionsViewDelegate?
     private var collectionView: UICollectionView?
     private var viewModel: MovieDetailSectionsViewViewModel? {
         didSet {
@@ -32,15 +32,14 @@ final class MovieDetailSectionsView: UIView {
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = UIColor(named: "BackgroundColor")
-        let collectionView = createCollectionView()
-        addSubview(collectionView)
+        collectionView = createCollectionView()
+        addSubview(collectionView!)
         addSubview(activityIndicator)
-        self.collectionView = collectionView
-        addConstraints()
+        setupConstraints()
         activityIndicator.startAnimating()
     }
     
-    private func addConstraints() {
+    private func setupConstraints() {
         guard let collectionView = collectionView else { return }
         
         NSLayoutConstraint.activate([
@@ -57,8 +56,8 @@ final class MovieDetailSectionsView: UIView {
     }
     
     private func createCollectionView() -> UICollectionView {
-        let layout = UICollectionViewCompositionalLayout { sectionIndex, _ in
-            self.createSectionLayout(for: sectionIndex)
+        let layout = UICollectionViewCompositionalLayout { [weak self] sectionIndex, _ in
+            self?.createSectionLayout(for: sectionIndex)
         }
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -67,6 +66,11 @@ final class MovieDetailSectionsView: UIView {
         collectionView.alpha = 0
         collectionView.delegate = self
         collectionView.dataSource = self
+        registerCells(for: collectionView)
+        
+        return collectionView
+    }
+    private func registerCells(for collectionView: UICollectionView) {
         collectionView.register(BackdropCollectionViewCell.self, forCellWithReuseIdentifier: BackdropCollectionViewCell.cellIdentifer)
         collectionView.register(OverviewCollectionViewCell.self, forCellWithReuseIdentifier: OverviewCollectionViewCell.cellIdentifier)
         collectionView.register(FactCollectionViewCell.self, forCellWithReuseIdentifier: FactCollectionViewCell.cellIdentifier)
@@ -76,8 +80,6 @@ final class MovieDetailSectionsView: UIView {
         collectionView.register(ReviewCollectionViewCell.self, forCellWithReuseIdentifier: ReviewCollectionViewCell.cellIdentifier)
         collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: MovieCollectionViewCell.cellIdentifier)
         collectionView.register(SectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeaderView.reuseIdentifier)
-        
-        return collectionView
     }
     
     private func updateView() {
@@ -189,7 +191,7 @@ final class MovieDetailSectionsView: UIView {
             )
         }
     }
-
+    
     private func createSectionLayout(
         itemWidth: NSCollectionLayoutDimension,
         itemHeight: NSCollectionLayoutDimension,
@@ -207,21 +209,21 @@ final class MovieDetailSectionsView: UIView {
         )
         
         let group: NSCollectionLayoutGroup = itemWidth == .fractionalWidth(1.0) ?
-            NSCollectionLayoutGroup.vertical(
-                layoutSize: NSCollectionLayoutSize(
-                    widthDimension: groupWidth,
-                    heightDimension: groupHeight
-                ),
-                subitems: [item]
-            ) :
-            NSCollectionLayoutGroup.horizontal(
-                layoutSize: NSCollectionLayoutSize(
-                    widthDimension: groupWidth,
-                    heightDimension: groupHeight
-                ),
-                subitems: [item]
-            )
-
+        NSCollectionLayoutGroup.vertical(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: groupWidth,
+                heightDimension: groupHeight
+            ),
+            subitems: [item]
+        ) :
+        NSCollectionLayoutGroup.horizontal(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: groupWidth,
+                heightDimension: groupHeight
+            ),
+            subitems: [item]
+        )
+        
         group.contentInsets = groupInsets
         
         let section = NSCollectionLayoutSection(group: group)
@@ -234,7 +236,7 @@ final class MovieDetailSectionsView: UIView {
         section.boundarySupplementaryItems = [createSectionHeader()]
         return section
     }
-
+    
     private func createSectionHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
         let headerSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
@@ -247,6 +249,7 @@ final class MovieDetailSectionsView: UIView {
         )
     }
 }
+
 
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegate
 

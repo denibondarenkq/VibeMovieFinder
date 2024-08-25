@@ -30,6 +30,10 @@
 		7956FD082C38622300DB6247 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7956FD072C38622300DB6247 /* NetworkService.swift */; };
 		7956FD0C2C3961D300DB6247 /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7956FD0B2C3961D300DB6247 /* Genre.swift */; };
 		7956FD102C39A50C00DB6247 /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7956FD0F2C39A50C00DB6247 /* TextStyle.swift */; };
+		7977CFAB2C7A60100004AC5C /* VibeConfigurationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7977CFAA2C7A60100004AC5C /* VibeConfigurationViewModel.swift */; };
+		7977CFAD2C7A607E0004AC5C /* VibeButtonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7977CFAC2C7A607E0004AC5C /* VibeButtonCollectionViewCell.swift */; };
+		7977CFAF2C7A60A90004AC5C /* CenteredVibeButtonFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7977CFAE2C7A60A90004AC5C /* CenteredVibeButtonFlowLayout.swift */; };
+		7977CFB12C7AABEB0004AC5C /* DefaultButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7977CFB02C7AABEB0004AC5C /* DefaultButtonView.swift */; };
 		7986113E2C62C59F00FF7254 /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7986113D2C62C59F00FF7254 /* ImageService.swift */; };
 		798611402C63DB8D00FF7254 /* Backdrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7986113F2C63DB8D00FF7254 /* Backdrop.swift */; };
 		798611422C63DD0C00FF7254 /* Cast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798611412C63DD0C00FF7254 /* Cast.swift */; };
@@ -58,7 +62,8 @@
 		79DED2FD2C56B0C4006198EA /* WatchlistTableViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79DED2FC2C56B0C4006198EA /* WatchlistTableViewViewModel.swift */; };
 		79DED3012C56EE91006198EA /* PopularTableViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79DED3002C56EE91006198EA /* PopularTableViewViewModel.swift */; };
 		79ED69F82C6FC8770051B252 /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79ED69F72C6FC8770051B252 /* ShadowView.swift */; };
-		79ED69FA2C7109E20051B252 /* SectionLayoutProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79ED69F92C7109E20051B252 /* SectionLayoutProvider.swift */; };
+		79ED6A002C7405590051B252 /* VibeSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79ED69FF2C7405590051B252 /* VibeSearchViewController.swift */; };
+		79ED6A022C74057A0051B252 /* VibeConfigurationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79ED6A012C74057A0051B252 /* VibeConfigurationViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -87,6 +92,10 @@
 		7956FD072C38622300DB6247 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		7956FD0B2C3961D300DB6247 /* Genre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genre.swift; sourceTree = "<group>"; };
 		7956FD0F2C39A50C00DB6247 /* TextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
+		7977CFAA2C7A60100004AC5C /* VibeConfigurationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VibeConfigurationViewModel.swift; sourceTree = "<group>"; };
+		7977CFAC2C7A607E0004AC5C /* VibeButtonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VibeButtonCollectionViewCell.swift; sourceTree = "<group>"; };
+		7977CFAE2C7A60A90004AC5C /* CenteredVibeButtonFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenteredVibeButtonFlowLayout.swift; sourceTree = "<group>"; };
+		7977CFB02C7AABEB0004AC5C /* DefaultButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultButtonView.swift; sourceTree = "<group>"; };
 		7986113D2C62C59F00FF7254 /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
 		7986113F2C63DB8D00FF7254 /* Backdrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backdrop.swift; sourceTree = "<group>"; };
 		798611412C63DD0C00FF7254 /* Cast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cast.swift; sourceTree = "<group>"; };
@@ -115,7 +124,8 @@
 		79DED2FC2C56B0C4006198EA /* WatchlistTableViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistTableViewViewModel.swift; sourceTree = "<group>"; };
 		79DED3002C56EE91006198EA /* PopularTableViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularTableViewViewModel.swift; sourceTree = "<group>"; };
 		79ED69F72C6FC8770051B252 /* ShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowView.swift; sourceTree = "<group>"; };
-		79ED69F92C7109E20051B252 /* SectionLayoutProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionLayoutProvider.swift; sourceTree = "<group>"; };
+		79ED69FF2C7405590051B252 /* VibeSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VibeSearchViewController.swift; sourceTree = "<group>"; };
+		79ED6A012C74057A0051B252 /* VibeConfigurationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VibeConfigurationViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +191,8 @@
 				7939BE492C2969130098FCB0 /* ChatAIViewController.swift */,
 				7939BE4D2C2969B50098FCB0 /* ProfileViewController.swift */,
 				7939BE4F2C2969E90098FCB0 /* TabBarController.swift */,
+				79ED69FF2C7405590051B252 /* VibeSearchViewController.swift */,
+				79ED6A012C74057A0051B252 /* VibeConfigurationViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -204,6 +216,9 @@
 				79B1463D2C6A62CB00114F7E /* MovieList */,
 				79448BE52C4C464F00F00C21 /* LoadingFooterView.swift */,
 				79ED69F72C6FC8770051B252 /* ShadowView.swift */,
+				7977CFAC2C7A607E0004AC5C /* VibeButtonCollectionViewCell.swift */,
+				7977CFB02C7AABEB0004AC5C /* DefaultButtonView.swift */,
+				7977CFAE2C7A60A90004AC5C /* CenteredVibeButtonFlowLayout.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -213,6 +228,7 @@
 			children = (
 				798611432C63E3EB00FF7254 /* MovieDetail */,
 				79B1463B2C6A601A00114F7E /* MovieList */,
+				7977CFAA2C7A60100004AC5C /* VibeConfigurationViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -244,7 +260,6 @@
 			isa = PBXGroup;
 			children = (
 				798611472C63E65400FF7254 /* MovieDetailSectionsView.swift */,
-				79ED69F92C7109E20051B252 /* SectionLayoutProvider.swift */,
 				79B1463C2C6A62A400114F7E /* Sections */,
 			);
 			path = MovieDetail;
@@ -388,12 +403,15 @@
 				7986114F2C650BBE00FF7254 /* CastCollectionViewCellViewModel.swift in Sources */,
 				79B146492C6D47A000114F7E /* FactCollectionViewCellViewModel.swift in Sources */,
 				79DED2FD2C56B0C4006198EA /* WatchlistTableViewViewModel.swift in Sources */,
+				7977CFAF2C7A60A90004AC5C /* CenteredVibeButtonFlowLayout.swift in Sources */,
 				79C69EFB2C5EF01000F463EB /* MovieDetailViewController.swift in Sources */,
+				7977CFAB2C7A60100004AC5C /* VibeConfigurationViewModel.swift in Sources */,
 				798611402C63DB8D00FF7254 /* Backdrop.swift in Sources */,
 				7939BE4E2C2969B50098FCB0 /* ProfileViewController.swift in Sources */,
 				7939BE642C29CA900098FCB0 /* MovieTableViewCell.swift in Sources */,
 				7956FD032C385ABA00DB6247 /* HTTPMethod.swift in Sources */,
 				79448BE42C4C16CC00F00C21 /* CacheManager.swift in Sources */,
+				7977CFB12C7AABEB0004AC5C /* DefaultButtonView.swift in Sources */,
 				79B146312C67E2C900114F7E /* Review.swift in Sources */,
 				79B1464D2C6E76C500114F7E /* OverviewCollectionViewCellViewModel.swift in Sources */,
 				79B1464B2C6D47C700114F7E /* FactCollectionViewCell.swift in Sources */,
@@ -411,11 +429,11 @@
 				79B146372C68F84F00114F7E /* MovieCollectionViewCellViewModel.swift in Sources */,
 				7939BE622C29C1CE0098FCB0 /* MovieTableViewCellViewModel.swift in Sources */,
 				7939BE342C29661B0098FCB0 /* AppDelegate.swift in Sources */,
+				79ED6A002C7405590051B252 /* VibeSearchViewController.swift in Sources */,
 				79B146412C6A98BE00114F7E /* ReviewCollectionViewCell.swift in Sources */,
 				798611482C63E65400FF7254 /* MovieDetailSectionsView.swift in Sources */,
 				79B1464F2C6E76F400114F7E /* OverviewCollectionViewCell.swift in Sources */,
 				79C69EFD2C5EF18F00F463EB /* MovieDetailSectionsViewViewModel.swift in Sources */,
-				79ED69FA2C7109E20051B252 /* SectionLayoutProvider.swift in Sources */,
 				7956FD012C3859AF00DB6247 /* AuthManager.swift in Sources */,
 				7956FD102C39A50C00DB6247 /* TextStyle.swift in Sources */,
 				79448BE62C4C464F00F00C21 /* LoadingFooterView.swift in Sources */,
@@ -425,8 +443,10 @@
 				79B146332C68F6C100114F7E /* ImageCollectionViewCellViewModel.swift in Sources */,
 				7939BE4A2C2969130098FCB0 /* ChatAIViewController.swift in Sources */,
 				79B146432C6D18FF00114F7E /* GenreCollectionViewCell.swift in Sources */,
+				79ED6A022C74057A0051B252 /* VibeConfigurationViewController.swift in Sources */,
 				7939BE362C29661B0098FCB0 /* SceneDelegate.swift in Sources */,
 				79B146352C68F6F200114F7E /* GenreCollectionViewCellViewModel.swift in Sources */,
+				7977CFAD2C7A607E0004AC5C /* VibeButtonCollectionViewCell.swift in Sources */,
 				79B146392C6A41A600114F7E /* ReviewCollectionViewCellViewModel.swift in Sources */,
 				79ED69F82C6FC8770051B252 /* ShadowView.swift in Sources */,
 			);
