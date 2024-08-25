@@ -68,7 +68,7 @@
 
 /* Begin PBXFileReference section */
 		7924E6192C6637D90017B5BE /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
-		7939BE302C29661B0098FCB0 /* MovieGuru.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieGuru.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7939BE302C29661B0098FCB0 /* VibeMovieFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VibeMovieFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7939BE332C29661B0098FCB0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7939BE352C29661B0098FCB0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		7939BE372C29661B0098FCB0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -155,7 +155,7 @@
 		7939BE272C29661B0098FCB0 = {
 			isa = PBXGroup;
 			children = (
-				7939BE322C29661B0098FCB0 /* MovieGuru */,
+				7939BE322C29661B0098FCB0 /* VibeMovieFinder */,
 				7939BE312C29661B0098FCB0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -163,12 +163,12 @@
 		7939BE312C29661B0098FCB0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7939BE302C29661B0098FCB0 /* MovieGuru.app */,
+				7939BE302C29661B0098FCB0 /* VibeMovieFinder.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		7939BE322C29661B0098FCB0 /* MovieGuru */ = {
+		7939BE322C29661B0098FCB0 /* VibeMovieFinder */ = {
 			isa = PBXGroup;
 			children = (
 				7939BE652C2A00640098FCB0 /* Resources */,
@@ -179,7 +179,7 @@
 				7939BE552C299D470098FCB0 /* Views */,
 				7939BE412C29661C0098FCB0 /* Info.plist */,
 			);
-			path = MovieGuru;
+			path = VibeMovieFinder;
 			sourceTree = "<group>";
 		};
 		7939BE472C2966B10098FCB0 /* Controllers */ = {
@@ -327,9 +327,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		7939BE2F2C29661B0098FCB0 /* MovieGuru */ = {
+		7939BE2F2C29661B0098FCB0 /* VibeMovieFinder */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7939BE442C29661C0098FCB0 /* Build configuration list for PBXNativeTarget "MovieGuru" */;
+			buildConfigurationList = 7939BE442C29661C0098FCB0 /* Build configuration list for PBXNativeTarget "VibeMovieFinder" */;
 			buildPhases = (
 				7939BE2C2C29661B0098FCB0 /* Sources */,
 				7939BE2D2C29661B0098FCB0 /* Frameworks */,
@@ -339,9 +339,9 @@
 			);
 			dependencies = (
 			);
-			name = MovieGuru;
-			productName = MovieGuru;
-			productReference = 7939BE302C29661B0098FCB0 /* MovieGuru.app */;
+			name = VibeMovieFinder;
+			productName = VibeMovieFinder;
+			productReference = 7939BE302C29661B0098FCB0 /* VibeMovieFinder.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -359,7 +359,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 7939BE2B2C29661B0098FCB0 /* Build configuration list for PBXProject "MovieGuru" */;
+			buildConfigurationList = 7939BE2B2C29661B0098FCB0 /* Build configuration list for PBXProject "VibeMovieFinder" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -372,7 +372,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				7939BE2F2C29661B0098FCB0 /* MovieGuru */,
+				7939BE2F2C29661B0098FCB0 /* VibeMovieFinder */,
 			);
 		};
 /* End PBXProject section */
@@ -594,7 +594,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7LD839RLR5;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MovieGuru/Info.plist;
+				INFOPLIST_FILE = VibeMovieFinder/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -604,7 +604,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = denibondarenkq.MovieGuru;
+				PRODUCT_BUNDLE_IDENTIFIER = denibondarenkq.VibeMovieFinder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -621,7 +621,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7LD839RLR5;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MovieGuru/Info.plist;
+				INFOPLIST_FILE = VibeMovieFinder/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -631,7 +631,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = denibondarenkq.MovieGuru;
+				PRODUCT_BUNDLE_IDENTIFIER = denibondarenkq.VibeMovieFinder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -642,7 +642,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		7939BE2B2C29661B0098FCB0 /* Build configuration list for PBXProject "MovieGuru" */ = {
+		7939BE2B2C29661B0098FCB0 /* Build configuration list for PBXProject "VibeMovieFinder" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7939BE422C29661C0098FCB0 /* Debug */,
@@ -651,7 +651,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7939BE442C29661C0098FCB0 /* Build configuration list for PBXNativeTarget "MovieGuru" */ = {
+		7939BE442C29661C0098FCB0 /* Build configuration list for PBXNativeTarget "VibeMovieFinder" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7939BE452C29661C0098FCB0 /* Debug */,
