@@ -74,7 +74,6 @@ public enum Endpoint {
     func makeRequest(parameters: [String: Any] = [:]) throws -> URLRequest {
         var components = URLComponents(url: baseURL.appendingPathComponent(path), resolvingAgainstBaseURL: true)!
         
-        // Добавляем sessionID в queryItems, если это accountWatchlistMovies
         var allParameters = parameters
         if case let .accountWatchlistMovies(sessionID) = self {
             allParameters["session_id"] = sessionID

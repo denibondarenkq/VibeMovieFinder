@@ -5,9 +5,7 @@ class WatchlistTableViewViewModel: MoviesTableViewViewModel {
         super.init()
         
         guard let sessionID = AuthManager.shared.sessionId else {
-            // Обработайте ситуацию, когда sessionID равно nil
-            // Например, можете выбросить исключение или перенаправить пользователя на экран авторизации
-            print("Session ID is nil, redirecting to login.")
+            self.delegate?.didFailToFetchMovies(with: NetworkService.NetworkServiceError.invalidSession)
             return
         }
         

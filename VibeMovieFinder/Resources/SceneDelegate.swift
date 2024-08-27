@@ -8,8 +8,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        AuthManager.shared.bearerToken = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwZWM5ODQ4ODQ0MWZiNzc3NDFhMjI5YjUzNDRkZGE4YSIsIm5iZiI6MTcyMTIzODI1NS4zMDc4Mywic3ViIjoiNjYzNTZhOTBhZDU5YjUwMTIyNmUwMmVhIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.2AkeQ-sHqU8GQUOnWA4IxcoEX6gMS-j87ZomVNWhOCA"
-        
         let rootViewController: UIViewController
         
         if AuthManager.shared.sessionId != nil {

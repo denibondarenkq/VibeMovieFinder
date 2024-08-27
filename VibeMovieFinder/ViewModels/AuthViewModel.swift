@@ -12,7 +12,7 @@ final class AuthViewModel {
     func startAuthorization() {
         AuthManager.shared.createRequestToken { [weak self] result in
             switch result {
-            case .success(let requestToken):
+            case .success:
                 self?.authorizeToken()
             case .failure(let error):
                 self?.delegate?.didFailWithError(error)

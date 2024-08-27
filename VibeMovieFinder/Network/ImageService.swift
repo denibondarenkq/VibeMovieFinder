@@ -1,10 +1,3 @@
-//
-//  ImageService.swift
-//  MovieGuru
-//
-//  Created by Denys Bondarenko on 06.08.2024.
-//
-
 import Foundation
 
 final class ImageService {

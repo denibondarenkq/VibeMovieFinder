@@ -1,10 +1,3 @@
-//
-//  Reviews.swift
-//  MovieGuru
-//
-//  Created by Denys Bondarenko on 10.08.2024.
-//
-
 import Foundation
 
 struct Reviews: Codable {

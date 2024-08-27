@@ -4,17 +4,11 @@ final class AuthManager {
     static let shared = AuthManager()
     
     private init() {
+        loadBearerToken()
         loadAuthData()
     }
     
-    var bearerToken: String? {
-        get {
-            return UserDefaults.standard.string(forKey: "bearerToken")
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: "bearerToken")
-        }
-    }
+    private(set) var bearerToken: String?
     
     private(set) var requestToken: String? {
         didSet {
@@ -26,6 +20,22 @@ final class AuthManager {
         didSet {
             UserDefaults.standard.set(sessionId, forKey: "sessionId")
         }
+    }
+    
+    private func loadBearerToken() {
+        if let path = Bundle.main.path(forResource: "Secrets", ofType: "plist"),
+           let xml = FileManager.default.contents(atPath: path),
+           let plist = try? PropertyListSerialization.propertyList(from: xml, options: .mutableContainers, format: nil) as? [String: Any],
+           let token = plist["TMDBBearerToken"] as? String {
+            self.bearerToken = token
+        } else {
+            print("Bearer token not found in Secrets.plist")
+        }
+    }
+    
+    private func loadAuthData() {
+        self.requestToken = UserDefaults.standard.string(forKey: "requestToken")
+        self.sessionId = UserDefaults.standard.string(forKey: "sessionId")
     }
     
     func createRequestToken(completion: @escaping (Result<String, Error>) -> Void) {
@@ -76,12 +86,5 @@ final class AuthManager {
                 completion(.failure(error))
             }
         }
-    }
-    
-    private func loadAuthData() {
-        // Загрузите данные из UserDefaults при создании экземпляра
-        self.requestToken = UserDefaults.standard.string(forKey: "requestToken")
-        self.sessionId = UserDefaults.standard.string(forKey: "sessionId")
-        self.bearerToken = UserDefaults.standard.string(forKey: "bearerToken")
     }
 }

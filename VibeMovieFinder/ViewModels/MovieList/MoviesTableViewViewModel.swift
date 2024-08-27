@@ -76,16 +76,16 @@ class MoviesTableViewViewModel {
             var fetchedMoviesPage: Movies?
             var fetchError: Error?
             
-//            group.enter()
-//            self.fetchGenres(from: .genreMovieList) { result in
-//                switch result {
-//                case .success(let genres):
-//                    fetchedGenres = genres.genres
-//                case .failure(let error):
-//                    fetchError = error
-//                }
-//                group.leave()
-//            }
+            group.enter()
+            self.fetchGenres(from: .genreMovieList) { result in
+                switch result {
+                case .success(let genres):
+                    fetchedGenres = genres.genres
+                case .failure(let error):
+                    fetchError = error
+                }
+                group.leave()
+            }
             
             print("Entering group for fetchMovies")
             group.enter()
