@@ -2,9 +2,16 @@ import Foundation
 
 class WatchlistTableViewViewModel: MoviesTableViewViewModel {
     override init() {
-        let accountId = AuthManager.shared.accountId
         super.init()
-        configure(endpoint: .accountWatchlistMovies(accountId: accountId), initialParameters: ["sort_by": "created_at.desc"])
+        
+        guard let sessionID = AuthManager.shared.sessionId else {
+            // Обработайте ситуацию, когда sessionID равно nil
+            // Например, можете выбросить исключение или перенаправить пользователя на экран авторизации
+            print("Session ID is nil, redirecting to login.")
+            return
+        }
+        
+        configure(endpoint: .accountWatchlistMovies(sessionID: sessionID), initialParameters: ["sort_by": "created_at.desc"])
     }
     
     func updateSortOrder(to sortOrder: String) {

@@ -2,8 +2,8 @@ import UIKit
 
 class DefaultButtonView: UIView {
 
-    let shadowView = ShadowView() // Сделать доступным для подклассов
-    let button = UIButton(type: .system) // Сделать доступным для подклассов
+    let shadowView = ShadowView()
+    let button = UIButton(type: .system)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,14 +32,11 @@ class DefaultButtonView: UIView {
     }
 
     private func setupButton() {
-
-        // Создание конфигурации кнопки
         var configuration = UIButton.Configuration.filled()
         configuration.baseBackgroundColor = .systemBlue
         configuration.baseForegroundColor = .white
         configuration.contentInsets = NSDirectionalEdgeInsets(top: Spacing.medium, leading: Spacing.medium, bottom: Spacing.medium, trailing: Spacing.medium)
 
-        // Установка стиля текста
         configuration.attributedTitle = AttributedString("Button Title", attributes: AttributeContainer([.font: TextStyle.heading2]))
 
         button.configuration = configuration

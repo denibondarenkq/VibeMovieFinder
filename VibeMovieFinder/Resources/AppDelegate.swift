@@ -1,10 +1,3 @@
-//
-//  AppDelegate.swift
-//  MovieGuru
-//
-//  Created by Denys Bondarenko on 24.06.2024.
-//
-
 import UIKit
 
 @main

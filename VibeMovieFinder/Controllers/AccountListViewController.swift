@@ -1,15 +1,8 @@
-//
-//  WatchlistViewController.swift
-//  MovieGuru
-//
-//  Created by Denys Bondarenko on 24.06.2024.
-//
-
 import UIKit
 
 class AccountListViewController: UIViewController {
     private let movieTableView = MoviesTableView()
-    private let viewModel = PopularTableViewViewModel()
+    private let viewModel = WatchlistTableViewViewModel()
 
     override func loadView() {
         super.loadView()
@@ -27,14 +20,6 @@ class AccountListViewController: UIViewController {
         title = "Watchlist"
         view.addSubview(movieTableView)
         view.backgroundColor = UIColor(named: "BackgroundColor")
-        
-        // Задаем кастомный шрифт для заголовка навигационной панели
-        if let customFont = UIFont(name: "YourCustomFontName", size: 24) {
-            navigationController?.navigationBar.titleTextAttributes = [
-                .font: customFont,
-                .foregroundColor: UIColor.white
-            ]
-        }
     }
 
 
@@ -46,10 +31,10 @@ class AccountListViewController: UIViewController {
     @objc private func promptSortOrder() {
         let alert = UIAlertController(title: "Sort By", message: "Date Added", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Ascending", style: .default, handler: { _ in
-//            self.viewModel.updateSortOrder(to: "created_at.asc")
+            self.viewModel.updateSortOrder(to: "created_at.asc")
         }))
         alert.addAction(UIAlertAction(title: "Descending", style: .default, handler: { _ in
-//            self.viewModel.updateSortOrder(to: "created_at.desc")
+            self.viewModel.updateSortOrder(to: "created_at.desc")
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
@@ -73,7 +58,41 @@ class AccountListViewController: UIViewController {
     }
 
     private func fetchInitialData() {
-        viewModel.fetchMoviesAndGenres(page: 1)
+        viewModel.fetchMoviesAndGenres(page: 1) { [weak self] result in
+            switch result {
+            case .success:
+                self?.didFetchMovies()
+            case .failure(let error):
+                self?.handleError(error)
+            }
+        }
+    }
+
+    private func handleError(_ error: Error) {
+        if let networkError = error as? NetworkService.NetworkServiceError {
+            switch networkError {
+            case .invalidSession:
+                DispatchQueue.main.async {
+                    self.showAuthorizationController()
+                }
+            default:
+                showErrorAlert(message: error.localizedDescription)
+            }
+        } else {
+            showErrorAlert(message: error.localizedDescription)
+        }
+    }
+
+    private func showAuthorizationController() {
+        let authViewController = AuthViewController()
+        authViewController.modalPresentationStyle = .fullScreen
+        present(authViewController, animated: true, completion: nil)
+    }
+
+    private func showErrorAlert(message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true, completion: nil)
     }
 }
 
@@ -94,6 +113,12 @@ extension AccountListViewController: BaseMoviesViewModelDelegate {
         DispatchQueue.main.async {
             self.movieTableView.tableView.reloadData()
             self.movieTableView.tableView.tableFooterView = nil
+        }
+    }
+
+    func didFailToFetchMovies(with error: Error) {
+        DispatchQueue.main.async {
+            self.handleError(error)
         }
     }
 }

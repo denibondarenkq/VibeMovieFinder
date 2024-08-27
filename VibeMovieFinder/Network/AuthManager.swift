@@ -1,29 +1,87 @@
-//
-//  AuthManager.swift
-//  MovieGuru
-//
-//  Created by Denys Bondarenko on 05.07.2024.
-//
-
 import Foundation
 
 final class AuthManager {
     static let shared = AuthManager()
     
-    private init() {}
-    
-    var token: String? {
-        return "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwZWM5ODQ4ODQ0MWZiNzc3NDFhMjI5YjUzNDRkZGE4YSIsIm5iZiI6MTcyMDAyNTY4NC4zOTMyODEsInN1YiI6IjY2MzU2YTkwYWQ1OWI1MDEyMjZlMDJlYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Ek0VihWUtm3hTKiSFV9RCdq5mRZPcqcYdLyOdthmiFo"
+    private init() {
+        loadAuthData()
     }
     
-    var accountId: Int {
-        return 21250428
-    }
-    
-    func withValidToken(completion: @escaping (String) -> Void) {
-        if let token = token {
-            completion(token)
-        } else {
+    var bearerToken: String? {
+        get {
+            return UserDefaults.standard.string(forKey: "bearerToken")
         }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "bearerToken")
+        }
+    }
+    
+    private(set) var requestToken: String? {
+        didSet {
+            UserDefaults.standard.set(requestToken, forKey: "requestToken")
+        }
+    }
+    
+    private(set) var sessionId: String? {
+        didSet {
+            UserDefaults.standard.set(sessionId, forKey: "sessionId")
+        }
+    }
+    
+    func createRequestToken(completion: @escaping (Result<String, Error>) -> Void) {
+        let endpoint = Endpoint.requestToken
+        NetworkService.shared.execute(endpoint: endpoint, expecting: RequestTokenResponse.self) { [weak self] result in
+            switch result {
+            case .success(let response):
+                self?.requestToken = response.requestToken
+                completion(.success(response.requestToken))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func authorizeToken(completion: @escaping (Result<URL, Error>) -> Void) {
+        guard let requestToken = requestToken else {
+            completion(.failure(NetworkService.NetworkServiceError.failedToCreateRequest))
+            return
+        }
+        let authURL = URL(string: "https://www.themoviedb.org/authenticate/\(requestToken)")!
+        completion(.success(authURL))
+    }
+    
+    func createSessionId(completion: @escaping (Result<String, Error>) -> Void) {
+        guard let requestToken = requestToken else {
+            completion(.failure(NetworkService.NetworkServiceError.failedToCreateRequest))
+            return
+        }
+        
+        let endpoint = Endpoint.createSessionId(requestToken: requestToken)
+        NetworkService.shared.execute(endpoint: endpoint, expecting: SessionIDResponse.self) { [weak self] result in
+            switch result {
+            case .success(let response):
+                if response.success {
+                    guard let sessionId = response.sessionID else {
+                        completion(.failure(NetworkService.NetworkServiceError.failedToGetData))
+                        return
+                    }
+                    self?.sessionId = sessionId
+                    completion(.success(sessionId))
+                } else {
+                    let errorMessage = response.statusMessage ?? "Unknown error"
+                    let error = NSError(domain: "", code: response.statusCode ?? -1, userInfo: [NSLocalizedDescriptionKey: errorMessage])
+                    completion(.failure(error))
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    private func loadAuthData() {
+        // Загрузите данные из UserDefaults при создании экземпляра
+        self.requestToken = UserDefaults.standard.string(forKey: "requestToken")
+        self.sessionId = UserDefaults.standard.string(forKey: "sessionId")
+        self.bearerToken = UserDefaults.standard.string(forKey: "bearerToken")
     }
 }

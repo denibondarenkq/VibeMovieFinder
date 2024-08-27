@@ -1,10 +1,3 @@
-//
-//  SceneDelegate.swift
-//  MovieGuru
-//
-//  Created by Denys Bondarenko on 24.06.2024.
-//
-
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -13,17 +6,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        let vc = TabBarController()
+        AuthManager.shared.bearerToken = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwZWM5ODQ4ODQ0MWZiNzc3NDFhMjI5YjUzNDRkZGE4YSIsIm5iZiI6MTcyMTIzODI1NS4zMDc4Mywic3ViIjoiNjYzNTZhOTBhZDU5YjUwMTIyNmUwMmVhIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.2AkeQ-sHqU8GQUOnWA4IxcoEX6gMS-j87ZomVNWhOCA"
+        
+        let rootViewController: UIViewController
+        
+        if AuthManager.shared.sessionId != nil {
+            rootViewController = TabBarController()
+        } else {
+            rootViewController = AuthViewController()
+        }
+        
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = vc
+        window.rootViewController = rootViewController
         window.makeKeyAndVisible()
         self.window = window
-        
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -34,7 +32,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
-        print("hello again!!")
         // Called when the scene has moved from an inactive state to an active state.
         // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
     }
@@ -45,7 +42,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneWillEnterForeground(_ scene: UIScene) {
-        print("hey")
         // Called as the scene transitions from the background to the foreground.
         // Use this method to undo the changes made on entering the background.
     }
@@ -55,7 +51,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
 
 }
 

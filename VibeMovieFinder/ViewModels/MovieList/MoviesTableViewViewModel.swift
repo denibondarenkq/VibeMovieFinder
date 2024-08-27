@@ -2,6 +2,7 @@ import Foundation
 
 protocol BaseMoviesViewModelDelegate: AnyObject {
     func didFetchMovies()
+    func didFailToFetchMovies(with error: Error)
 }
 
 class MoviesTableViewViewModel {
@@ -42,10 +43,28 @@ class MoviesTableViewViewModel {
             requestParameters[key] = value
         }
         resetData()
-        fetchMoviesAndGenres(page: 1)
+        fetchMoviesAndGenres(page: 1) { [weak self] result in
+            switch result {
+            case .success:
+                self?.delegate?.didFetchMovies()
+            case .failure(let error):
+                self?.delegate?.didFailToFetchMovies(with: error)
+            }
+        }
     }
     
-    func fetchMoviesAndGenres(page: Int) {
+    func fetchNextPage() {
+        fetchMoviesAndGenres(page: currentPage + 1) { [weak self] result in
+            switch result {
+            case .success:
+                self?.delegate?.didFetchMovies()
+            case .failure(let error):
+                self?.delegate?.didFailToFetchMovies(with: error)
+            }
+        }
+    }
+    
+    func fetchMoviesAndGenres(page: Int, completion: @escaping (Result<Void, Error>) -> Void) {
         guard !isFetching, let endpoint = currentEndpoint, page <= totalPages else { return }
         isFetching = true
         
@@ -57,45 +76,56 @@ class MoviesTableViewViewModel {
             var fetchedMoviesPage: Movies?
             var fetchError: Error?
             
-            group.enter()
-            self.fetchGenres(from: .genreMovieList) { result in
-                switch result {
-                case .success(let genres):
-                    fetchedGenres = genres.genres
-                case .failure(let error):
-                    fetchError = error
-                }
-                group.leave()
-            }
+//            group.enter()
+//            self.fetchGenres(from: .genreMovieList) { result in
+//                switch result {
+//                case .success(let genres):
+//                    fetchedGenres = genres.genres
+//                case .failure(let error):
+//                    fetchError = error
+//                }
+//                group.leave()
+//            }
             
+            print("Entering group for fetchMovies")
             group.enter()
             self.fetchMovies(from: endpoint, with: self.requestParameters) { result in
+                defer {
+                    print("Leaving group for fetchMovies")
+                    group.leave()
+                }
+                
                 switch result {
                 case .success(let movies):
                     fetchedMoviesPage = movies
                 case .failure(let error):
+                    print("Error occurred in fetchMovies: \(error)")
                     fetchError = error
                 }
-                group.leave()
             }
+
             
             group.notify(queue: .main) {
-                guard fetchError == nil else {
-                    self.isFetching = false
+                self.isFetching = false
+                
+                if let error = fetchError {
+                    completion(.failure(error))
                     return
                 }
+                
+                guard let moviesPage = fetchedMoviesPage else {
+                    completion(.failure(NetworkService.NetworkServiceError.failedToGetData))
+                    return
+                }
+                
                 self.genres = fetchedGenres
-                self.movies.append(contentsOf: fetchedMoviesPage!.results)
-                self.totalPages = fetchedMoviesPage!.totalPages
+                self.movies.append(contentsOf: moviesPage.results)
+                self.totalPages = moviesPage.totalPages
                 self.currentPage = page
                 self.combineData()
-                self.isFetching = false
+                completion(.success(()))
             }
         }
-    }
-    
-    func fetchNextPage() {
-        fetchMoviesAndGenres(page: currentPage + 1)
     }
     
     private func fetchGenres(from endpoint: Endpoint, completion: @escaping ((Result<Genres, Error>) -> Void)) {
