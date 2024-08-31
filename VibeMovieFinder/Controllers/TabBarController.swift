@@ -15,12 +15,12 @@ class TabBarController: UITabBarController {
     
     private func setupTabBar() {
         //            let watchlistVC = MoviesListViewController()
-        let chatVC = VibeListViewController()
+        let chatVC = VibeListViewController(viewModel: VibeListViewModel())
         let profileVC = ProfileViewController()
         
-        let watchlistVC = AccountMoviesListViewController(endpoint: Endpoint.accountWatchlistMovies, title: "Watchlist")
+        let watchlistVC = AccountMoviesListViewController(viewModel: PaginatedMoviesListViewModel(), endpoint: Endpoint.accountWatchlistMovies, title: "Watchlist")
         
-        let ratedMoviesVC = AccountMoviesListViewController(endpoint: Endpoint.accountRatedMovies, title: "Rated Movies")
+        let ratedMoviesVC = AccountMoviesListViewController(viewModel: PaginatedMoviesListViewModel(), endpoint: Endpoint.accountRatedMovies, title: "Rated Movies")
         
         watchlistVC.navigationItem.largeTitleDisplayMode = .automatic
         chatVC.navigationItem.largeTitleDisplayMode = .automatic

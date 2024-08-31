@@ -117,26 +117,3 @@ extension MoviesTableView: UITableViewDelegate {
         delegate?.movieDetailView(self, didSelect: movie)
     }
 }
-
-// MARK: - UIScrollViewDelegate
-
-extension MoviesTableView: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offsetY = scrollView.contentOffset.y
-        let contentHeight = scrollView.contentSize.height
-        let height = scrollView.frame.size.height
-        
-        
-        if offsetY > contentHeight - height - 100 {
-            if viewModel?.hasMorePages == true, tableView.tableFooterView == nil {
-                showLoadingFooter()
-                viewModel?.fetchNextPage()
-            }
-        }
-    }
-    
-    private func showLoadingFooter() {
-        let footer = LoadingFooterView(frame: CGRect(x: 0, y: 0, width: frame.size.width, height: 100))
-        tableView.tableFooterView = footer
-    }
-}

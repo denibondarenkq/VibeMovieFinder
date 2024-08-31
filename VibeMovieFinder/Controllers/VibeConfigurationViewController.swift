@@ -2,7 +2,7 @@ import UIKit
 
 protocol VibeConfigurationDelegate: AnyObject {
     func didSelectVibes(_ selectedVibes: [String])
-    func didFailWithError(_ error: Error)
+    func didFailToFetchVibes(_ error: Error)
 }
 
 class VibeConfigurationViewController: UIViewController {
@@ -104,7 +104,7 @@ class VibeConfigurationViewController: UIViewController {
                     self.filledButtons = Array(repeating: false, count: self.viewModel.buttonTitles.count)
                     self.collectionView.reloadData()
                 case .failure(let error):
-                    self.delegate?.didFailWithError(error)
+                    self.delegate?.didFailToFetchVibes(error)
                     self.dismiss(animated: true, completion: nil)
                 }
             }

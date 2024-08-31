@@ -11,13 +11,6 @@ class VibeListViewModel: MoviesListViewModelProtocol {
 
     private var requestParameters: [String: Any] = [:]
     
-    var hasMorePages: Bool {
-        return false
-    }
-    
-    func fetchMoviesAndGenres(page: Int, completion: @escaping (Result<Void, Error>) -> Void) {
-        // This function is not needed in this class as movies will be fetched only based on vibes
-    }
     
     func fetchMoviesBasedOnVibes(_ vibes: [String], completion: @escaping (Result<Void, Error>) -> Void) {
         guard let sessionID = SessionManager.shared.sessionId else {
@@ -65,18 +58,34 @@ class VibeListViewModel: MoviesListViewModelProtocol {
     }
     
     private func fetchWatchedMovies(completion: @escaping () -> Void) {
+        var allWatchedMovies: [String] = []
+        var currentPage = 1
         let endpoint = Endpoint.accountRatedMovies
         
-        NetworkService.shared.execute(endpoint: endpoint, parameters: self.requestParameters, expecting: Movies.self) { [weak self] result in
-            switch result {
-            case .success(let movies):
-                self?.watchedMoviesTitles = movies.results.map { $0.title }
-                completion()
-            case .failure(let error):
-                print("Failed to fetch watched movies: \(error)")
-                completion()
+        func fetchPage(page: Int) {
+            var parameters = self.requestParameters
+            parameters["page"] = page
+            
+            NetworkService.shared.execute(endpoint: endpoint, parameters: parameters, expecting: Movies.self) { [weak self] result in
+                switch result {
+                case .success(let movies):
+                    allWatchedMovies.append(contentsOf: movies.results.map { $0.title })
+                    
+                    if page < movies.totalPages {
+                        fetchPage(page: page + 1)
+                    } else {
+                        self?.watchedMoviesTitles = allWatchedMovies
+                        completion()
+                    }
+                    
+                case .failure(let error):
+                    print("Failed to fetch watched movies on page \(page): \(error)")
+                    completion()
+                }
             }
         }
+        
+        fetchPage(page: currentPage)
     }
     
     private func createPrompt(vibes: [String]) -> String {
@@ -84,7 +93,7 @@ class VibeListViewModel: MoviesListViewModelProtocol {
         let vibesList = vibes.joined(separator: ", ")
 
         let promptObject: [String: Any] = [
-            "prompt": "Generate a list of movie recommendations based on the following vibes: \(vibesList). Exclude the following movies from the recommendations: \(watchedMoviesList). Each movie should be presented as an object with 'title' and 'releaseYear' keys, where 'title' is the name of the movie and 'releaseYear' is the year of release. The output should be formatted as a JSON array with objects having these keys.",
+            "prompt": "Generate a list of movie recommendations based on the following vibes: \(vibesList). The recommendations must not include any of the following movies: \(watchedMoviesList). Make sure to exclude these movies completely from the results. Each movie should be presented as an object with 'title' and 'releaseYear' keys, where 'title' is the name of the movie and 'releaseYear' is the year of release. The output should be formatted as a JSON array with objects having these keys.",
             "format": "json"
         ]
         
@@ -162,10 +171,6 @@ class VibeListViewModel: MoviesListViewModelProtocol {
                 posterPath: movie.posterPath
             )
         }
-    }
-    
-    func fetchNextPage() {
-        // Pagination is not used in this class
     }
     
     func movie(at index: Int) -> Movie? {

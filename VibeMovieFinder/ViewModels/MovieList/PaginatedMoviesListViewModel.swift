@@ -1,6 +1,6 @@
 import Foundation
 
-class MoviesTableViewViewModel: MoviesListViewModelProtocol {
+class PaginatedMoviesListViewModel: PaginatedMoviesListViewModelProtocol {
     private var movies: [Movie] = []
     private var genres: [Genre] = []
     private(set) var movieCellViewModels: [MovieTableViewCellViewModel] = []

@@ -151,7 +151,7 @@ private extension UILabel {
     static func createGenreLabel(for genreName: String) -> UILabel {
         let label = UILabel()
         label.text = genreName
-        label.font = .systemFont(ofSize: 12, weight: .medium)
+        label.font = TextStyle.light
         label.textColor = .systemBackground
         label.backgroundColor = .label
         label.textAlignment = .center

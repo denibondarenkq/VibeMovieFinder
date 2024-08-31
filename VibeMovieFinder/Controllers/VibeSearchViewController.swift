@@ -61,7 +61,7 @@ class VibeSearchViewController: UIViewController {
 //}
 
 extension VibeSearchViewController: VibeConfigurationDelegate {
-    func didFailWithError(_ error: any Error) {
+    func didFailToFetchVibes(_ error: any Error) {
         //
     }
     

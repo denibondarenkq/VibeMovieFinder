@@ -1,9 +1,9 @@
 import UIKit
 
 class MoviesListViewController: UIViewController {
-    private let movieTableView = MoviesTableView()
+    let movieTableView = MoviesTableView()
     let viewModel: MoviesListViewModelProtocol
-
+    
     init(viewModel: MoviesListViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -12,24 +12,23 @@ class MoviesListViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func loadView() {
         super.loadView()
         configureView()
         setupConstraints()
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBindings()
-        fetchInitialData()
     }
-
+    
     private func configureView() {
         view.addSubview(movieTableView)
         view.backgroundColor = UIColor(named: "BackgroundColor")
     }
-
+    
     private func setupConstraints() {
         movieTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -39,25 +38,14 @@ class MoviesListViewController: UIViewController {
             movieTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
-
+    
     private func setupBindings() {
         viewModel.delegate = self
         movieTableView.delegate = self
-
+        
         movieTableView.configure(with: viewModel)
     }
-
-    private func fetchInitialData() {
-        viewModel.fetchMoviesAndGenres(page: 1) { [weak self] result in
-            switch result {
-            case .success:
-                self?.didFetchMovies()
-            case .failure(let error):
-                self?.handleError(error)
-            }
-        }
-    }
-
+    
     func handleError(_ error: Error) {
         if let networkError = error as? NetworkService.NetworkServiceError {
             switch networkError {
@@ -72,13 +60,13 @@ class MoviesListViewController: UIViewController {
             showErrorAlert(message: error.localizedDescription)
         }
     }
-
+    
     private func showAuthorizationController() {
         let authViewController = AuthViewController()
         authViewController.modalPresentationStyle = .fullScreen
         present(authViewController, animated: true, completion: nil)
     }
-
+    
     private func showErrorAlert(message: String) {
         let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
@@ -112,3 +100,4 @@ extension MoviesListViewController: MoviesTableViewModelDelegate {
         }
     }
 }
+
