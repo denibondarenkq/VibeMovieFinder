@@ -61,6 +61,10 @@ class VibeSearchViewController: UIViewController {
 //}
 
 extension VibeSearchViewController: VibeConfigurationDelegate {
+    func didFailWithError(_ error: any Error) {
+        //
+    }
+    
     func didSelectVibes(_ selectedVibes: [String]) {
         print("d")
         // Обновите интерфейс или модель данных на основе выбранных vibes

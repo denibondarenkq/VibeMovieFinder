@@ -12,7 +12,7 @@
 		7939BE362C29661B0098FCB0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7939BE352C29661B0098FCB0 /* SceneDelegate.swift */; };
 		7939BE3D2C29661C0098FCB0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7939BE3C2C29661C0098FCB0 /* Assets.xcassets */; };
 		7939BE402C29661C0098FCB0 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 7939BE3F2C29661C0098FCB0 /* Base */; };
-		7939BE4C2C2969510098FCB0 /* AccountListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7939BE4B2C2969510098FCB0 /* AccountListViewController.swift */; };
+		7939BE4C2C2969510098FCB0 /* MoviesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7939BE4B2C2969510098FCB0 /* MoviesListViewController.swift */; };
 		7939BE4E2C2969B50098FCB0 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7939BE4D2C2969B50098FCB0 /* ProfileViewController.swift */; };
 		7939BE502C2969E90098FCB0 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7939BE4F2C2969E90098FCB0 /* TabBarController.swift */; };
 		7939BE5A2C299DAB0098FCB0 /* MoviesTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7939BE592C299DAB0098FCB0 /* MoviesTableView.swift */; };
@@ -22,7 +22,7 @@
 		79448BE42C4C16CC00F00C21 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79448BE32C4C16CC00F00C21 /* CacheManager.swift */; };
 		79448BE62C4C464F00F00C21 /* LoadingFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79448BE52C4C464F00F00C21 /* LoadingFooterView.swift */; };
 		7956FCFD2C3844A500DB6247 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7956FCFC2C3844A500DB6247 /* Movie.swift */; };
-		7956FD012C3859AF00DB6247 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7956FD002C3859AF00DB6247 /* AuthManager.swift */; };
+		7956FD012C3859AF00DB6247 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7956FD002C3859AF00DB6247 /* SessionManager.swift */; };
 		7956FD032C385ABA00DB6247 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7956FD022C385ABA00DB6247 /* HTTPMethod.swift */; };
 		7956FD062C385B2300DB6247 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7956FD052C385B2300DB6247 /* Endpoint.swift */; };
 		7956FD082C38622300DB6247 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7956FD072C38622300DB6247 /* NetworkService.swift */; };
@@ -61,8 +61,14 @@
 		79C903D52C7CC33B00CD949A /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C903D42C7CC33B00CD949A /* AuthViewController.swift */; };
 		79C903D92C7E3AF400CD949A /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C903D82C7E3AF400CD949A /* APIResponse.swift */; };
 		79C903DB2C7E8FB400CD949A /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 79C903DA2C7E8FB400CD949A /* Secrets.plist */; };
-		79DED2FD2C56B0C4006198EA /* WatchlistTableViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79DED2FC2C56B0C4006198EA /* WatchlistTableViewViewModel.swift */; };
-		79DED3012C56EE91006198EA /* PopularTableViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79DED3002C56EE91006198EA /* PopularTableViewViewModel.swift */; };
+		79C903DE2C7E945F00CD949A /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = 79C903DD2C7E945F00CD949A /* GoogleGenerativeAI */; };
+		79C903E02C7E95DD00CD949A /* APIKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C903DF2C7E95DD00CD949A /* APIKeyManager.swift */; };
+		79C903E22C7E978E00CD949A /* GeminiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C903E12C7E978E00CD949A /* GeminiService.swift */; };
+		79C903E42C7F7B6B00CD949A /* AccountMoviesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C903E32C7F7B6B00CD949A /* AccountMoviesListViewController.swift */; };
+		79C903E62C7FA3D200CD949A /* VibeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C903E52C7FA3D200CD949A /* VibeListViewController.swift */; };
+		79C903E82C7FA3ED00CD949A /* VibeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C903E72C7FA3ED00CD949A /* VibeListViewModel.swift */; };
+		79C903EA2C8117BA00CD949A /* MoviesTableViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C903E92C8117BA00CD949A /* MoviesTableViewProtocol.swift */; };
+		79C903EC2C82279700CD949A /* Vibe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C903EB2C82279700CD949A /* Vibe.swift */; };
 		79ED69F82C6FC8770051B252 /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79ED69F72C6FC8770051B252 /* ShadowView.swift */; };
 		79ED6A002C7405590051B252 /* VibeSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79ED69FF2C7405590051B252 /* VibeSearchViewController.swift */; };
 		79ED6A022C74057A0051B252 /* VibeConfigurationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79ED6A012C74057A0051B252 /* VibeConfigurationViewController.swift */; };
@@ -76,7 +82,7 @@
 		7939BE3C2C29661C0098FCB0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7939BE3F2C29661C0098FCB0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7939BE412C29661C0098FCB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7939BE4B2C2969510098FCB0 /* AccountListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListViewController.swift; sourceTree = "<group>"; };
+		7939BE4B2C2969510098FCB0 /* MoviesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesListViewController.swift; sourceTree = "<group>"; };
 		7939BE4D2C2969B50098FCB0 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		7939BE4F2C2969E90098FCB0 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		7939BE592C299DAB0098FCB0 /* MoviesTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesTableView.swift; sourceTree = "<group>"; };
@@ -86,7 +92,7 @@
 		79448BE32C4C16CC00F00C21 /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
 		79448BE52C4C464F00F00C21 /* LoadingFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingFooterView.swift; sourceTree = "<group>"; };
 		7956FCFC2C3844A500DB6247 /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
-		7956FD002C3859AF00DB6247 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		7956FD002C3859AF00DB6247 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		7956FD022C385ABA00DB6247 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
 		7956FD052C385B2300DB6247 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		7956FD072C38622300DB6247 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
@@ -125,8 +131,13 @@
 		79C903D42C7CC33B00CD949A /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		79C903D82C7E3AF400CD949A /* APIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResponse.swift; sourceTree = "<group>"; };
 		79C903DA2C7E8FB400CD949A /* Secrets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Secrets.plist; sourceTree = "<group>"; };
-		79DED2FC2C56B0C4006198EA /* WatchlistTableViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistTableViewViewModel.swift; sourceTree = "<group>"; };
-		79DED3002C56EE91006198EA /* PopularTableViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularTableViewViewModel.swift; sourceTree = "<group>"; };
+		79C903DF2C7E95DD00CD949A /* APIKeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeyManager.swift; sourceTree = "<group>"; };
+		79C903E12C7E978E00CD949A /* GeminiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiService.swift; sourceTree = "<group>"; };
+		79C903E32C7F7B6B00CD949A /* AccountMoviesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountMoviesListViewController.swift; sourceTree = "<group>"; };
+		79C903E52C7FA3D200CD949A /* VibeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VibeListViewController.swift; sourceTree = "<group>"; };
+		79C903E72C7FA3ED00CD949A /* VibeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VibeListViewModel.swift; sourceTree = "<group>"; };
+		79C903E92C8117BA00CD949A /* MoviesTableViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesTableViewProtocol.swift; sourceTree = "<group>"; };
+		79C903EB2C82279700CD949A /* Vibe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibe.swift; sourceTree = "<group>"; };
 		79ED69F72C6FC8770051B252 /* ShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowView.swift; sourceTree = "<group>"; };
 		79ED69FF2C7405590051B252 /* VibeSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VibeSearchViewController.swift; sourceTree = "<group>"; };
 		79ED6A012C74057A0051B252 /* VibeConfigurationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VibeConfigurationViewController.swift; sourceTree = "<group>"; };
@@ -137,6 +148,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79C903DE2C7E945F00CD949A /* GoogleGenerativeAI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,12 +158,14 @@
 		79185A0A2C35B93200E20F9A /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				7956FD002C3859AF00DB6247 /* AuthManager.swift */,
+				79C903DF2C7E95DD00CD949A /* APIKeyManager.swift */,
+				7956FD002C3859AF00DB6247 /* SessionManager.swift */,
 				7956FD052C385B2300DB6247 /* Endpoint.swift */,
 				7956FD022C385ABA00DB6247 /* HTTPMethod.swift */,
 				79448BE32C4C16CC00F00C21 /* CacheManager.swift */,
 				7956FD072C38622300DB6247 /* NetworkService.swift */,
 				7986113D2C62C59F00FF7254 /* ImageService.swift */,
+				79C903E12C7E978E00CD949A /* GeminiService.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -191,7 +205,9 @@
 			isa = PBXGroup;
 			children = (
 				7939BE4F2C2969E90098FCB0 /* TabBarController.swift */,
-				7939BE4B2C2969510098FCB0 /* AccountListViewController.swift */,
+				7939BE4B2C2969510098FCB0 /* MoviesListViewController.swift */,
+				79C903E32C7F7B6B00CD949A /* AccountMoviesListViewController.swift */,
+				79C903E52C7FA3D200CD949A /* VibeListViewController.swift */,
 				79C69EFA2C5EF00F00F463EB /* MovieDetailViewController.swift */,
 				79ED69FF2C7405590051B252 /* VibeSearchViewController.swift */,
 				79ED6A012C74057A0051B252 /* VibeConfigurationViewController.swift */,
@@ -211,6 +227,7 @@
 				798611412C63DD0C00FF7254 /* Cast.swift */,
 				79B146302C67E2C900114F7E /* Review.swift */,
 				79C903D02C7CBE2900CD949A /* AuthModels.swift */,
+				79C903EB2C82279700CD949A /* Vibe.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -289,9 +306,9 @@
 		79B1463B2C6A601A00114F7E /* MovieList */ = {
 			isa = PBXGroup;
 			children = (
+				79C903E92C8117BA00CD949A /* MoviesTableViewProtocol.swift */,
 				7939BE5B2C299EDE0098FCB0 /* MoviesTableViewViewModel.swift */,
-				79DED2FC2C56B0C4006198EA /* WatchlistTableViewViewModel.swift */,
-				79DED3002C56EE91006198EA /* PopularTableViewViewModel.swift */,
+				79C903E72C7FA3ED00CD949A /* VibeListViewModel.swift */,
 				7939BE612C29C1CE0098FCB0 /* MovieTableViewCellViewModel.swift */,
 			);
 			path = MovieList;
@@ -338,6 +355,9 @@
 			dependencies = (
 			);
 			name = VibeMovieFinder;
+			packageProductDependencies = (
+				79C903DD2C7E945F00CD949A /* GoogleGenerativeAI */,
+			);
 			productName = VibeMovieFinder;
 			productReference = 7939BE302C29661B0098FCB0 /* VibeMovieFinder.app */;
 			productType = "com.apple.product-type.application";
@@ -366,6 +386,9 @@
 				Base,
 			);
 			mainGroup = 7939BE272C29661B0098FCB0;
+			packageReferences = (
+				79C903DC2C7E945F00CD949A /* XCRemoteSwiftPackageReference "generative-ai-swift" */,
+			);
 			productRefGroup = 7939BE312C29661B0098FCB0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -393,14 +416,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79C903E82C7FA3ED00CD949A /* VibeListViewModel.swift in Sources */,
 				7956FCFD2C3844A500DB6247 /* Movie.swift in Sources */,
 				7986114B2C63F08100FF7254 /* BackdropCollectionViewCell.swift in Sources */,
 				7986113E2C62C59F00FF7254 /* ImageService.swift in Sources */,
-				79DED3012C56EE91006198EA /* PopularTableViewViewModel.swift in Sources */,
 				79B1463F2C6A671C00114F7E /* ImageCollectionViewCell.swift in Sources */,
 				7986114F2C650BBE00FF7254 /* CastCollectionViewCellViewModel.swift in Sources */,
 				79B146492C6D47A000114F7E /* FactCollectionViewCellViewModel.swift in Sources */,
-				79DED2FD2C56B0C4006198EA /* WatchlistTableViewViewModel.swift in Sources */,
 				7977CFAF2C7A60A90004AC5C /* CenteredVibeButtonFlowLayout.swift in Sources */,
 				79C69EFB2C5EF01000F463EB /* MovieDetailViewController.swift in Sources */,
 				7977CFAB2C7A60100004AC5C /* VibeConfigurationViewModel.swift in Sources */,
@@ -413,16 +435,20 @@
 				79B146312C67E2C900114F7E /* Review.swift in Sources */,
 				79B1464D2C6E76C500114F7E /* OverviewCollectionViewCellViewModel.swift in Sources */,
 				79B1464B2C6D47C700114F7E /* FactCollectionViewCell.swift in Sources */,
+				79C903E42C7F7B6B00CD949A /* AccountMoviesListViewController.swift in Sources */,
 				7939BE5C2C299EDE0098FCB0 /* MoviesTableViewViewModel.swift in Sources */,
 				79B1462F2C66790700114F7E /* Spacing.swift in Sources */,
 				7956FD062C385B2300DB6247 /* Endpoint.swift in Sources */,
 				79B146452C6D2F0F00114F7E /* MovieCollectionViewCell.swift in Sources */,
 				798611422C63DD0C00FF7254 /* Cast.swift in Sources */,
 				7956FD082C38622300DB6247 /* NetworkService.swift in Sources */,
+				79C903E22C7E978E00CD949A /* GeminiService.swift in Sources */,
 				798611452C63E42700FF7254 /* BackdropCollectionViewCellViewModel.swift in Sources */,
 				7956FD0C2C3961D300DB6247 /* Genre.swift in Sources */,
-				7939BE4C2C2969510098FCB0 /* AccountListViewController.swift in Sources */,
+				7939BE4C2C2969510098FCB0 /* MoviesListViewController.swift in Sources */,
+				79C903E62C7FA3D200CD949A /* VibeListViewController.swift in Sources */,
 				7986114D2C6503EC00FF7254 /* CastCollectionViewCell.swift in Sources */,
+				79C903E02C7E95DD00CD949A /* APIKeyManager.swift in Sources */,
 				79B146372C68F84F00114F7E /* MovieCollectionViewCellViewModel.swift in Sources */,
 				7939BE622C29C1CE0098FCB0 /* MovieTableViewCellViewModel.swift in Sources */,
 				7939BE342C29661B0098FCB0 /* AppDelegate.swift in Sources */,
@@ -433,10 +459,12 @@
 				79B1464F2C6E76F400114F7E /* OverviewCollectionViewCell.swift in Sources */,
 				79C69EFD2C5EF18F00F463EB /* MovieDetailSectionsViewViewModel.swift in Sources */,
 				79C903D32C7CC09300CD949A /* AuthViewModel.swift in Sources */,
-				7956FD012C3859AF00DB6247 /* AuthManager.swift in Sources */,
+				7956FD012C3859AF00DB6247 /* SessionManager.swift in Sources */,
 				7956FD102C39A50C00DB6247 /* TextStyle.swift in Sources */,
 				79448BE62C4C464F00F00C21 /* LoadingFooterView.swift in Sources */,
 				7939BE5A2C299DAB0098FCB0 /* MoviesTableView.swift in Sources */,
+				79C903EA2C8117BA00CD949A /* MoviesTableViewProtocol.swift in Sources */,
+				79C903EC2C82279700CD949A /* Vibe.swift in Sources */,
 				7939BE502C2969E90098FCB0 /* TabBarController.swift in Sources */,
 				7924E61A2C6637D90017B5BE /* SectionHeaderView.swift in Sources */,
 				79B146332C68F6C100114F7E /* ImageCollectionViewCellViewModel.swift in Sources */,
@@ -661,6 +689,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		79C903DC2C7E945F00CD949A /* XCRemoteSwiftPackageReference "generative-ai-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/generative-ai-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.6;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		79C903DD2C7E945F00CD949A /* GoogleGenerativeAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 79C903DC2C7E945F00CD949A /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
+			productName = GoogleGenerativeAI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7939BE282C29661B0098FCB0 /* Project object */;
 }

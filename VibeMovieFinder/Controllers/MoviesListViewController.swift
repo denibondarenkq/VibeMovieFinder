@@ -1,43 +1,33 @@
 import UIKit
 
-class AccountListViewController: UIViewController {
+class MoviesListViewController: UIViewController {
     private let movieTableView = MoviesTableView()
-    private let viewModel = WatchlistTableViewViewModel()
+    let viewModel: MoviesListViewModelProtocol
+
+    init(viewModel: MoviesListViewModelProtocol) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func loadView() {
         super.loadView()
         configureView()
         setupConstraints()
     }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBindings()
         fetchInitialData()
-        setupSortButton()
     }
 
     private func configureView() {
-        title = "Watchlist"
         view.addSubview(movieTableView)
         view.backgroundColor = UIColor(named: "BackgroundColor")
-    }
-
-
-    private func setupSortButton() {
-        let sortButton = UIBarButtonItem(title: "Sort", style: .plain, target: self, action: #selector(promptSortOrder))
-        navigationItem.rightBarButtonItem = sortButton
-    }
-
-    @objc private func promptSortOrder() {
-        let alert = UIAlertController(title: "Sort By", message: "Date Added", preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Ascending", style: .default, handler: { _ in
-            self.viewModel.updateSortOrder(to: "created_at.asc")
-        }))
-        alert.addAction(UIAlertAction(title: "Descending", style: .default, handler: { _ in
-            self.viewModel.updateSortOrder(to: "created_at.desc")
-        }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        present(alert, animated: true, completion: nil)
     }
 
     private func setupConstraints() {
@@ -68,7 +58,7 @@ class AccountListViewController: UIViewController {
         }
     }
 
-    private func handleError(_ error: Error) {
+    func handleError(_ error: Error) {
         if let networkError = error as? NetworkService.NetworkServiceError {
             switch networkError {
             case .invalidSession:
@@ -98,7 +88,7 @@ class AccountListViewController: UIViewController {
 
 // MARK: - MovieTableViewDelegate
 
-extension AccountListViewController: MoviesTableViewDelegate {
+extension MoviesListViewController: MoviesTableViewDelegate {
     func movieDetailView(_ movieTableView: MoviesTableView, didSelect movie: Movie) {
         let vc = MovieDetailViewController(movie: movie)
         vc.navigationItem.largeTitleDisplayMode = .never
@@ -108,7 +98,7 @@ extension AccountListViewController: MoviesTableViewDelegate {
 
 // MARK: - BaseMoviesViewModelDelegate
 
-extension AccountListViewController: BaseMoviesViewModelDelegate {
+extension MoviesListViewController: MoviesTableViewModelDelegate {
     func didFetchMovies() {
         DispatchQueue.main.async {
             self.movieTableView.tableView.reloadData()

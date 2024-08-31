@@ -4,7 +4,8 @@ public enum Endpoint {
     case requestToken
     case createSessionId(requestToken: String)
     case accountAddToWatchList
-    case accountWatchlistMovies(sessionID: String)
+    case accountWatchlistMovies
+    case accountRatedMovies
     case movieDetails(movieId: Int)
     case genreMovieList
     case moviePopular
@@ -12,11 +13,12 @@ public enum Endpoint {
     case movieImages(movieId: Int)
     case movieRecommendations(movieId: Int)
     case movieReviews(movieId: Int)
-    
+    case searchMovie
+
     var baseURL: URL {
         return URL(string: "https://api.themoviedb.org/3/")!
     }
-    
+
     var path: String {
         switch self {
         case .requestToken:
@@ -27,6 +29,8 @@ public enum Endpoint {
             return "account/account_id/watchlist"
         case .accountWatchlistMovies:
             return "account/account_id/watchlist/movies"
+        case .accountRatedMovies:
+            return "account/account_id/rated/movies"
         case .movieDetails(let movieId):
             return "movie/\(movieId)"
         case .genreMovieList:
@@ -41,27 +45,29 @@ public enum Endpoint {
             return "movie/\(movieId)/recommendations"
         case .movieReviews(let movieId):
             return "movie/\(movieId)/reviews"
+        case .searchMovie:
+            return "search/movie"
         }
     }
-    
+
     var method: HTTPMethod {
         switch self {
-        case .requestToken, .accountWatchlistMovies, .movieDetails, .genreMovieList, .moviePopular, .movieCredits, .movieImages, .movieRecommendations, .movieReviews:
+        case .requestToken, .accountWatchlistMovies, .accountRatedMovies, .movieDetails, .genreMovieList, .moviePopular, .movieCredits, .movieImages, .movieRecommendations, .movieReviews, .searchMovie:
             return .GET
         case .createSessionId, .accountAddToWatchList:
             return .POST
         }
     }
-    
+
     var headers: [String: String]? {
-        guard let bearerToken = AuthManager.shared.bearerToken else { return nil }
+        guard let bearerToken = APIKeyManager.shared.bearerToken else { return nil }
         return [
             "accept": "application/json",
             "content-type": "application/json",
             "Authorization": "Bearer \(bearerToken)"
         ]
     }
-    
+
     var bodyParameters: [String: Any]? {
         switch self {
         case .createSessionId(let requestToken):
@@ -70,16 +76,11 @@ public enum Endpoint {
             return nil
         }
     }
-    
+
     func makeRequest(parameters: [String: Any] = [:]) throws -> URLRequest {
         var components = URLComponents(url: baseURL.appendingPathComponent(path), resolvingAgainstBaseURL: true)!
         
-        var allParameters = parameters
-        if case let .accountWatchlistMovies(sessionID) = self {
-            allParameters["session_id"] = sessionID
-        }
-        
-        components.queryItems = allParameters.map { URLQueryItem(name: $0.key, value: "\($0.value)") }
+        components.queryItems = parameters.map { URLQueryItem(name: $0.key, value: "\($0.value)") }
         
         guard let url = components.url else {
             fatalError("Invalid URL")

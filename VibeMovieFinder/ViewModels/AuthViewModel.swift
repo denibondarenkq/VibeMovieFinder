@@ -10,7 +10,7 @@ final class AuthViewModel {
     weak var delegate: AuthViewModelDelegate?
     
     func startAuthorization() {
-        AuthManager.shared.createRequestToken { [weak self] result in
+        SessionManager.shared.createRequestToken { [weak self] result in
             switch result {
             case .success:
                 self?.authorizeToken()
@@ -21,7 +21,7 @@ final class AuthViewModel {
     }
     
     private func authorizeToken() {
-        AuthManager.shared.authorizeToken { [weak self] result in
+        SessionManager.shared.authorizeToken { [weak self] result in
             switch result {
             case .success(let url):
                 self?.delegate?.didReceiveAuthURL(url)
@@ -32,7 +32,7 @@ final class AuthViewModel {
     }
     
     func createSession() {
-        AuthManager.shared.createSessionId { [weak self] result in
+        SessionManager.shared.createSessionId { [weak self] result in
             switch result {
             case .success:
                 self?.delegate?.didAuthorizeSuccessfully()

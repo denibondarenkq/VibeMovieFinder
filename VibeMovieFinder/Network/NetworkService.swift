@@ -39,6 +39,7 @@ final class NetworkService {
                     completion(.success(result))
                 } else {
                     let errorMessage = apiResponse.statusMessage ?? "Unknown error"
+                    print(endpoint, errorMessage)
                     let error = NSError(domain: "", code: apiResponse.statusCode ?? -1, userInfo: [NSLocalizedDescriptionKey: errorMessage])
                     completion(.failure(error))
                 }

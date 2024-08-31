@@ -1,16 +1,11 @@
 import Foundation
 
-protocol BaseMoviesViewModelDelegate: AnyObject {
-    func didFetchMovies()
-    func didFailToFetchMovies(with error: Error)
-}
-
-class MoviesTableViewViewModel {
+class MoviesTableViewViewModel: MoviesListViewModelProtocol {
     private var movies: [Movie] = []
     private var genres: [Genre] = []
     private(set) var movieCellViewModels: [MovieTableViewCellViewModel] = []
     private var isFetching = false
-    weak var delegate: BaseMoviesViewModelDelegate?
+    weak var delegate: MoviesTableViewModelDelegate?
     
     private var currentEndpoint: Endpoint?
     private var requestParameters: [String: Any] = ["page": 1]
@@ -25,8 +20,13 @@ class MoviesTableViewViewModel {
     }
     
     func configure(endpoint: Endpoint, initialParameters: [String: Any] = [:]) {
+        guard let sessionID = SessionManager.shared.sessionId else {
+            self.delegate?.didFailToFetchMovies(with: NetworkService.NetworkServiceError.invalidSession)
+            return
+        }
+        
         self.currentEndpoint = endpoint
-        self.requestParameters = initialParameters
+        self.requestParameters = initialParameters.merging(["session_id": sessionID], uniquingKeysWith: { $1 })
         resetData()
     }
     
@@ -87,24 +87,18 @@ class MoviesTableViewViewModel {
                 group.leave()
             }
             
-            print("Entering group for fetchMovies")
             group.enter()
             self.fetchMovies(from: endpoint, with: self.requestParameters) { result in
-                defer {
-                    print("Leaving group for fetchMovies")
-                    group.leave()
-                }
+                defer { group.leave() }
                 
                 switch result {
                 case .success(let movies):
                     fetchedMoviesPage = movies
                 case .failure(let error):
-                    print("Error occurred in fetchMovies: \(error)")
                     fetchError = error
                 }
             }
 
-            
             group.notify(queue: .main) {
                 self.isFetching = false
                 
@@ -142,11 +136,23 @@ class MoviesTableViewViewModel {
     
     private func combineData() {
         movieCellViewModels = movies.map { movie in
-            MovieTableViewCellViewModel(title: movie.title, voteAverage: movie.voteAverage, releaseDate: movie.releaseDate, genreIDs: movie.genreIDS, genres: genres, posterPath: movie.posterPath) }
+            MovieTableViewCellViewModel(
+                title: movie.title,
+                voteAverage: movie.voteAverage,
+                releaseDate: movie.releaseDate,
+                genreIDs: movie.genreIDS,
+                genres: genres,
+                posterPath: movie.posterPath
+            )
+        }
         delegate?.didFetchMovies()
     }
     
-    func movie(at index: Int) -> Movie {
+    func movie(at index: Int) -> Movie? {
         return movies[index]
+    }
+    
+    func updateSortOrder(to sortOrder: String) {
+        updateRequestParameters(["sort_by": sortOrder])
     }
 }

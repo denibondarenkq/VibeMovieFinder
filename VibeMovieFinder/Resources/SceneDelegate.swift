@@ -10,7 +10,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let rootViewController: UIViewController
         
-        if AuthManager.shared.sessionId != nil {
+        if SessionManager.shared.sessionId != nil {
             rootViewController = TabBarController()
         } else {
             rootViewController = AuthViewController()

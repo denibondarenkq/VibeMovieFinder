@@ -6,7 +6,7 @@ protocol MoviesTableViewDelegate: AnyObject {
 
 class MoviesTableView: UIView {
     weak var delegate: MoviesTableViewDelegate?
-    private var viewModel: MoviesTableViewViewModel? {
+    private var viewModel: MoviesListViewModelProtocol? {
         didSet {
             updateView()
         }
@@ -71,7 +71,7 @@ class MoviesTableView: UIView {
         tableView.dataSource = self
     }
         
-    public func configure(with viewModel: MoviesTableViewViewModel) {
+    public func configure(with viewModel: MoviesListViewModelProtocol) {
         self.viewModel = viewModel
     }
         

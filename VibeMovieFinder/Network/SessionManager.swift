@@ -1,14 +1,11 @@
 import Foundation
 
-final class AuthManager {
-    static let shared = AuthManager()
+final class SessionManager {
+    static let shared = SessionManager()
     
     private init() {
-        loadBearerToken()
         loadAuthData()
     }
-    
-    private(set) var bearerToken: String?
     
     private(set) var requestToken: String? {
         didSet {
@@ -19,17 +16,6 @@ final class AuthManager {
     private(set) var sessionId: String? {
         didSet {
             UserDefaults.standard.set(sessionId, forKey: "sessionId")
-        }
-    }
-    
-    private func loadBearerToken() {
-        if let path = Bundle.main.path(forResource: "Secrets", ofType: "plist"),
-           let xml = FileManager.default.contents(atPath: path),
-           let plist = try? PropertyListSerialization.propertyList(from: xml, options: .mutableContainers, format: nil) as? [String: Any],
-           let token = plist["TMDBBearerToken"] as? String {
-            self.bearerToken = token
-        } else {
-            print("Bearer token not found in Secrets.plist")
         }
     }
     

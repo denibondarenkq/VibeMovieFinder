@@ -2,6 +2,7 @@ import UIKit
 
 protocol VibeConfigurationDelegate: AnyObject {
     func didSelectVibes(_ selectedVibes: [String])
+    func didFailWithError(_ error: Error)
 }
 
 class VibeConfigurationViewController: UIViewController {
@@ -21,17 +22,26 @@ class VibeConfigurationViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-
+    
+    // Добавление индикатора активности
+    private let activityIndicator: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView(style: .large)
+        spinner.hidesWhenStopped = true
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        return spinner
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "BackgroundColor")
-
+        
         setupTitleLabel()
         setupCollectionView()
         setupGoButtonView()
+        setupActivityIndicator()
         loadData()
     }
-
+    
     private func setupTitleLabel() {
         view.addSubview(titleLabel)
         NSLayoutConstraint.activate([
@@ -40,7 +50,7 @@ class VibeConfigurationViewController: UIViewController {
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Spacing.medium)
         ])
     }
-
+    
     private func setupCollectionView() {
         let layout = CenteredVibeButtonFlowLayout()
         layout.minimumInteritemSpacing = Spacing.medium
@@ -62,7 +72,7 @@ class VibeConfigurationViewController: UIViewController {
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
-
+    
     private func setupGoButtonView() {
         view.addSubview(goButtonView)
         goButtonView.configure(title: "Generate My List")
@@ -74,15 +84,33 @@ class VibeConfigurationViewController: UIViewController {
             goButtonView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
     }
-
+    
+    private func setupActivityIndicator() {
+        view.addSubview(activityIndicator)
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+    }
+    
     private func loadData() {
-        viewModel.loadButtonTitles { [weak self] in
+        activityIndicator.startAnimating()
+        viewModel.loadButtonTitles { [weak self] result in
             guard let self = self else { return }
-            self.filledButtons = Array(repeating: false, count: self.viewModel.buttonTitles.count)
-            self.collectionView.reloadData()
+            DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
+                switch result {
+                case .success:
+                    self.filledButtons = Array(repeating: false, count: self.viewModel.buttonTitles.count)
+                    self.collectionView.reloadData()
+                case .failure(let error):
+                    self.delegate?.didFailWithError(error)
+                    self.dismiss(animated: true, completion: nil)
+                }
+            }
         }
     }
-
+    
     @objc private func goButtonTapped() {
         let selectedVibes = viewModel.getSelectedVibes(filledButtons: filledButtons)
         delegate?.didSelectVibes(selectedVibes)
@@ -90,12 +118,11 @@ class VibeConfigurationViewController: UIViewController {
     }
 }
 
-
 extension VibeConfigurationViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.buttonTitles.count
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: VibeButtonCollectionViewCell.identifier, for: indexPath) as? VibeButtonCollectionViewCell else {
             return UICollectionViewCell()
@@ -106,7 +133,7 @@ extension VibeConfigurationViewController: UICollectionViewDataSource, UICollect
         }
         return cell
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let title = viewModel.buttonTitles[indexPath.row]
         let padding: CGFloat = Spacing.large + Spacing.small
@@ -114,5 +141,4 @@ extension VibeConfigurationViewController: UICollectionViewDataSource, UICollect
         let size = title.size(withAttributes: [NSAttributedString.Key.font: TextStyle.heading2])
         return CGSize(width: size.width + padding, height: buttonHeight)
     }
-
 }
