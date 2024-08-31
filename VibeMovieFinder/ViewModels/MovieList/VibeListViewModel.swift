@@ -93,7 +93,7 @@ class VibeListViewModel: MoviesListViewModelProtocol {
         let vibesList = vibes.joined(separator: ", ")
 
         let promptObject: [String: Any] = [
-            "prompt": "Generate a list of movie recommendations based on the following vibes: \(vibesList). The recommendations must not include any of the following movies: \(watchedMoviesList). Make sure to exclude these movies completely from the results. Each movie should be presented as an object with 'title' and 'releaseYear' keys, where 'title' is the name of the movie and 'releaseYear' is the year of release. The output should be formatted as a JSON array with objects having these keys.",
+            "prompt": "Generate a list of 20-30 movie recommendations based on the following vibes: \(vibesList). The recommendations must not include any of the following movies: \(watchedMoviesList). Make sure to exclude these movies completely from the results. Each movie should be presented as an object with 'title' and 'releaseYear' keys, where 'title' is the name of the movie and 'releaseYear' is the year of release. The output should be formatted as a JSON array with objects having these keys.",
             "format": "json"
         ]
         
@@ -168,7 +168,8 @@ class VibeListViewModel: MoviesListViewModelProtocol {
                 releaseDate: movie.releaseDate,
                 genreIDs: movie.genreIDS,
                 genres: movieGenres,
-                posterPath: movie.posterPath
+                posterPath: movie.posterPath,
+                verdict: nil
             )
         }
     }

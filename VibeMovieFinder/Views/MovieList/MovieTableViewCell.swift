@@ -1,5 +1,4 @@
 import UIKit
-
 final class MovieTableViewCell: UITableViewCell {
     static let cellHeight: CGFloat = 190
     static let cellIdentifier = "MovieTableViewCell"
@@ -8,9 +7,8 @@ final class MovieTableViewCell: UITableViewCell {
     private let ratingLabel = UILabel.createRegularLabel()
     private let genresStackView = UIStackView.createStackView(axis: .horizontal, alignment: .leading, distribution: .fillProportionally, spacing: Spacing.small)
     private let yearLabel = UILabel.createRegularLabel()
+    private let verdictLabel = UILabel.createRegularLabel()  // UILabel для verdict
     private let movieImageView = UIImageView.createPosterImageView()
-    private let starImageView = UIImageView.createStarImageView()
-    private let calendarImageView = UIImageView.createCalendarImageView()
     
     private lazy var contentStackView: UIStackView = {
         let stackView = createContentStackView()
@@ -57,6 +55,7 @@ final class MovieTableViewCell: UITableViewCell {
         super.prepareForReuse()
         nameLabel.text = nil
         ratingLabel.text = nil
+        verdictLabel.text = nil  // Сбрасываем текст verdictLabel
         genresStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         yearLabel.text = nil
         movieImageView.image = nil
@@ -66,6 +65,14 @@ final class MovieTableViewCell: UITableViewCell {
         nameLabel.text = viewModel.title
         ratingLabel.text = "⭐ \(viewModel.rating)/10 TMDB"
         yearLabel.text = "🗓️ \(viewModel.releaseYear)"
+        
+        // Если verdict не nil, показываем и устанавливаем текст; если nil — скрываем label
+        if let verdict = viewModel.verdict {
+            verdictLabel.text = "🧑‍⚖️ \(verdict)/10 Your verdict"
+            verdictLabel.isHidden = false
+        } else {
+            verdictLabel.isHidden = true
+        }
         
         for genre in viewModel.genreNames {
             let genreLabel = UILabel.createGenreLabel(for: genre)
@@ -87,15 +94,7 @@ final class MovieTableViewCell: UITableViewCell {
     }
     
     func createContentStackView() -> UIStackView {
-        let calendarStackView = UIStackView(arrangedSubviews: [calendarImageView, yearLabel])
-        calendarStackView.spacing = Spacing.small
-        calendarStackView.alignment = .center
-        
-        let ratingStackView = UIStackView(arrangedSubviews: [starImageView, ratingLabel])
-        ratingStackView.spacing = Spacing.small
-        ratingStackView.alignment = .center
-
-        let contentStackView = UIStackView(arrangedSubviews: [nameLabel, ratingStackView, calendarStackView, genresStackView])
+        let contentStackView = UIStackView(arrangedSubviews: [nameLabel, ratingLabel, verdictLabel, yearLabel, genresStackView])  // Убрали ratingStackView и calendarStackView
         contentStackView.axis = .vertical
         contentStackView.spacing = Spacing.medium
         contentStackView.alignment = .leading
@@ -177,22 +176,6 @@ private extension UIImageView {
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 10
         imageView.layer.masksToBounds = true
-        return imageView
-    }
-    
-    static func createStarImageView() -> UIImageView {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(systemName: "star")
-        imageView.tintColor = .label
-        return imageView
-    }
-    
-    static func createCalendarImageView() -> UIImageView {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(systemName: "calendar")
-        imageView.tintColor = .label
         return imageView
     }
 }

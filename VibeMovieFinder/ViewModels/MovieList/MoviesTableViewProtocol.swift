@@ -11,6 +11,7 @@ protocol PaginatedMoviesListViewModelProtocol: MoviesListViewModelProtocol {
     
     func fetchMoviesAndGenres(page: Int, completion: @escaping (Result<Void, Error>) -> Void)
     func fetchNextPage()
+    func updateRequestParameters(_ newParameters: [String: Any])
 }
 
 protocol MoviesTableViewModelDelegate: AnyObject {

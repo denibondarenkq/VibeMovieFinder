@@ -28,10 +28,10 @@ class AccountMoviesListViewController: PaginatedMoviesListViewController {
     @objc private func promptSortOrder() {
         let alert = UIAlertController(title: "Sort By", message: "Date Added", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Ascending", style: .default, handler: { [weak self] _ in
-            (self?.viewModel as? PaginatedMoviesListViewModel)?.updateSortOrder(to: "created_at.asc")
+//            (self?.viewModel as? PaginatedMoviesListViewModel)?.updateSortOrder(to: "created_at.asc")
         }))
         alert.addAction(UIAlertAction(title: "Descending", style: .default, handler: { [weak self] _ in
-            (self?.viewModel as? PaginatedMoviesListViewModel)?.updateSortOrder(to: "created_at.desc")
+//            (self?.viewModel as? PaginatedMoviesListViewModel)?.updateSortOrder(to: "created_at.desc")
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)

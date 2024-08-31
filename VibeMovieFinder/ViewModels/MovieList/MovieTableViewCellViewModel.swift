@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 
 final class MovieTableViewCellViewModel {
     
@@ -6,9 +6,10 @@ final class MovieTableViewCellViewModel {
     public let rating: String
     public let releaseYear: String
     public let genreNames: [String]
+    public let verdict: Int?
     private let posterPath: String?
     
-    init(title: String, voteAverage: Double, releaseDate: String, genreIDs: [Int], genres: [Genre], posterPath: String?) {
+    init(title: String, voteAverage: Double, releaseDate: String, genreIDs: [Int], genres: [Genre], posterPath: String?, verdict: Int?) {
         self.title = title
         self.rating = String(format: "%.1f", voteAverage)
         self.releaseYear = String(releaseDate.prefix(4))
@@ -16,6 +17,7 @@ final class MovieTableViewCellViewModel {
             genres.first(where: { $0.id == id })?.name
         }
         self.posterPath = posterPath
+        self.verdict = verdict
     }
     
     public var posterURL: URL? {

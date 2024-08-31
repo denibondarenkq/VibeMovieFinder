@@ -142,7 +142,8 @@ class PaginatedMoviesListViewModel: PaginatedMoviesListViewModelProtocol {
                 releaseDate: movie.releaseDate,
                 genreIDs: movie.genreIDS,
                 genres: genres,
-                posterPath: movie.posterPath
+                posterPath: movie.posterPath,
+                verdict: movie.rating ?? nil
             )
         }
         delegate?.didFetchMovies()
@@ -152,7 +153,7 @@ class PaginatedMoviesListViewModel: PaginatedMoviesListViewModelProtocol {
         return movies[index]
     }
     
-    func updateSortOrder(to sortOrder: String) {
-        updateRequestParameters(["sort_by": sortOrder])
-    }
+//    func updateParameters(parametrs: String) {
+//        updateRequestParameters(["sort_by": sortOrder])
+//    }
 }
