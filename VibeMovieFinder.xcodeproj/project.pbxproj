@@ -71,6 +71,7 @@
 		79C903EC2C82279700CD949A /* Vibe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C903EB2C82279700CD949A /* Vibe.swift */; };
 		79C903EF2C838CDE00CD949A /* PaginatedMoviesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C903EE2C838CDE00CD949A /* PaginatedMoviesListViewController.swift */; };
 		79C903F12C838D0A00CD949A /* SearchMoviesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C903F02C838D0A00CD949A /* SearchMoviesViewController.swift */; };
+		79C903F32C83D6E300CD949A /* MovieAccountState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C903F22C83D6E300CD949A /* MovieAccountState.swift */; };
 		79ED69F82C6FC8770051B252 /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79ED69F72C6FC8770051B252 /* ShadowView.swift */; };
 		79ED6A002C7405590051B252 /* VibeSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79ED69FF2C7405590051B252 /* VibeSearchViewController.swift */; };
 		79ED6A022C74057A0051B252 /* VibeConfigurationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79ED6A012C74057A0051B252 /* VibeConfigurationViewController.swift */; };
@@ -142,6 +143,7 @@
 		79C903EB2C82279700CD949A /* Vibe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibe.swift; sourceTree = "<group>"; };
 		79C903EE2C838CDE00CD949A /* PaginatedMoviesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginatedMoviesListViewController.swift; sourceTree = "<group>"; };
 		79C903F02C838D0A00CD949A /* SearchMoviesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMoviesViewController.swift; sourceTree = "<group>"; };
+		79C903F22C83D6E300CD949A /* MovieAccountState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieAccountState.swift; sourceTree = "<group>"; };
 		79ED69F72C6FC8770051B252 /* ShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowView.swift; sourceTree = "<group>"; };
 		79ED69FF2C7405590051B252 /* VibeSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VibeSearchViewController.swift; sourceTree = "<group>"; };
 		79ED6A012C74057A0051B252 /* VibeConfigurationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VibeConfigurationViewController.swift; sourceTree = "<group>"; };
@@ -230,6 +232,7 @@
 				79B146302C67E2C900114F7E /* Review.swift */,
 				79C903D02C7CBE2900CD949A /* AuthModels.swift */,
 				79C903EB2C82279700CD949A /* Vibe.swift */,
+				79C903F22C83D6E300CD949A /* MovieAccountState.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -432,6 +435,7 @@
 			files = (
 				79C903E82C7FA3ED00CD949A /* VibeListViewModel.swift in Sources */,
 				7956FCFD2C3844A500DB6247 /* Movie.swift in Sources */,
+				79C903F32C83D6E300CD949A /* MovieAccountState.swift in Sources */,
 				7986114B2C63F08100FF7254 /* BackdropCollectionViewCell.swift in Sources */,
 				7986113E2C62C59F00FF7254 /* ImageService.swift in Sources */,
 				79B1463F2C6A671C00114F7E /* ImageCollectionViewCell.swift in Sources */,

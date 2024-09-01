@@ -2,15 +2,18 @@ import Foundation
 
 protocol MovieDetailSectionsViewViewModelDelegate: AnyObject {
     func didFetchMovieDetails()
+    func didUpdateMovieState()
+    func didFailToFetch(with error: Error)
 }
 
 class MovieDetailSectionsViewViewModel {
-    private let movie: Movie
+    let movie: Movie
     private var genres: [Genre] = []
     private var credits: [Cast] = []
     private var images: [Backdrop] = []
     private var reviews: [Review] = []
     private var recommendations: [Movie] = []
+    var movieAccountState: MovieAccountState?
     
     weak var delegate: MovieDetailSectionsViewViewModelDelegate?
     
@@ -81,6 +84,17 @@ class MovieDetailSectionsViewViewModel {
     public func fetchContent() {
         let dispatchGroup = DispatchGroup()
         var fetchError: Error?
+        
+        dispatchGroup.enter()
+        fetchMovieAccountState { result in
+            switch result {
+            case .success(let state):
+                self.movieAccountState = state
+            case .failure(let error):
+                fetchError = error
+            }
+            dispatchGroup.leave()
+        }
         
         dispatchGroup.enter()
         fetchGenres { result in
@@ -163,8 +177,7 @@ class MovieDetailSectionsViewViewModel {
                 )
             }),
             .overview(viewModels: [
-                OverviewCollectionViewCellViewModel(titleLabel: "Description", descriptionText: movie.overview),
-                OverviewCollectionViewCellViewModel(titleLabel: "AI Overview", descriptionText: movie.overview),
+                OverviewCollectionViewCellViewModel(titleLabel: "Description", descriptionText: movie.overview)
             ]),
             .cast(viewModels: credits.compactMap { cast in
                 CastCollectionViewCellViewModel(
@@ -198,6 +211,16 @@ class MovieDetailSectionsViewViewModel {
         ]
     }
     
+    private func fetchMovieAccountState(completion: @escaping (Result<MovieAccountState, Error>) -> Void) {
+        guard let sessionID = SessionManager.shared.sessionId else {
+            completion(.failure(NetworkService.NetworkServiceError.invalidSession))
+            return
+        }
+                
+        let endpoint = Endpoint.movieAccountStates(movieId: movie.id)
+        NetworkService.shared.execute(endpoint: endpoint, parameters: ["session_id": sessionID], expecting: MovieAccountState.self, completion: completion)
+    }
+    
     private func fetchGenres(completion: @escaping (Result<Genres, Error>) -> Void) {
         NetworkService.shared.execute(endpoint: .genreMovieList, expecting: Genres.self, completion: completion)
     }
@@ -220,6 +243,60 @@ class MovieDetailSectionsViewViewModel {
     private func fetchRecommendations(completion: @escaping (Result<Movies, Error>) -> Void) {
         let endpoint = Endpoint.movieRecommendations(movieId: movie.id)
         NetworkService.shared.execute(endpoint: endpoint, expecting: Movies.self, completion: completion)
+    }
+    
+    func rateMovie(movieId: Int, value: Double, completion: @escaping (Result<Bool, Error>) -> Void) {
+        guard let sessionID = SessionManager.shared.sessionId else {
+            completion(.failure(NetworkService.NetworkServiceError.invalidSession))
+            return
+        }
+
+        let endpoint = Endpoint.movieAddRating(movieId: movieId, rating: value)
+        
+        NetworkService.shared.execute(endpoint: endpoint, parameters: ["session_id": sessionID], expecting: APIResponse<Bool>.self) { result in
+            switch result {
+            case .success:
+                completion(.success(true))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func removeRating(movieId: Int, completion: @escaping (Result<Bool, Error>) -> Void) {
+        guard let sessionID = SessionManager.shared.sessionId else {
+            completion(.failure(NetworkService.NetworkServiceError.invalidSession))
+            return
+        }
+
+        let endpoint = Endpoint.movieDeleteRating(movieId: movieId)
+        
+        NetworkService.shared.execute(endpoint: endpoint, parameters: ["session_id": sessionID], expecting: APIResponse<Bool>.self) { result in
+            switch result {
+            case .success:
+                completion(.success(true))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func toggleWatchlist(mediaType: String, mediaId: Int, watchlist: Bool, completion: @escaping (Result<Bool, Error>) -> Void) {
+        guard let sessionID = SessionManager.shared.sessionId else {
+            completion(.failure(NetworkService.NetworkServiceError.invalidSession))
+            return
+        }
+
+        let endpoint = Endpoint.accountAddToWatchlist(mediaType: mediaType, mediaId: mediaId, watchlist: watchlist)
+        
+        NetworkService.shared.execute(endpoint: endpoint, parameters: ["session_id": sessionID], expecting: APIResponse<Bool>.self) { result in
+            switch result {
+            case .success:
+                completion(.success(true))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
     
     func numberOfItems(in section: Int) -> Int {

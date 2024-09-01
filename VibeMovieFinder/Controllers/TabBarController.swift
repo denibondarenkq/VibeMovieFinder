@@ -14,9 +14,7 @@ class TabBarController: UITabBarController {
     }
     
     private func setupTabBar() {
-        //            let watchlistVC = MoviesListViewController()
         let chatVC = VibeListViewController(viewModel: VibeListViewModel())
-//        let profileVC = ProfileViewController()
         
         let watchlistVC = AccountMoviesListViewController(viewModel: PaginatedMoviesListViewModel(), endpoint: Endpoint.accountWatchlistMovies, title: "Watchlist")
         

@@ -98,7 +98,7 @@ class PaginatedMoviesListViewModel: PaginatedMoviesListViewModelProtocol {
                     fetchError = error
                 }
             }
-
+            
             group.notify(queue: .main) {
                 self.isFetching = false
                 
@@ -153,7 +153,7 @@ class PaginatedMoviesListViewModel: PaginatedMoviesListViewModelProtocol {
         return movies[index]
     }
     
-//    func updateParameters(parametrs: String) {
-//        updateRequestParameters(["sort_by": sortOrder])
-//    }
+    //    func updateParameters(parametrs: String) {
+    //        updateRequestParameters(["sort_by": sortOrder])
+    //    }
 }
