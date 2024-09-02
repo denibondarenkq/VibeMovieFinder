@@ -8,6 +8,8 @@ class PaginatedMoviesListViewController: MoviesListViewController {
         return viewModel
     }
     
+    private let refreshControl = UIRefreshControl()
+
     init(viewModel: PaginatedMoviesListViewModelProtocol) {
         super.init(viewModel: viewModel)
     }
@@ -19,7 +21,30 @@ class PaginatedMoviesListViewController: MoviesListViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupScrollListener()
+        setupRefreshControl()
         fetchInitialData()
+    }
+
+    private func setupRefreshControl() {
+        refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
+        movieTableView.tableView.refreshControl = refreshControl
+    }
+
+    @objc private func didPullToRefresh() {
+        paginatedViewModel.fetchMoviesAndGenres(page: 1) { [weak self] result in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                self.refreshControl.endRefreshing()
+                
+                switch result {
+                case .success:
+                    self.movieTableView.tableView.reloadData() // Перезагружаем данные таблицы
+                case .failure(let error):
+                    self.handleError(error)
+                }
+            }
+        }
     }
     
     private func setupScrollListener() {

@@ -8,6 +8,7 @@ struct APIResponse<T: Decodable>: Decodable {
         case success
         case statusCode = "status_code"
         case statusMessage = "status_message"
+        case data
     }
 
     init(from decoder: Decoder) throws {
@@ -16,6 +17,12 @@ struct APIResponse<T: Decodable>: Decodable {
         statusCode = try container.decodeIfPresent(Int.self, forKey: .statusCode)
         statusMessage = try container.decodeIfPresent(String.self, forKey: .statusMessage)
         
-        data = try? T(from: decoder)
+//        data = try? T(from: decoder)
+        if let data = try? container.decodeIfPresent(T.self, forKey: .data) {
+            self.data = data
+        } else {
+            // Если нет, попробуем декодировать корневой объект как T
+            self.data = try? T(from: decoder)
+        }
     }
 }

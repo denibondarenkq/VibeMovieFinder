@@ -52,59 +52,64 @@ final class MovieDetailViewController: UIViewController {
     }
 
     @objc private func didTapRate() {
-            let alertController = UIAlertController(title: "Rate Movie", message: nil, preferredStyle: .alert)
-            alertController.addTextField { textField in
-                textField.keyboardType = .decimalPad
-                textField.placeholder = "Enter rating (0.5 - 10.0)"
-            }
+        let alertController = UIAlertController(title: "Rate Movie", message: nil, preferredStyle: .alert)
+        alertController.addTextField { textField in
+            textField.keyboardType = .decimalPad
+            textField.placeholder = "Enter rating (0.5 - 10.0)"
+        }
 
-            let rateAction = UIAlertAction(title: "Rate", style: .default) { [weak self, weak alertController] _ in
-                guard let self = self else { return }
-                guard let ratingText = alertController?.textFields?.first?.text,
-                      let ratingValue = Double(ratingText), ratingValue >= 0.5 && ratingValue <= 10.0 else {
-                    return
-                }
-                self.viewModel.rateMovie(movieId: self.viewModel.movie.id, value: ratingValue) { result in
-                    DispatchQueue.main.async {
-                        switch result {
-                        case .success:
-                            self.showSuccessAlert(message: "Rating saved!")
-                        case .failure(let error):
-                            self.handleError(error)
-                        }
+        let rateAction = UIAlertAction(title: "Rate", style: .default) { [weak self, weak alertController] _ in
+            guard let self = self else { return }
+            guard let ratingText = alertController?.textFields?.first?.text,
+                  let ratingValue = Double(ratingText), ratingValue >= 0.5 && ratingValue <= 10.0 else {
+                return
+            }
+            self.viewModel.rateMovie(movieId: self.viewModel.movie.id, value: ratingValue) { result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success:
+                        self.viewModel.fetchContent()
+                        self.updateRatingButton()
+                        self.showSuccessAlert(message: "Rating saved!")
+                    case .failure(let error):
+                        self.handleError(error)
                     }
                 }
-            }
-
-            let removeRatingAction = UIAlertAction(title: "Remove Rating", style: .destructive) { [weak self] _ in
-                guard let self = self else { return }
-                self.viewModel.removeRating(movieId: self.viewModel.movie.id) { result in
-                    DispatchQueue.main.async {
-                        switch result {
-                        case .success:
-                            self.showSuccessAlert(message: "Rating removed!")
-                        case .failure(let error):
-                            self.handleError(error)
-                        }
-                    }
-                }
-            }
-
-            alertController.addAction(rateAction)
-            alertController.addAction(removeRatingAction)
-            alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-
-            DispatchQueue.main.async {
-                self.present(alertController, animated: true, completion: nil)
             }
         }
 
+        let removeRatingAction = UIAlertAction(title: "Remove Rating", style: .destructive) { [weak self] _ in
+            guard let self = self else { return }
+            self.viewModel.removeRating(movieId: self.viewModel.movie.id) { result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success:
+                        self.viewModel.fetchContent()
+                        self.updateRatingButton() // Убедитесь, что эта строка вызывается
+                        self.showSuccessAlert(message: "Rating removed!")
+                    case .failure(let error):
+                        self.handleError(error)
+                    }
+                }
+            }
+        }
+
+        alertController.addAction(rateAction)
+        alertController.addAction(removeRatingAction)
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+
+        DispatchQueue.main.async {
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
+
     @objc private func didTapWatchlist() {
-        let isInWatchlist = viewModel.movieAccountState?.watchlist ?? false
+        let isInWatchlist = viewModel.isInWatchlist
         viewModel.toggleWatchlist(mediaType: "movie", mediaId: viewModel.movie.id, watchlist: !isInWatchlist) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
+                    self.viewModel.fetchContent()
                     self.updateWatchlistButton()
                     let message = isInWatchlist ? "Removed from Watchlist" : "Added to Watchlist"
                     self.showSuccessAlert(message: message)
@@ -116,14 +121,12 @@ final class MovieDetailViewController: UIViewController {
     }
     
     private func updateWatchlistButton() {
-        let isInWatchlist = viewModel.movieAccountState?.watchlist ?? false
-        let watchlistImageName = isInWatchlist ? "bookmark.slash.fill" : "bookmark"
+        let watchlistImageName = viewModel.isInWatchlist ? "bookmark.fill" : "bookmark"
         watchlistButton?.image = UIImage(systemName: watchlistImageName)
     }
     
     private func updateRatingButton() {
-        let isRated = viewModel.movieAccountState?.rated != nil
-        let ratingImageName = isRated ? "star.slash.fill" : "star"
+        let ratingImageName = viewModel.isRated ? "star.fill" : "star"
         ratingButton?.image = UIImage(systemName: ratingImageName)
     }
     
@@ -142,10 +145,18 @@ final class MovieDetailViewController: UIViewController {
         }
     }
     
-    private func showAuthorizationController() {
-        let authViewController = AuthViewController()
-        authViewController.modalPresentationStyle = .fullScreen
-        present(authViewController, animated: true, completion: nil)
+    func showAuthorizationController() {
+            guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                  let window = scene.windows.first else {
+                return
+            }
+            let authViewController = AuthViewController()
+            window.rootViewController = authViewController
+            UIView.transition(with: window,
+                              duration: 0.5,
+                              options: [.transitionFlipFromRight],
+                              animations: nil,
+                              completion: nil)
     }
     
     private func showErrorAlert(message: String) {

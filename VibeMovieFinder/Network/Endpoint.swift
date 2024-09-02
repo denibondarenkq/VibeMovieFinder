@@ -3,6 +3,7 @@ import Foundation
 public enum Endpoint {
     case requestToken
     case createSessionId(requestToken: String)
+    case deleteSession(sessionId: String)
     case accountWatchlistMovies
     case accountRatedMovies
     case movieDetails(movieId: Int)
@@ -28,6 +29,8 @@ public enum Endpoint {
             return "authentication/token/new"
         case .createSessionId:
             return "authentication/session/new"
+        case .deleteSession:
+            return "authentication/session"
         case .accountWatchlistMovies:
             return "account/account_id/watchlist/movies"
         case .accountRatedMovies:
@@ -65,7 +68,7 @@ public enum Endpoint {
             return .GET
         case .createSessionId, .movieAddRating, .accountAddToWatchlist:
             return .POST
-        case .movieDeleteRating:
+        case .deleteSession, .movieDeleteRating:
             return .DELETE
         }
     }
@@ -83,6 +86,8 @@ public enum Endpoint {
         switch self {
         case .createSessionId(let requestToken):
             return ["request_token": requestToken]
+        case .deleteSession(let sessionId):
+            return ["session_id": sessionId]
         case .movieAddRating(_, let rating):
             return ["value": rating]
         case .accountAddToWatchlist(let mediaType, let mediaId, let watchlist):

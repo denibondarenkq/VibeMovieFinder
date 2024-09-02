@@ -61,10 +61,18 @@ class MoviesListViewController: UIViewController {
         }
     }
     
-    private func showAuthorizationController() {
-        let authViewController = AuthViewController()
-        authViewController.modalPresentationStyle = .fullScreen
-        present(authViewController, animated: true, completion: nil)
+    func showAuthorizationController() {
+            guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                  let window = scene.windows.first else {
+                return
+            }
+            let authViewController = AuthViewController()
+            window.rootViewController = authViewController
+            UIView.transition(with: window,
+                              duration: 0.5,
+                              options: [.transitionFlipFromRight],
+                              animations: nil,
+                              completion: nil)
     }
     
     private func showErrorAlert(message: String) {

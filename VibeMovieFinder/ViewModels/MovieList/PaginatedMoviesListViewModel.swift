@@ -113,7 +113,11 @@ class PaginatedMoviesListViewModel: PaginatedMoviesListViewModelProtocol {
                 }
                 
                 self.genres = fetchedGenres
-                self.movies.append(contentsOf: moviesPage.results)
+                if page == 1 {
+                    self.movies = moviesPage.results
+                } else {
+                    self.movies.append(contentsOf: moviesPage.results)
+                }
                 self.totalPages = moviesPage.totalPages
                 self.currentPage = page
                 self.combineData()

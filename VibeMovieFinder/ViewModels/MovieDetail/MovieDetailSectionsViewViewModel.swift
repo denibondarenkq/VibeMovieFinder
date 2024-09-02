@@ -26,49 +26,6 @@ class MovieDetailSectionsViewViewModel {
         case cast(viewModels: [CastCollectionViewCellViewModel])
         case reviews(viewModels: [ReviewCollectionViewCellViewModel])
         case recommendations(viewModels: [MovieCollectionViewCellViewModel])
-        
-        var numberOfItems: Int {
-            switch self {
-            case .backdrop:
-                return 1
-            case .facts(let viewModels):
-                return viewModels.count
-            case .overview(let viewModels):
-                return viewModels.count
-            case .images(let viewModels):
-                return viewModels.count
-            case .genres(let viewModels):
-                return viewModels.count
-            case .cast(let viewModels):
-                return viewModels.count
-            case .reviews(let viewModels):
-                return viewModels.count
-            case .recommendations(let viewModels):
-                return viewModels.count
-            }
-        }
-        
-        func viewModelForItem(at index: Int) -> Any {
-            switch self {
-            case .backdrop(let viewModel):
-                return viewModel
-            case .facts(let viewModels):
-                return viewModels[index]
-            case .overview(let viewModels):
-                return viewModels[index]
-            case .images(let viewModels):
-                return viewModels[index]
-            case .genres(let viewModels):
-                return viewModels[index]
-            case .cast(let viewModels):
-                return viewModels[index]
-            case .reviews(let viewModels):
-                return viewModels[index]
-            case .recommendations(let viewModels):
-                return viewModels[index]
-            }
-        }
-        
     }
     
     public private(set) var sections: [SectionType] = []
@@ -79,6 +36,30 @@ class MovieDetailSectionsViewViewModel {
     
     public var title: String {
         movie.title
+    }
+    
+    var isRated: Bool {
+        switch movieAccountState?.rated {
+        case .rated(let rated):
+            return true
+        case .unrated(_):
+            return false
+        case .none:
+            return false
+        }
+    }
+
+    var userRating: Int? {
+        switch movieAccountState?.rated {
+        case .rated(let rated):
+            return rated.value
+        case .unrated(_), .none:
+            return nil
+        }
+    }
+
+    var isInWatchlist: Bool {
+        return movieAccountState?.watchlist ?? false
     }
     
     public func fetchContent() {
@@ -153,7 +134,7 @@ class MovieDetailSectionsViewViewModel {
         
         dispatchGroup.notify(queue: .main) {
             if fetchError != nil {
-                return
+                print("ERROR")
             }
             self.setUpSections()
             self.delegate?.didFetchMovieDetails()
@@ -166,7 +147,7 @@ class MovieDetailSectionsViewViewModel {
             .facts(viewModels: [
                 FactCollectionViewCellViewModel(title: "Release", value: String(movie.releaseDate.prefix(7)), emoji: "🎬"),
                 FactCollectionViewCellViewModel(title: "Rating", value: "\(round(movie.voteAverage * 10) / 10.0)/10", emoji: "🔥"),
-                FactCollectionViewCellViewModel(title: "Your verdict", value: "\(round(movie.voteAverage * 10) / 10.0)/10", emoji: "🧑‍⚖️"),
+                FactCollectionViewCellViewModel(title: "Your verdict", value: "\((userRating ?? -1) > -1 ? "\(userRating ?? 0)/10" : "Not rated")", emoji: "🧑‍⚖️"),
                 FactCollectionViewCellViewModel(title: "Popularity", value: "\(round(movie.popularity * 10) / 10.0)", emoji: "🤩"),
                 FactCollectionViewCellViewModel(title: "Language", value: movie.originalLanguage.uppercased(), emoji: "🌎"),
             ]),
@@ -211,7 +192,7 @@ class MovieDetailSectionsViewViewModel {
         ]
     }
     
-    private func fetchMovieAccountState(completion: @escaping (Result<MovieAccountState, Error>) -> Void) {
+    func fetchMovieAccountState(completion: @escaping (Result<MovieAccountState, Error>) -> Void) {
         guard let sessionID = SessionManager.shared.sessionId else {
             completion(.failure(NetworkService.NetworkServiceError.invalidSession))
             return
