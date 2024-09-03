@@ -22,6 +22,7 @@ final class MovieDetailViewController: UIViewController {
         setupConstraints()
         configureNavigationBar()
         viewModel.delegate = self
+        movieCollectionView.delegate = self
         viewModel.fetchContent()
     }
     
@@ -29,6 +30,7 @@ final class MovieDetailViewController: UIViewController {
         title = viewModel.title
         view.addSubview(movieCollectionView)
         view.backgroundColor = UIColor(named: "BackgroundColor")
+
     }
     
     private func configureNavigationBar() {
@@ -85,7 +87,7 @@ final class MovieDetailViewController: UIViewController {
                     switch result {
                     case .success:
                         self.viewModel.fetchContent()
-                        self.updateRatingButton() // Убедитесь, что эта строка вызывается
+                        self.updateRatingButton()
                         self.showSuccessAlert(message: "Rating removed!")
                     case .failure(let error):
                         self.handleError(error)
@@ -190,5 +192,20 @@ extension MovieDetailViewController: MovieDetailSectionsViewViewModelDelegate {
         DispatchQueue.main.async {
             self.handleError(error)
         }
+    }
+}
+
+extension MovieDetailViewController: MovieDetailSectionsViewDelegate {
+    func movieDetailSectionsView(_ view: MovieDetailSectionsView, didSelectText text: String) {
+        let fullScreenVC = FullScreenTextViewController(text: text)
+                let navController = UINavigationController(rootViewController: fullScreenVC)
+                navController.modalPresentationStyle = .fullScreen
+                present(navController, animated: true, completion: nil)
+    }
+    
+    func movieDetailSectionsView(_ view: MovieDetailSectionsView, didSelectMovie movie: Movie) {
+        let vc = MovieDetailViewController(movie: movie)
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

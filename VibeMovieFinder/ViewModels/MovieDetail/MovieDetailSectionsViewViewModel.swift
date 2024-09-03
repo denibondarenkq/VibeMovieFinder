@@ -306,5 +306,9 @@ class MovieDetailSectionsViewViewModel {
             return recommendationViewModels.count
         }
     }
+    
+    func recommendation(at index: Int) -> Movie? {
+        return recommendations[index]
+    }
 
 }

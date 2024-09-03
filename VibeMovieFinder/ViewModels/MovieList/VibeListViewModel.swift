@@ -59,7 +59,6 @@ class VibeListViewModel: MoviesListViewModelProtocol {
     
     private func fetchWatchedMovies(completion: @escaping () -> Void) {
         var allWatchedMovies: [String] = []
-        var currentPage = 1
         let endpoint = Endpoint.accountRatedMovies
         
         func fetchPage(page: Int) {
@@ -80,12 +79,13 @@ class VibeListViewModel: MoviesListViewModelProtocol {
                     
                 case .failure(let error):
                     print("Failed to fetch watched movies on page \(page): \(error)")
+                    self?.watchedMoviesTitles = allWatchedMovies
                     completion()
                 }
             }
         }
         
-        fetchPage(page: currentPage)
+        fetchPage(page: 1)
     }
     
     private func createPrompt(vibes: [String]) -> String {
@@ -115,16 +115,13 @@ class VibeListViewModel: MoviesListViewModelProtocol {
             let query = movieGemini.title
             let year = movieGemini.releaseYear
             
-            // Создаем параметры для поиска фильма
             let parameters: [String: Any] = [
                 "query": query,
                 "primary_release_year": "\(year)"
             ]
             
-            // Создаем эндпоинт поиска фильма
             let endpoint = Endpoint.searchMovie
             
-            // Выполняем запрос
             NetworkService.shared.execute(endpoint: endpoint, parameters: parameters, expecting: Movies.self) { result in
                 switch result {
                 case .success(let movies):
@@ -133,7 +130,7 @@ class VibeListViewModel: MoviesListViewModelProtocol {
                     }
                 case .failure(let error):
                     print(movieGemini, parameters)
-//                    fetchError = error
+                    fetchError = error
                 }
                 dispatchGroup.leave()
             }

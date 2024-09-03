@@ -1,9 +1,9 @@
 import UIKit
 
 protocol MovieDetailSectionsViewDelegate: AnyObject {
-    func movieDetailView(_ movieTableView: MoviesTableView, didSelect movie: Movie)
+    func movieDetailSectionsView(_ view: MovieDetailSectionsView, didSelectMovie movie: Movie)
+    func movieDetailSectionsView(_ view: MovieDetailSectionsView, didSelectText text: String)
 }
-
 final class MovieDetailSectionsView: UIView {
     weak var delegate: MovieDetailSectionsViewDelegate?
     private var collectionView: UICollectionView?
@@ -31,7 +31,7 @@ final class MovieDetailSectionsView: UIView {
     
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = UIColor(named: "BackgroundColor")
+        
         collectionView = createCollectionView()
         addSubview(collectionView!)
         addSubview(activityIndicator)
@@ -96,157 +96,34 @@ final class MovieDetailSectionsView: UIView {
     }
     
     private func createSectionLayout(for sectionIndex: Int) -> NSCollectionLayoutSection {
-        guard let sections = viewModel?.sections else {
-            return createSectionLayout(
-                itemWidth: .fractionalWidth(1.00),
-                itemHeight: .fractionalHeight(1.00),
-                groupWidth: .fractionalWidth(1.0),
-                groupHeight: .fractionalHeight(0.4),
-                scrollBehavior: nil,
-                groupInsets: NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0),
-                sectionInsets: NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-            )
+        guard let sections = viewModel?.sections, sectionIndex < sections.count else {
+            return BackdropSectionLayoutStrategy().createSectionLayout()
         }
         
-        switch sections[sectionIndex] {
+        let sectionType = sections[sectionIndex]
+        
+        let strategy: SectionLayoutStrategy
+        
+        switch sectionType {
         case .backdrop:
-            return createSectionLayout(
-                itemWidth: .fractionalWidth(1.00),
-                itemHeight: .fractionalHeight(1.00),
-                groupWidth: .fractionalWidth(1.0),
-                groupHeight: .fractionalHeight(0.4),
-                scrollBehavior: nil,
-                groupInsets: NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0),
-                sectionInsets: NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-            )
+            strategy = BackdropSectionLayoutStrategy()
         case .facts:
-            return createSectionLayout(
-                itemWidth: .fractionalWidth(0.33),
-                itemHeight: .fractionalHeight(1.00),
-                groupWidth: .fractionalWidth(1.0),
-                groupHeight: .absolute(80),
-                scrollBehavior: .groupPagingCentered,
-                groupInsets: NSDirectionalEdgeInsets(top: Spacing.medium, leading: Spacing.large, bottom: Spacing.large, trailing: Spacing.large),
-                sectionInsets: NSDirectionalEdgeInsets(top: Spacing.medium, leading: Spacing.large, bottom: Spacing.large, trailing: Spacing.large)
-            )
+            strategy = DefaultSectionLayoutStrategy(groupWidth: .absolute(100), groupHeight: .absolute(80))
         case .overview:
-            return createSectionLayout(
-                itemWidth: .fractionalWidth(1.0),
-                itemHeight: .fractionalHeight(1.0),
-                groupWidth: .fractionalWidth(1.0),
-                groupHeight: .absolute(130),
-                scrollBehavior: nil,
-                groupInsets: NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: Spacing.medium, trailing: 0),
-                sectionInsets: NSDirectionalEdgeInsets(top: Spacing.medium, leading: Spacing.large, bottom: Spacing.large, trailing: Spacing.large)
-            )
+            strategy = DefaultSectionLayoutStrategy(groupWidth: .absolute(350), groupHeight: .absolute(130))
         case .genres:
-            return createSectionLayout(
-                itemWidth: .fractionalWidth(1.0),
-                itemHeight: .fractionalHeight(1.0),
-                groupWidth: .absolute(150),
-                groupHeight: .absolute(30),
-                scrollBehavior: .continuousGroupLeadingBoundary,
-                groupInsets: NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Spacing.medium),
-                sectionInsets: NSDirectionalEdgeInsets(top: Spacing.medium, leading: Spacing.large, bottom: Spacing.large, trailing: Spacing.large)
-            )
+            strategy = DefaultSectionLayoutStrategy(groupWidth: .absolute(150), groupHeight: .absolute(30))
         case .cast:
-            return createSectionLayout(
-                itemWidth: .fractionalWidth(1.0),
-                itemHeight: .fractionalHeight(1.0),
-                groupWidth: .absolute(120),
-                groupHeight: .absolute(180),
-                scrollBehavior: .continuousGroupLeadingBoundary,
-                groupInsets: NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Spacing.medium),
-                sectionInsets: NSDirectionalEdgeInsets(top: Spacing.medium, leading: Spacing.large, bottom: Spacing.large, trailing: Spacing.large)
-            )
+            strategy = DefaultSectionLayoutStrategy(groupWidth: .absolute(120), groupHeight: .absolute(180))
         case .images:
-            return createSectionLayout(
-                itemWidth: .fractionalWidth(1.0),
-                itemHeight: .fractionalHeight(1.0),
-                groupWidth: .absolute(230),
-                groupHeight: .absolute(130),
-                scrollBehavior: .continuousGroupLeadingBoundary,
-                groupInsets: NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Spacing.medium),
-                sectionInsets: NSDirectionalEdgeInsets(top: Spacing.medium, leading: Spacing.large, bottom: Spacing.large, trailing: Spacing.large)
-            )
+            strategy = DefaultSectionLayoutStrategy(groupWidth: .absolute(230), groupHeight: .absolute(130))
         case .reviews:
-            return createSectionLayout(
-                itemWidth: .fractionalWidth(1.0),
-                itemHeight: .fractionalHeight(1.0),
-                groupWidth: .absolute(350),
-                groupHeight: .absolute(180),
-                scrollBehavior: .continuousGroupLeadingBoundary,
-                groupInsets: NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Spacing.medium),
-                sectionInsets: NSDirectionalEdgeInsets(top: Spacing.medium, leading: Spacing.large, bottom: Spacing.large, trailing: Spacing.large)
-            )
+            strategy = DefaultSectionLayoutStrategy(groupWidth: .absolute(350), groupHeight: .absolute(180))
         case .recommendations:
-            return createSectionLayout(
-                itemWidth: .fractionalWidth(1.0),
-                itemHeight: .fractionalHeight(1.0),
-                groupWidth: .absolute(230),
-                groupHeight: .absolute(180),
-                scrollBehavior: .continuousGroupLeadingBoundary,
-                groupInsets: NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: Spacing.medium),
-                sectionInsets: NSDirectionalEdgeInsets(top: Spacing.medium, leading: Spacing.large, bottom: Spacing.large, trailing: Spacing.large)
-            )
-        }
-    }
-    
-    private func createSectionLayout(
-        itemWidth: NSCollectionLayoutDimension,
-        itemHeight: NSCollectionLayoutDimension,
-        groupWidth: NSCollectionLayoutDimension,
-        groupHeight: NSCollectionLayoutDimension,
-        scrollBehavior: UICollectionLayoutSectionOrthogonalScrollingBehavior?,
-        groupInsets: NSDirectionalEdgeInsets,
-        sectionInsets: NSDirectionalEdgeInsets
-    ) -> NSCollectionLayoutSection {
-        let item = NSCollectionLayoutItem(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: itemWidth,
-                heightDimension: itemHeight
-            )
-        )
-        
-        let group: NSCollectionLayoutGroup = itemWidth == .fractionalWidth(1.0) ?
-        NSCollectionLayoutGroup.vertical(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: groupWidth,
-                heightDimension: groupHeight
-            ),
-            subitems: [item]
-        ) :
-        NSCollectionLayoutGroup.horizontal(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: groupWidth,
-                heightDimension: groupHeight
-            ),
-            subitems: [item]
-        )
-        
-        group.contentInsets = groupInsets
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = sectionInsets
-        
-        if let scrollBehavior = scrollBehavior {
-            section.orthogonalScrollingBehavior = scrollBehavior
+            strategy = DefaultSectionLayoutStrategy(groupWidth: .absolute(230), groupHeight: .absolute(180))
         }
         
-        section.boundarySupplementaryItems = [createSectionHeader()]
-        return section
-    }
-    
-    private func createSectionHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
-        let headerSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(60)
-        )
-        return NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: headerSize,
-            elementKind: UICollectionView.elementKindSectionHeader,
-            alignment: .top
-        )
+        return strategy.createSectionLayout()
     }
 }
 
@@ -408,4 +285,28 @@ extension MovieDetailSectionsView: UICollectionViewDataSource, UICollectionViewD
 
         return header
     }
+    
+        func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+            guard let sectionType = viewModel?.sections[indexPath.section] else {
+                return
+            }
+
+            switch sectionType {
+            case .overview(let viewModels):
+                let overview = viewModels[indexPath.row].descriptionText
+                delegate?.movieDetailSectionsView(self, didSelectText: overview)
+                
+            case .reviews(let viewModels):
+                let review = viewModels[indexPath.row].content
+                delegate?.movieDetailSectionsView(self, didSelectText: review)
+
+            case .recommendations:
+                guard let movie = viewModel?.recommendation(at: indexPath.row) else { return }
+                delegate?.movieDetailSectionsView(self, didSelectMovie: movie)
+                
+            default:
+                break
+            }
+        }
+    
 }
