@@ -53,9 +53,9 @@ class VibesMoviesViewController: MoviesViewController {
             findMoviesButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
             loadingSpinnerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loadingSpinnerView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -20),
+            loadingSpinnerView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: Spacing.large),
             
-            loadingLabel.topAnchor.constraint(equalTo: loadingSpinnerView.bottomAnchor, constant: 10),
+            loadingLabel.topAnchor.constraint(equalTo: loadingSpinnerView.bottomAnchor, constant: Spacing.large),
             loadingLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }

@@ -30,8 +30,8 @@ class VibeSelectionViewController: UIViewController {
         view.backgroundColor = UIColor(named: "BackgroundColor")
         
         setupTitleLabel()
-        setupCollectionView()
         setupGoButtonView()
+        setupCollectionView()
         setupSpinnerView()
         loadData()
     }
@@ -42,6 +42,18 @@ class VibeSelectionViewController: UIViewController {
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Spacing.large),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Spacing.medium),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Spacing.medium)
+        ])
+    }
+    
+    private func setupGoButtonView() {
+        view.addSubview(goButtonView)
+        goButtonView.configure(title: "Generate My List")
+        goButtonView.addTarget(self, action: #selector(goButtonTapped), for: .touchUpInside)
+        
+        goButtonView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            goButtonView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Spacing.large),
+            goButtonView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
     }
     
@@ -61,21 +73,9 @@ class VibeSelectionViewController: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Spacing.medium),
-            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        ])
-    }
-    
-    private func setupGoButtonView() {
-        view.addSubview(goButtonView)
-        goButtonView.configure(title: "Generate My List")
-        goButtonView.addTarget(self, action: #selector(goButtonTapped), for: .touchUpInside)
-        
-        goButtonView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            goButtonView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Spacing.large),
-            goButtonView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: goButtonView.topAnchor, constant: -Spacing.large)
         ])
     }
     

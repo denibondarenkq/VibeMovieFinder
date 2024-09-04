@@ -36,7 +36,7 @@ class AuthViewController: UIViewController {
         super.viewDidLoad()
         configureView()
         setupConstraints()
-        viewModel.delegate = self
+        viewModel.delegate = self        
         signInButtonView.addTarget(self, action: #selector(signInButtonTapped), for: .touchUpInside)
     }
 
@@ -53,17 +53,17 @@ class AuthViewController: UIViewController {
         signInButtonView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            welcomeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
+            welcomeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Spacing.large*2),
             welcomeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 
-            descriptionLabel.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 20),
-            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            descriptionLabel.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: Spacing.large),
+            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Spacing.large),
+            descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Spacing.large),
 
-            signInButtonView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 40),
-            signInButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            signInButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            signInButtonView.heightAnchor.constraint(equalToConstant: 50)
+            signInButtonView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: Spacing.large*2),
+            signInButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Spacing.large),
+            signInButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Spacing.large),
+            signInButtonView.heightAnchor.constraint(equalToConstant: Spacing.large*2)
         ])
     }
 

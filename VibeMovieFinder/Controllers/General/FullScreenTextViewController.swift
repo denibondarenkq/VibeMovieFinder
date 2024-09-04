@@ -24,8 +24,8 @@ class FullScreenTextViewController: UIViewController {
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.isEditable = false
         textView.font = TextStyle.body
-        textView.backgroundColor = .white
-        
+        view.backgroundColor = UIColor(named: "BackgroundColor")
+
         view.addSubview(textView)
         
         NSLayoutConstraint.activate([
